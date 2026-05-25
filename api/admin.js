@@ -1,4 +1,5 @@
 import { sql } from '@vercel/postgres';
+import { verifyAuth, setCORSHeaders } from './auth-helper.js';
 
 // Role hierarchy — higher index = more power
 const ROLE_HIERARCHY = ['member', 'builder', 'developer', 'mod', 'admin', 'owner'];
