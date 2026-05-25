@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import jwt from 'jsonwebtoken';
-import { verifyAuth, setCORSHeaders } from './_auth-helper.js';
+import { verifyAuth, setCORSHeaders } from './auth-helper.js';
 
 export default async function handler(req, res) {
   setCORSHeaders(res);

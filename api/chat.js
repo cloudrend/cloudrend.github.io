@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { verifyAuth, setCORSHeaders } from './_auth-helper.js';
+import { verifyAuth, setCORSHeaders } from './auth-helper.js';
 
 let pusher = null;
 try {
