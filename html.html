@@ -30,7 +30,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
       background: var(--bg); color: var(--text);
       min-height: 100vh; overflow-x: hidden;
     }
@@ -125,7 +125,7 @@
     /* ── Hero section ── */
     .hero {
       position: relative; overflow: hidden;
-      background: #17141F;
+      background: var(--bg);
       padding: 0;
     }
     .hero-grid {
@@ -141,7 +141,7 @@
     }
     .hero-logo-top { height: 46px; width: auto; margin-bottom: 28px; }
     .hero-copy .hero-btns { justify-content: flex-start; }
-    .hero-copy p { margin-left: 0; margin-right: 0; color: rgba(255,255,255,0.65); }
+    .hero-copy p { margin-left: 0; margin-right: 0; color: var(--muted); }
 
     /* ── Right visual panel ── */
     .hero-visual {
@@ -156,38 +156,63 @@
     .hero-visual::after {
       content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(90deg, #17141F 0%, rgba(23,20,31,0) 14%);
+      background: linear-gradient(90deg, var(--bg) 0%, rgba(249,245,255,0) 14%);
     }
 
-    /* ── Server info card (floats over the visual panel) ── */
-    .hero-card {
-      position: absolute; z-index: 2;
-      right: 24px; bottom: 24px;
-      width: 260px;
-      background: rgba(255,255,255,0.97); border: 1px solid var(--border);
-      border-radius: 20px; padding: 18px 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
-      backdrop-filter: blur(8px);
+    /* ── Join Now expanding "liquid" server info button ── */
+    .join-expand-wrap { position: relative; display: inline-block; }
+    .btn-join {
+      position: relative; z-index: 5;
+      overflow: hidden;
+      transition: width 0.55s cubic-bezier(0.65,0,0.35,1),
+                  height 0.55s cubic-bezier(0.65,0,0.35,1),
+                  border-radius 0.5s cubic-bezier(0.65,0,0.35,1),
+                  background 0.4s ease;
+      width: 150px; height: 46px;
+      white-space: nowrap;
     }
-    .hero-card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-    .hero-card-icon {
+    .btn-join.expanding {
+      width: 280px; height: 300px;
+      border-radius: 24px !important;
+      align-items: flex-start; justify-content: flex-start;
+      background: var(--card); cursor: default;
+      box-shadow: 0 12px 40px rgba(103,80,164,0.28), 0 2px 10px rgba(103,80,164,0.14);
+    }
+    .btn-join .join-label {
+      transition: opacity 0.2s ease;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-join.expanding .join-label { opacity: 0; pointer-events: none; position: absolute; }
+    .join-info-content {
+      opacity: 0; transition: opacity 0.3s ease 0.25s;
+      position: absolute; inset: 0; padding: 18px 20px;
+      pointer-events: none;
+    }
+    .btn-join.expanding .join-info-content { opacity: 1; pointer-events: auto; }
+    .join-info-content .hero-card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .join-info-content .hero-card-icon {
       width: 36px; height: 36px; border-radius: 10px;
       background: var(--grad); flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       font-size: 16px;
     }
-    .hero-card-top h3 { font-size: 13px; font-weight: 800; color: var(--text); }
-    .hero-card-top span { font-size: 10.5px; color: var(--muted); font-weight: 600; }
-    .hero-card-row {
+    .join-info-content .hero-card-top h3 { font-size: 13px; font-weight: 800; color: var(--text); }
+    .join-info-content .hero-card-top span { font-size: 10.5px; color: var(--muted); font-weight: 600; }
+    .join-info-content .hero-card-row {
       display: flex; align-items: center; justify-content: space-between;
       padding: 7px 0; border-top: 1px solid var(--border);
       font-size: 12px;
     }
-    .hero-card-row:first-of-type { border-top: none; }
-    .hero-card-row .k { color: var(--muted); font-weight: 700; }
-    .hero-card-row .v { color: var(--text); font-weight: 800; }
-    .hero-card-ips { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
-    .hero-card .ip-pill { padding: 5px 10px 5px 8px; font-size: 11.5px; }
+    .join-info-content .hero-card-row:first-of-type { border-top: none; }
+    .join-info-content .hero-card-row .k { color: var(--muted); font-weight: 700; }
+    .join-info-content .hero-card-row .v { color: var(--text); font-weight: 800; }
+    .join-info-content .hero-card-ips { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .join-info-content .ip-pill { padding: 5px 10px 5px 8px; font-size: 11px; margin-top: 0; }
+    .join-redirect-note {
+      font-size: 10.5px; color: var(--muted); text-align: center;
+      margin-top: 10px; font-weight: 700;
+    }
+
 
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; min-height: 0; }
@@ -195,21 +220,23 @@
       .hero-copy .hero-btns { justify-content: center; }
       .hero-logo-top { margin-left: auto; margin-right: auto; }
       .hero-visual { min-height: 320px; }
-      .hero-visual::after { background: linear-gradient(180deg, #17141F 0%, rgba(23,20,31,0) 14%); }
-      .hero-card { position: static; width: 100%; margin: -40px auto 24px; max-width: 340px; }
+      .hero-visual::after { background: linear-gradient(180deg, var(--bg) 0%, rgba(249,245,255,0) 14%); }
+      .btn-join.expanding { width: min(280px, 86vw); left: 50%; transform: translateX(-50%); position: relative; }
     }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(103,80,164,0.22); border: 1px solid rgba(156,77,204,0.4);
+      background: var(--blue-dim); border: 1px solid var(--border-hi);
       border-radius: 100px; padding: 4px 14px;
-      font-size: 12px; font-weight: 700; color: #C9A8FF;
+      font-size: 12px; font-weight: 700; color: var(--blue);
       letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px;
     }
     .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 5px var(--success); }
     .hero h1 {
       font-size: clamp(36px,4.6vw,58px); font-weight: 800;
       line-height: 1.08; margin-bottom: 16px;
-      color: #F4F1FA;
+      background: linear-gradient(135deg,#3d2f6b 20%,#6750A4 60%,#9C4DCC 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .hero p { font-size: 16px; max-width: 460px; margin: 0 0 28px; line-height: 1.7; }
     .hero-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -348,51 +375,51 @@
       <h1>Welcome to<br/>Cloudrend SMP</h1>
       <p>A newly launched cracked SMP — Java &amp; Bedrock, custom world, and a growing community. Join us.</p>
       <div class="hero-btns">
-        <a href="/auth.html?mode=register" class="btn btn-primary btn-lg">Join Now →</a>
+        <div class="join-expand-wrap">
+          <button type="button" class="btn btn-primary btn-lg btn-join" id="join-btn" onclick="expandJoin()">
+            <span class="join-label">Join Now →</span>
+            <div class="join-info-content">
+              <div class="hero-card-top">
+                <div class="hero-card-icon">🖥️</div>
+                <div>
+                  <h3>Server Info</h3>
+                  <span id="hc-status-label">Loading…</span>
+                </div>
+              </div>
+              <div class="hero-card-row">
+                <span class="k">Status</span>
+                <span class="v" id="hc-status">Loading…</span>
+              </div>
+              <div class="hero-card-row">
+                <span class="k">Players</span>
+                <span class="v" id="hc-players">—</span>
+              </div>
+              <div class="hero-card-row">
+                <span class="k">Version</span>
+                <span class="v" id="hc-version">—</span>
+              </div>
+              <div class="hero-card-ips">
+                <div class="ip-pill" style="justify-content:space-between;width:100%;">
+                  <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">☕</span><code>mc.loca.lol</code></span>
+                  <span style="font-size:10px;color:var(--muted);">Java</span>
+                </div>
+                <div class="ip-pill" style="justify-content:space-between;width:100%;">
+                  <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">🪨</span><code>mc.loca.lol:25972</code></span>
+                  <span style="font-size:10px;color:var(--muted);">Bedrock</span>
+                </div>
+              </div>
+              <p class="join-redirect-note">Taking you to login…</p>
+            </div>
+          </button>
+        </div>
         <a href="/policies.html" class="btn btn-subtle btn-lg">📜 Rules</a>
         <a href="https://discord.gg/3hcTp5JV3H" target="_blank" class="btn btn-subtle btn-lg">Discord</a>
       </div>
     </div>
 
-    <!-- Right: screenshot visual + floating server info card -->
+    <!-- Right: screenshot visual -->
     <div class="hero-visual">
       <img src="/assets/preview.png" alt="Cloudrend SMP gameplay preview" />
-
-      <div class="hero-card">
-        <div class="hero-card-top">
-          <div class="hero-card-icon">🖥️</div>
-          <div>
-            <h3>Server Info</h3>
-            <span>Tap an IP to copy</span>
-          </div>
-        </div>
-        <div class="hero-card-row">
-          <span class="k">Status</span>
-          <span class="v" id="hc-status">Loading…</span>
-        </div>
-        <div class="hero-card-row">
-          <span class="k">Players</span>
-          <span class="v" id="hc-players">—</span>
-        </div>
-        <div class="hero-card-row">
-          <span class="k">Version</span>
-          <span class="v" id="hc-version">—</span>
-        </div>
-        <div class="hero-card-ips">
-          <div class="ip-pill" onclick="copyIP('mc.loca.lol')" style="justify-content:space-between;width:100%;margin-top:0;">
-            <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">☕</span><code>mc.loca.lol</code></span>
-            <span style="font-size:10px;color:var(--muted);">⎘ Java</span>
-          </div>
-          <div class="ip-pill" onclick="copyIP('15.235.145.164')" style="justify-content:space-between;width:100%;margin-top:0;">
-            <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">🛟</span><code>15.235.145.164</code></span>
-            <span style="font-size:10px;color:var(--muted);">⎘ Backup</span>
-          </div>
-          <div class="ip-pill" onclick="copyIP('mc.loca.lol:25972')" style="justify-content:space-between;width:100%;margin-top:0;">
-            <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">🪨</span><code>mc.loca.lol:25972</code></span>
-            <span style="font-size:10px;color:var(--muted);">⎘ Bedrock</span>
-          </div>
-        </div>
-      </div>
     </div>
 
   </div>
@@ -659,11 +686,23 @@
     toast(`${ip} copied! ⎘`);
   }
 
+  let joinExpanded = false;
+  function expandJoin() {
+    if (joinExpanded) return;
+    joinExpanded = true;
+    const btn = document.getElementById('join-btn');
+    btn.classList.add('expanding');
+    setTimeout(() => {
+      window.location.href = '/auth.html?mode=register';
+    }, 1400);
+  }
+
   async function loadStatus() {
     try {
       const d = await fetch('https://api.mcsrvstat.us/3/mc.loca.lol').then(r=>r.json());
       const statusEl = document.getElementById('ss-status');
       const hcStatus = document.getElementById('hc-status');
+      const hcLabel = document.getElementById('hc-status-label');
       if (d.online) {
         statusEl.innerHTML = '<span class="chip chip-on">● Online</span>';
         document.getElementById('ss-players').textContent = `${d.players?.online??0} / ${d.players?.max??'?'}`;
@@ -672,6 +711,7 @@
         if (hcStatus) hcStatus.innerHTML = '<span class="chip chip-on">● Online</span>';
         if (document.getElementById('hc-players')) document.getElementById('hc-players').textContent = `${d.players?.online??0} / ${d.players?.max??'?'}`;
         if (document.getElementById('hc-version')) document.getElementById('hc-version').textContent = d.version??'?';
+        if (hcLabel) hcLabel.textContent = 'Ready to join!';
       } else {
         statusEl.innerHTML = '<span class="chip chip-off">● Offline</span>';
         document.getElementById('ss-players').textContent = '0';
@@ -680,6 +720,7 @@
         if (hcStatus) hcStatus.innerHTML = '<span class="chip chip-off">● Offline</span>';
         if (document.getElementById('hc-players')) document.getElementById('hc-players').textContent = '0';
         if (document.getElementById('hc-version')) document.getElementById('hc-version').textContent = '—';
+        if (hcLabel) hcLabel.textContent = 'Server offline';
       }
     } catch {
       document.getElementById('ss-status').innerHTML='<span class="chip chip-off">Error</span>';
