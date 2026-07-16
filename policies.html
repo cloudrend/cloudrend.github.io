@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Policies — Cloudrend SMP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --md-primary: #6750A4;
+      --md-primary-container: #EADDFF;
+      --md-on-primary-container: #21005D;
+      --md-surface: #FFFBFE;
+      --md-surface-variant: #E7E0EC;
+      --md-on-surface: #1C1B1F;
+      --md-on-surface-variant: #49454F;
+      --md-outline: #79747E;
+      --md-error: #B3261E;
+      --md-error-container: #F9DEDC;
+      --md-shadow: 0 2px 8px rgba(103,80,164,0.10), 0 1px 2px rgba(103,80,164,0.06);
+      --md-shadow-lg: 0 4px 24px rgba(103,80,164,0.13), 0 2px 6px rgba(103,80,164,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      background: #F9F5FF;
+      color: var(--md-on-surface);
+      overflow-x: hidden;
+    }
+
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.16;
+      pointer-events: none;
+      animation: drift 14s ease-in-out infinite alternate;
+    }
+    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,-18px) scale(1.06); } }
+
+    .stars { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+    .star { position: absolute; background: rgba(255,255,255,0.9); border-radius: 50%; opacity: 0; animation: twinkle var(--d) ease-in-out var(--delay) infinite alternate; }
+    @keyframes twinkle { from { opacity:0; } to { opacity:0.5; } }
+
+    nav {
+      position: sticky; top: 0; z-index: 20;
+      background: #fff;
+      border-bottom: 1px solid var(--md-surface-variant);
+      box-shadow: 0 1px 3px rgba(103,80,164,0.08);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--md-primary);
+      text-decoration: none;
+    }
+    .nav-logo img { height: 32px; width: auto; }
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--md-primary);
+      background: transparent;
+      border: 1.5px solid var(--md-outline);
+      border-radius: 999px;
+      padding: 10px 16px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .nav-back:hover { background: rgba(103,80,164,0.08); }
+    .nav-back svg { width: 14px; height: 14px; }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 44px 24px 72px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(103,80,164,0.12);
+      border: 1px solid rgba(103,80,164,0.2);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--md-primary);
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      color: var(--md-on-surface);
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+    .hero p {
+      font-size: 15px;
+      color: var(--md-on-surface-variant);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .section-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--md-on-surface);
+      margin: 0;
+    }
+    .section-header p {
+      font-size: 13px;
+      color: var(--md-on-surface-variant);
+      margin: 0;
+    }
+
+    .rules-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    .rule-card {
+      background: #fff;
+      border: 1px solid var(--md-surface-variant);
+      border-radius: 22px;
+      padding: 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      box-shadow: var(--md-shadow);
+      transition: transform 0.18s ease, border-color 0.18s;
+    }
+    .rule-card:hover { transform: translateY(-1px); border-color: rgba(103,80,164,0.18); }
+    .rule-card.red:hover { border-color: rgba(242,63,67,0.24); }
+    .rule-card.yellow:hover { border-color: rgba(250,168,26,0.24); }
+
+    .rule-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .num-purple { background: rgba(167,139,250,0.22); color: #7c3aed; }
+    .num-blue   { background: rgba(88,101,242,0.18); color: #5865f2; }
+    .num-red    { background: rgba(242,63,67,0.14); color: #d92f34; }
+    .num-yellow { background: rgba(250,168,26,0.16); color: #c47d07; }
+
+    .rule-body { flex: 1; min-width: 0; }
+    .rule-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--md-on-surface);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .rule-desc {
+      font-size: 14px;
+      color: var(--md-on-surface-variant);
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    .severity-chip {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .sev-high { background: rgba(242,63,67,0.12); color: #d92f34; }
+    .sev-med  { background: rgba(250,168,26,0.15); color: #b57d0a; }
+    .sev-low  { background: rgba(35,165,90,0.14); color: #1e8a4d; }
+
+    .divider {
+      height: 1px;
+      background: var(--md-surface-variant);
+      margin: 8px 0 48px;
+    }
+
+    .footer-warn {
+      background: rgba(242,63,67,0.08);
+      border: 1px solid rgba(242,63,67,0.18);
+      border-radius: 18px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .warn-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(242,63,67,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .footer-warn h3 { font-size: 16px; font-weight: 800; color: var(--md-on-surface); margin-bottom: 6px; }
+    .footer-warn p { font-size: 14px; color: var(--md-on-surface-variant); line-height: 1.75; margin: 0; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 880px) {
+      .page { padding: 36px 18px 64px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Blobs -->
+<div class="bg-blob" style="width:600px;height:600px;background:#5865f2;top:-150px;left:-200px;animation-duration:14s;"></div>
+<div class="bg-blob" style="width:500px;height:500px;background:#7c3aed;bottom:-100px;right:-150px;animation-duration:10s;animation-delay:-4s;"></div>
+<div class="bg-blob" style="width:300px;height:300px;background:#a855f7;top:50%;left:50%;animation-duration:16s;animation-delay:-2s;"></div>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Navbar -->
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo_cloudrend.png" alt="Cloudrend SMP" /></a>
+  <a href="/" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to home
+  </a>
+</nav>
+
+<!-- Page -->
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">📜 Server Policies</div>
+    <h1>Play fair.<br/>Be kind. Have fun.</h1>
+    <p>These rules and policies apply to all players on Cloudrend SMP — in-game, in chat, and for any purchases. Ignorance is not an excuse.</p>
+  </div>
+
+  <!-- Two column -->
+  <div class="two-col">
+
+    <!-- IN-GAME RULES -->
+    <div>
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(167,139,250,0.15);">🎮</div>
+        <div>
+          <h2>In-Game Rules</h2>
+          <p>How to behave in the world</p>
+        </div>
+      </div>
+      <div class="rules-grid">
+
+        <div class="rule-card red">
+          <div class="rule-num num-red">1</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              No Griefing
+              <span class="severity-chip sev-high">Bannable</span>
+            </div>
+            <p class="rule-desc">Do not destroy, modify, or steal from other players' builds without their permission. This includes farms, bases, and any placed structures.</p>
+          </div>
+        </div>
+
+        <div class="rule-card red">
+          <div class="rule-num num-red">2</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              No Hacking / Cheating
+              <span class="severity-chip sev-high">Bannable</span>
+            </div>
+            <p class="rule-desc">The use of X-ray resource packs, fly hacks, auto-clickers, or any cheat client is strictly prohibited. Play fair or don't play.</p>
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-num num-purple">3</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              Respect Personal Space
+              <span class="severity-chip sev-med">Warning</span>
+            </div>
+            <p class="rule-desc">Do not build within [X] blocks of another player's base unless you are teammates or have explicit permission from them.</p>
+          </div>
+        </div>
+
+        <div class="rule-card yellow">
+          <div class="rule-num num-yellow">4</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              No Lag Machines
+              <span class="severity-chip sev-med">Warning</span>
+            </div>
+            <p class="rule-desc">Avoid building massive redstone clocks or mob farms that intentionally slow down the server. Keep your farms optimized and reasonable.</p>
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-num num-purple">5</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              PvP Consent
+              <span class="severity-chip sev-med">Warning</span>
+            </div>
+            <p class="rule-desc">Do not kill other players unless both parties agree to a fight, or you are in a designated PvP zone. Surprise killing is not allowed.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CHAT RULES -->
+    <div>
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(88,101,242,0.15);">💬</div>
+        <div>
+          <h2>Chat Rules</h2>
+          <p>How to talk to each other</p>
+        </div>
+      </div>
+      <div class="rules-grid">
+
+        <div class="rule-card">
+          <div class="rule-num num-blue">1</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              Be Respectful
+              <span class="severity-chip sev-high">Bannable</span>
+            </div>
+            <p class="rule-desc">No harassment, bullying, or hate speech of any kind. Treat every player with basic human decency regardless of who they are.</p>
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-num num-blue">2</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              No Spamming
+              <span class="severity-chip sev-low">Kick</span>
+            </div>
+            <p class="rule-desc">Avoid flooding the chat with repetitive messages, excessive caps lock, or random characters. Keep it readable.</p>
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-num num-blue">3</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              Language Policy
+              <span class="severity-chip sev-low">Warning</span>
+            </div>
+            <p class="rule-desc">Keep the chat family-friendly. Avoid excessive swearing or inappropriate language — this server is open to all ages.</p>
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-num num-blue">4</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              No Advertising
+              <span class="severity-chip sev-med">Warning</span>
+            </div>
+            <p class="rule-desc">Do not promote other servers or post website links without prior staff approval. Unauthorized ads will result in a warning or mute.</p>
+          </div>
+        </div>
+
+        <div class="rule-card red">
+          <div class="rule-num num-red">5</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              No NSFW
+              <span class="severity-chip sev-high">Bannable</span>
+            </div>
+            <p class="rule-desc">Any NSFW topics, explicit content, or inappropriate discussions are strictly prohibited — no exceptions.</p>
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-num num-blue">6</div>
+          <div class="rule-body">
+            <div class="rule-title">
+              Staff Privacy
+              <span class="severity-chip sev-med">Warning</span>
+            </div>
+            <p class="rule-desc">Do not argue with staff members in public chat. If you have an issue, use private messages or open a ticket. Public drama helps no one.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /two-col -->
+
+  <div class="divider"></div>
+
+  <!-- TERMS OF SERVICE -->
+  <div>
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(240,168,50,0.15);">🛒</div>
+      <div>
+        <h2>Terms of Service — Purchases</h2>
+        <p>What you agree to when buying premium ranks</p>
+      </div>
+    </div>
+    <div class="rules-grid">
+
+      <div class="rule-card yellow">
+        <div class="rule-num num-yellow">1</div>
+        <div class="rule-body">
+          <div class="rule-title">
+            Refunds
+            <span class="severity-chip sev-med">No Refunds</span>
+          </div>
+          <p class="rule-desc">By purchasing our premium ranks, you agree that refunds are not allowed unless an issue occurs that cannot be resolved by our support team.</p>
+        </div>
+      </div>
+
+      <div class="rule-card red">
+        <div class="rule-num num-red">2</div>
+        <div class="rule-body">
+          <div class="rule-title">
+            Reselling
+            <span class="severity-chip sev-high">Bannable</span>
+          </div>
+          <p class="rule-desc">Reselling our products or premium rank perks/items for real life currency is strictly prohibited. Violation may result in a permanent ban and blacklisting from all current and future products.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Footer warning -->
+  <div class="footer-warn">
+    <div class="warn-icon">⚠️</div>
+    <div>
+      <h3>Consequences</h3>
+      <p>Breaking any of these rules may result in a <strong style="color:#faa81a;">warning</strong>, <strong style="color:#f0a832;">kick</strong>, temporary mute, or a <strong style="color:#f23f43;">permanent ban</strong> depending on the severity and frequency of the violation. Staff decisions are final — appeal via Discord if you believe a ban was unjust.</p>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  // Stars
+  const s = document.getElementById('stars');
+  for (let i = 0; i < 70; i++) {
+    const el = document.createElement('div');
+    el.className = 'star';
+    el.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${1.5+Math.random()*3}s;--delay:${Math.random()*5}s;width:${Math.random()>.8?4:2}px;height:${Math.random()>.8?4:2}px;`;
+    s.appendChild(el);
+  }
+</script>
+</body>
+</html>
