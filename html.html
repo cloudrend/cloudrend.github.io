@@ -49,20 +49,6 @@
     .star { position: absolute; background: rgba(103,80,164,0.7); border-radius: 50%; opacity: 0; animation: twinkle var(--d) ease-in-out var(--delay) infinite alternate; }
     @keyframes twinkle { from { opacity:0; } to { opacity:0.4; } }
 
-    /* ── Mesh hero bg ── */
-    .mesh-bg {
-      position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
-    }
-    .mesh-bg::before {
-      content: '';
-      position: absolute; inset: -50%;
-      background:
-        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(103,80,164,0.14) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(156,77,204,0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 60% at 60% 10%, rgba(103,80,164,0.08) 0%, transparent 70%);
-      animation: meshDrift 20s ease-in-out infinite alternate;
-    }
-    @keyframes meshDrift { from { transform: translate(0,0); } to { transform: translate(20px,15px); } }
 
     /* ── Showcase cards ── */
     .showcase-card {
@@ -139,34 +125,93 @@
     /* ── Hero section ── */
     .hero {
       position: relative; overflow: hidden;
-      padding: 80px 24px 72px; text-align: center;
+      background: #17141F;
+      padding: 0;
     }
-    .hero-photo-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background-image: url('/assets/preview.png');
-      background-size: cover; background-position: center 65%;
-      opacity: 0.16;
+    .hero-grid {
+      position: relative; z-index: 1;
+      max-width: 1400px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: stretch; min-height: 560px;
+      text-align: left;
     }
-    .hero-photo-fade {
-      position: absolute; inset: 0; z-index: 0;
-      background: linear-gradient(180deg, var(--bg) 0%, rgba(249,245,255,0.55) 40%, var(--bg) 100%);
+    .hero-copy {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 64px 56px;
+    }
+    .hero-logo-top { height: 46px; width: auto; margin-bottom: 28px; }
+    .hero-copy .hero-btns { justify-content: flex-start; }
+    .hero-copy p { margin-left: 0; margin-right: 0; color: rgba(255,255,255,0.65); }
+
+    /* ── Right visual panel ── */
+    .hero-visual {
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 420px;
+    }
+    .hero-visual img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    .hero-visual::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, #17141F 0%, rgba(23,20,31,0) 14%);
+    }
+
+    /* ── Server info card (floats over the visual panel) ── */
+    .hero-card {
+      position: absolute; z-index: 2;
+      right: 24px; bottom: 24px;
+      width: 260px;
+      background: rgba(255,255,255,0.97); border: 1px solid var(--border);
+      border-radius: 20px; padding: 18px 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+    }
+    .hero-card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .hero-card-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--grad); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .hero-card-top h3 { font-size: 13px; font-weight: 800; color: var(--text); }
+    .hero-card-top span { font-size: 10.5px; color: var(--muted); font-weight: 600; }
+    .hero-card-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 0; border-top: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .hero-card-row:first-of-type { border-top: none; }
+    .hero-card-row .k { color: var(--muted); font-weight: 700; }
+    .hero-card-row .v { color: var(--text); font-weight: 800; }
+    .hero-card-ips { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+    .hero-card .ip-pill { padding: 5px 10px 5px 8px; font-size: 11.5px; }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; min-height: 0; }
+      .hero-copy { padding: 56px 24px 40px; text-align: center; align-items: center; }
+      .hero-copy .hero-btns { justify-content: center; }
+      .hero-logo-top { margin-left: auto; margin-right: auto; }
+      .hero-visual { min-height: 320px; }
+      .hero-visual::after { background: linear-gradient(180deg, #17141F 0%, rgba(23,20,31,0) 14%); }
+      .hero-card { position: static; width: 100%; margin: -40px auto 24px; max-width: 340px; }
     }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--blue-dim); border: 1px solid var(--border-hi);
+      background: rgba(103,80,164,0.22); border: 1px solid rgba(156,77,204,0.4);
       border-radius: 100px; padding: 4px 14px;
-      font-size: 12px; font-weight: 700; color: var(--blue);
+      font-size: 12px; font-weight: 700; color: #C9A8FF;
       letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px;
     }
     .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 5px var(--success); }
     .hero h1 {
-      font-size: clamp(36px,6vw,64px); font-weight: 800;
+      font-size: clamp(36px,4.6vw,58px); font-weight: 800;
       line-height: 1.08; margin-bottom: 16px;
-      background: linear-gradient(135deg,#3d2f6b 20%,#6750A4 60%,#9C4DCC 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #F4F1FA;
     }
-    .hero p { font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 28px; line-height: 1.7; }
+    .hero p { font-size: 16px; max-width: 460px; margin: 0 0 28px; line-height: 1.7; }
     .hero-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
     /* Server IP pill */
@@ -294,32 +339,65 @@
 
 <!-- Hero -->
 <div class="hero fu">
-  <div class="hero-photo-bg"></div>
-  <div class="hero-photo-fade"></div>
-  <div class="mesh-bg"></div>
-  <div style="position:relative;z-index:1;">
-    <div class="hero-badge"><div class="dot"></div> Now Live — Season 1</div>
-    <h1>Welcome to<br/>Cloudrend SMP</h1>
-    <p>A newly launched cracked SMP — Java & Bedrock, custom world, and a growing community. Join us.</p>
-    <div class="hero-btns">
-      <a href="/auth.html?mode=register" class="btn btn-primary btn-lg">Join Now →</a>
-      <a href="/policies.html" class="btn btn-subtle btn-lg">📜 Rules</a>
-      <a href="https://discord.gg/3hcTp5JV3H" target="_blank" class="btn btn-subtle btn-lg">Discord</a>
-    </div>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
-      <div class="ip-pill" onclick="copyIP('cloudrend.playsmp.xyz')">
-        <span style="font-size:14px;">☕</span>
-        <code>cloudrend.playsmp.xyz</code>
-        <span style="font-size:11px;color:var(--muted);">⎘ Java</span>
-      </div>
-      <div class="ip-pill" onclick="copyIP('20.17.177.135')">
-        <span style="font-size:14px;">🪨</span>
-        <code>20.17.177.135:53045</code>
-        <span style="font-size:11px;color:var(--muted);">⎘ Bedrock</span>
+  <div class="hero-grid">
+
+    <!-- Left: logo + copy -->
+    <div class="hero-copy">
+      <img src="/assets/logo_cloudrend.png" alt="Cloudrend SMP" class="hero-logo-top" />
+      <div class="hero-badge"><div class="dot"></div> Now Live — Season 1</div>
+      <h1>Welcome to<br/>Cloudrend SMP</h1>
+      <p>A newly launched cracked SMP — Java &amp; Bedrock, custom world, and a growing community. Join us.</p>
+      <div class="hero-btns">
+        <a href="/auth.html?mode=register" class="btn btn-primary btn-lg">Join Now →</a>
+        <a href="/policies.html" class="btn btn-subtle btn-lg">📜 Rules</a>
+        <a href="https://discord.gg/3hcTp5JV3H" target="_blank" class="btn btn-subtle btn-lg">Discord</a>
       </div>
     </div>
+
+    <!-- Right: screenshot visual + floating server info card -->
+    <div class="hero-visual">
+      <img src="/assets/preview.png" alt="Cloudrend SMP gameplay preview" />
+
+      <div class="hero-card">
+        <div class="hero-card-top">
+          <div class="hero-card-icon">🖥️</div>
+          <div>
+            <h3>Server Info</h3>
+            <span>Tap an IP to copy</span>
+          </div>
+        </div>
+        <div class="hero-card-row">
+          <span class="k">Status</span>
+          <span class="v" id="hc-status">Loading…</span>
+        </div>
+        <div class="hero-card-row">
+          <span class="k">Players</span>
+          <span class="v" id="hc-players">—</span>
+        </div>
+        <div class="hero-card-row">
+          <span class="k">Version</span>
+          <span class="v" id="hc-version">—</span>
+        </div>
+        <div class="hero-card-ips">
+          <div class="ip-pill" onclick="copyIP('mc.loca.lol')" style="justify-content:space-between;width:100%;margin-top:0;">
+            <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">☕</span><code>mc.loca.lol</code></span>
+            <span style="font-size:10px;color:var(--muted);">⎘ Java</span>
+          </div>
+          <div class="ip-pill" onclick="copyIP('15.235.145.164')" style="justify-content:space-between;width:100%;margin-top:0;">
+            <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">🛟</span><code>15.235.145.164</code></span>
+            <span style="font-size:10px;color:var(--muted);">⎘ Backup</span>
+          </div>
+          <div class="ip-pill" onclick="copyIP('mc.loca.lol:25972')" style="justify-content:space-between;width:100%;margin-top:0;">
+            <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">🪨</span><code>mc.loca.lol:25972</code></span>
+            <span style="font-size:10px;color:var(--muted);">⎘ Bedrock</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
+
 
 <!-- Server status strip -->
 <div class="section fu2" style="padding-bottom:0;margin-bottom:0;">
@@ -327,8 +405,8 @@
     <div style="display:flex;align-items:center;gap:8px;flex:0 0 auto;">
       <span style="font-size:16px;">🖥</span>
       <div>
-        <div style="font-size:14px;font-weight:800;">cloudrend.playsmp.xyz</div>
-        <div style="font-size:11px;color:var(--muted);font-weight:600;">☕ Java &nbsp;·&nbsp; 🪨 Bedrock: 20.17.177.135:53045</div>
+        <div style="font-size:14px;font-weight:800;">mc.loca.lol</div>
+        <div style="font-size:11px;color:var(--muted);font-weight:600;">☕ Java &nbsp;·&nbsp; 🛟 Backup: 15.235.145.164 &nbsp;·&nbsp; 🪨 Bedrock: mc.loca.lol:25972</div>
       </div>
     </div>
     <div style="width:1px;height:32px;background:var(--border);flex-shrink:0;"></div>
@@ -576,27 +654,38 @@
     clearTimeout(t._t); t._t=setTimeout(()=>t.className=err?'err':'',3000);
   }
 
-  function copyIP(ip = 'cloudrend.playsmp.xyz') {
+  function copyIP(ip = 'mc.loca.lol') {
     navigator.clipboard.writeText(ip);
     toast(`${ip} copied! ⎘`);
   }
 
   async function loadStatus() {
     try {
-      const d = await fetch('https://api.mcsrvstat.us/3/cloudrend.playsmp.xyz').then(r=>r.json());
+      const d = await fetch('https://api.mcsrvstat.us/3/mc.loca.lol').then(r=>r.json());
       const statusEl = document.getElementById('ss-status');
+      const hcStatus = document.getElementById('hc-status');
       if (d.online) {
         statusEl.innerHTML = '<span class="chip chip-on">● Online</span>';
         document.getElementById('ss-players').textContent = `${d.players?.online??0} / ${d.players?.max??'?'}`;
         document.getElementById('ss-version').textContent = d.version??'?';
         document.getElementById('ss-motd').textContent = d.motd?.clean?.join(' ')??'—';
+        if (hcStatus) hcStatus.innerHTML = '<span class="chip chip-on">● Online</span>';
+        if (document.getElementById('hc-players')) document.getElementById('hc-players').textContent = `${d.players?.online??0} / ${d.players?.max??'?'}`;
+        if (document.getElementById('hc-version')) document.getElementById('hc-version').textContent = d.version??'?';
       } else {
         statusEl.innerHTML = '<span class="chip chip-off">● Offline</span>';
         document.getElementById('ss-players').textContent = '0';
         document.getElementById('ss-version').textContent = '—';
         document.getElementById('ss-motd').textContent = '—';
+        if (hcStatus) hcStatus.innerHTML = '<span class="chip chip-off">● Offline</span>';
+        if (document.getElementById('hc-players')) document.getElementById('hc-players').textContent = '0';
+        if (document.getElementById('hc-version')) document.getElementById('hc-version').textContent = '—';
       }
-    } catch { document.getElementById('ss-status').innerHTML='<span class="chip chip-off">Error</span>'; }
+    } catch {
+      document.getElementById('ss-status').innerHTML='<span class="chip chip-off">Error</span>';
+      const hcStatus = document.getElementById('hc-status');
+      if (hcStatus) hcStatus.innerHTML = '<span class="chip chip-off">Error</span>';
+    }
   }
 
   // Stars
