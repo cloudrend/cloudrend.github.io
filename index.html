@@ -1,1 +1,763 @@
-</h1> Website in Maintenance </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloudrend SMP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue:      #6750A4;
+      --blue-dim:  rgba(103,80,164,0.12);
+      --blue-glow: rgba(103,80,164,0.28);
+      --lav:       #9C4DCC;
+      --lav-dim:   rgba(156,77,204,0.12);
+      --grad:      linear-gradient(135deg,#6750A4 0%,#9C4DCC 100%);
+      --bg:        #F9F5FF;
+      --surface:   #FFFBFE;
+      --card:      #FFFFFF;
+      --card-h:    #F3EDFB;
+      --border:    #E7E0EC;
+      --border-hi: #C9B8E8;
+      --text:      #1C1B1F;
+      --muted:     #6F6A78;
+      --error:     #B3261E;
+      --success:   #2E7D32;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; overflow-x: hidden;
+    }
+
+    h1, h2, h3, .nav-logo, .section-title { font-family: 'Syne', sans-serif; }
+
+    /* ── Floating blobs (matches policies/tos/auth) ── */
+    .bg-blob {
+      position: fixed; border-radius: 50%; filter: blur(90px);
+      opacity: 0.16; pointer-events: none; z-index: 0;
+      animation: drift 14s ease-in-out infinite alternate;
+    }
+    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,-18px) scale(1.06); } }
+
+    .stars { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+    .star { position: absolute; background: rgba(103,80,164,0.7); border-radius: 50%; opacity: 0; animation: twinkle var(--d) ease-in-out var(--delay) infinite alternate; }
+    @keyframes twinkle { from { opacity:0; } to { opacity:0.4; } }
+
+
+    /* ── Showcase cards ── */
+    .showcase-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; position: relative;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .showcase-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+    .showcase-media {
+      width: 100%; height: 180px; background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      /* Once you have a real image, this div becomes an <img> and these styles won't apply */
+    }
+    /* When showcase-media is a real <img> tag */
+    img.showcase-media { object-fit: cover; display: block; font-size: 0; }
+    .showcase-info { padding: 14px 16px; }
+    .showcase-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .showcase-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .coming-soon-badge {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(28,27,31,0.72); backdrop-filter: blur(6px);
+      color: #fff; font-size: 10px; font-weight: 800;
+      padding: 3px 10px; border-radius: 100px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      border: 1px solid rgba(255,255,255,0.14);
+      /* Remove this entire element once content is real */
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 99px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      height: 58px; display: flex; align-items: center;
+      padding: 0 24px; justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(103,80,164,0.06);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; color: var(--text); text-decoration: none; }
+    .nav-logo img { height: 34px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+
+    /* ── Buttons ── */
+    .btn {
+      border: none; border-radius: 8px; font-family: inherit;
+      font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.15s; font-size: 13px; padding: 8px 16px;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--grad); color: #fff; }
+    .btn-primary:hover { opacity: 0.9; box-shadow: 0 2px 10px var(--blue-glow); }
+    .btn-subtle { background: rgba(103,80,164,0.05); color: var(--text); border: 1px solid var(--border); }
+    .btn-subtle:hover { border-color: var(--border-hi); background: var(--card-h); }
+    .btn-ghost { background: transparent; color: var(--muted); }
+    .btn-ghost:hover { background: var(--blue-dim); color: var(--blue); }
+    .btn-lg { padding: 11px 22px; font-size: 14px; border-radius: 10px; }
+
+    /* ── Glass card ── */
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; transition: border-color 0.15s, box-shadow 0.15s;
+      box-shadow: 0 2px 8px rgba(103,80,164,0.06);
+    }
+    .card:hover { border-color: var(--border-hi); box-shadow: 0 4px 16px rgba(103,80,164,0.1); }
+
+    /* ── Hero section ── */
+    .hero {
+      position: relative; overflow: hidden;
+      background: var(--bg);
+      padding: 0;
+    }
+    .hero-grid {
+      position: relative; z-index: 1;
+      max-width: 1400px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: stretch; min-height: 560px;
+      text-align: left;
+    }
+    .hero-copy {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 64px 56px;
+    }
+    .hero-logo-top { height: 46px; width: auto; margin-bottom: 28px; }
+    .hero-copy .hero-btns { justify-content: flex-start; }
+    .hero-copy p { margin-left: 0; margin-right: 0; color: var(--muted); }
+
+    /* ── Right visual panel ── */
+    .hero-visual {
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 420px;
+    }
+    .hero-visual img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    .hero-visual::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--bg) 0%, rgba(249,245,255,0) 14%);
+    }
+
+    /* ── Join Now expanding "liquid" server info button ── */
+    .join-expand-wrap { position: relative; display: inline-block; }
+    .btn-join {
+      position: relative; z-index: 5;
+      overflow: hidden;
+      transition: width 0.55s cubic-bezier(0.65,0,0.35,1),
+                  height 0.55s cubic-bezier(0.65,0,0.35,1),
+                  border-radius 0.5s cubic-bezier(0.65,0,0.35,1),
+                  background 0.4s ease;
+      width: 150px; height: 46px;
+      white-space: nowrap;
+    }
+    .btn-join.expanding {
+      width: 280px; height: 300px;
+      border-radius: 24px !important;
+      align-items: flex-start; justify-content: flex-start;
+      background: var(--card); cursor: default;
+      box-shadow: 0 12px 40px rgba(103,80,164,0.28), 0 2px 10px rgba(103,80,164,0.14);
+    }
+    .btn-join .join-label {
+      transition: opacity 0.2s ease;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-join.expanding .join-label { opacity: 0; pointer-events: none; position: absolute; }
+    .join-info-content {
+      opacity: 0; transition: opacity 0.3s ease 0.25s;
+      position: absolute; inset: 0; padding: 18px 20px;
+      pointer-events: none;
+    }
+    .btn-join.expanding .join-info-content { opacity: 1; pointer-events: auto; }
+    .join-info-content .hero-card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .join-info-content .hero-card-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--grad); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .join-info-content .hero-card-top h3 { font-size: 13px; font-weight: 800; color: var(--text); }
+    .join-info-content .hero-card-top span { font-size: 10.5px; color: var(--muted); font-weight: 600; }
+    .join-info-content .hero-card-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 0; border-top: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .join-info-content .hero-card-row:first-of-type { border-top: none; }
+    .join-info-content .hero-card-row .k { color: var(--muted); font-weight: 700; }
+    .join-info-content .hero-card-row .v { color: var(--text); font-weight: 800; }
+    .join-info-content .hero-card-ips { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .join-info-content .ip-pill { padding: 5px 10px 5px 8px; font-size: 11px; margin-top: 0; }
+    .join-redirect-note {
+      font-size: 10.5px; color: var(--muted); text-align: center;
+      margin-top: 10px; font-weight: 700;
+    }
+
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; min-height: 0; }
+      .hero-copy { padding: 56px 24px 40px; text-align: center; align-items: center; }
+      .hero-copy .hero-btns { justify-content: center; }
+      .hero-logo-top { margin-left: auto; margin-right: auto; }
+      .hero-visual { min-height: 320px; }
+      .hero-visual::after { background: linear-gradient(180deg, var(--bg) 0%, rgba(249,245,255,0) 14%); }
+      .btn-join.expanding { width: min(280px, 86vw); left: 50%; transform: translateX(-50%); position: relative; }
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--blue-dim); border: 1px solid var(--border-hi);
+      border-radius: 100px; padding: 4px 14px;
+      font-size: 12px; font-weight: 700; color: var(--blue);
+      letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 5px var(--success); }
+    .hero h1 {
+      font-size: clamp(36px,4.6vw,58px); font-weight: 800;
+      line-height: 1.08; margin-bottom: 16px;
+      background: linear-gradient(135deg,#3d2f6b 20%,#6750A4 60%,#9C4DCC 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p { font-size: 16px; max-width: 460px; margin: 0 0 28px; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    /* Server IP pill */
+    .ip-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 100px; padding: 6px 14px 6px 10px;
+      font-size: 13px; cursor: pointer; margin-top: 20px;
+      transition: border-color 0.15s, background 0.15s;
+      box-shadow: 0 2px 8px rgba(103,80,164,0.06);
+    }
+    .ip-pill:hover { border-color: var(--border-hi); background: var(--blue-dim); }
+    .ip-pill code { font-family: 'Courier New',monospace; font-size: 13px; color: var(--blue); }
+
+    /* ── Section ── */
+    .section { max-width: 1100px; margin: 0 auto; padding: 0 24px 64px; }
+    .section-label {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+    }
+    .section-label-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .section-label p { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; }
+    .section-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .section-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+    /* ── Feature cards ── */
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 12px; }
+    .feat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .feat-card:hover { border-color: var(--border-hi); background: var(--card-h); }
+    .feat-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 10px; flex-shrink: 0;
+    }
+    .feat-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+    .feat-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+    .feat-card code {
+      display: inline-block; margin-top: 6px;
+      background: rgba(79,107,255,0.12); border-radius: 5px;
+      padding: 2px 7px; font-size: 11px; color: var(--blue);
+    }
+
+    /* ── Category divider ── */
+    .cat-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px; margin-top: 28px;
+    }
+    .cat-header:first-child { margin-top: 0; }
+    .cat-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .cat-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; }
+    .cat-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ── Server status strip ── */
+    .status-strip {
+      display: flex; align-items: center; gap: 20px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 20px; margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .status-item { display: flex; flex-direction: column; gap: 2px; }
+    .status-item .label { font-size: 10px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+    .status-item .val { font-size: 15px; font-weight: 800; color: var(--text); }
+    .chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+    .chip-on { background: rgba(35,165,90,0.15); color: var(--success); }
+    .chip-off { background: rgba(107,115,153,0.15); color: var(--muted); }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 20px; left: 50%;
+      transform: translateX(-50%) translateY(70px);
+      background: var(--card); border: 1px solid var(--border-hi);
+      color: var(--text); padding: 9px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      display: flex; align-items: center; gap: 7px; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(103,80,164,0.18);
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast.err { color: var(--error); border-color: rgba(179,38,30,0.35); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px; text-align: center;
+      font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    .fu  { animation: fadeUp 0.35s ease both; }
+    .fu2 { animation: fadeUp 0.35s 0.07s ease both; }
+    .fu3 { animation: fadeUp 0.35s 0.14s ease both; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .spinner { width:16px;height:16px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite; }
+  </style>
+</head>
+<body>
+
+<!-- Blobs -->
+<div class="bg-blob" style="width:600px;height:600px;background:#5865f2;top:-150px;left:-200px;animation-duration:14s;"></div>
+<div class="bg-blob" style="width:500px;height:500px;background:#7c3aed;bottom:-100px;right:-150px;animation-duration:10s;animation-delay:-4s;"></div>
+<div class="bg-blob" style="width:300px;height:300px;background:#a855f7;top:50%;left:50%;animation-duration:16s;animation-delay:-2s;"></div>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Toast -->
+<div id="toast"><span id="ti">✓</span><span id="tm"></span></div>
+
+<!-- Nav -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/assets/logo_cloudrend.png" alt="Cloudrend SMP" />
+  </a>
+  <div class="nav-links">
+    <a href="/policies.html" class="btn btn-ghost">📜 Rules</a>
+    <a href="/forms.html" class="btn btn-ghost">📋 Forms</a>
+    <a href="/auth.html" class="btn btn-subtle">Register</a>
+    <a href="/auth.html" class="btn btn-primary">Login →</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero fu">
+  <div class="hero-grid">
+
+    <!-- Left: logo + copy -->
+    <div class="hero-copy">
+      <img src="/assets/logo_cloudrend.png" alt="Cloudrend SMP" class="hero-logo-top" />
+      <div class="hero-badge"><div class="dot"></div> Now Live — Season 1</div>
+      <h1>Welcome to<br/>Cloudrend SMP</h1>
+      <p>A newly launched cracked SMP — Java &amp; Bedrock, custom world, and a growing community. Join us.</p>
+      <div class="hero-btns">
+        <div class="join-expand-wrap">
+          <button type="button" class="btn btn-primary btn-lg btn-join" id="join-btn" onclick="expandJoin()">
+            <span class="join-label">Join Now →</span>
+            <div class="join-info-content">
+              <div class="hero-card-top">
+                <div class="hero-card-icon">🖥️</div>
+                <div>
+                  <h3>Server Info</h3>
+                  <span id="hc-status-label">Loading…</span>
+                </div>
+              </div>
+              <div class="hero-card-row">
+                <span class="k">Status</span>
+                <span class="v" id="hc-status">Loading…</span>
+              </div>
+              <div class="hero-card-row">
+                <span class="k">Players</span>
+                <span class="v" id="hc-players">—</span>
+              </div>
+              <div class="hero-card-row">
+                <span class="k">Version</span>
+                <span class="v" id="hc-version">—</span>
+              </div>
+              <div class="hero-card-ips">
+                <div class="ip-pill" style="justify-content:space-between;width:100%;">
+                  <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">☕</span><code>mc.loca.lol</code></span>
+                  <span style="font-size:10px;color:var(--muted);">Java</span>
+                </div>
+                <div class="ip-pill" style="justify-content:space-between;width:100%;">
+                  <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;">🪨</span><code>mc.loca.lol:25972</code></span>
+                  <span style="font-size:10px;color:var(--muted);">Bedrock</span>
+                </div>
+              </div>
+              <p class="join-redirect-note">Taking you to login…</p>
+            </div>
+          </button>
+        </div>
+        <a href="/policies.html" class="btn btn-subtle btn-lg">📜 Rules</a>
+        <a href="https://discord.gg/3hcTp5JV3H" target="_blank" class="btn btn-subtle btn-lg">Discord</a>
+      </div>
+    </div>
+
+    <!-- Right: screenshot visual -->
+    <div class="hero-visual">
+      <img src="/assets/preview.png" alt="Cloudrend SMP gameplay preview" />
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Server status strip -->
+<div class="section fu2" style="padding-bottom:0;margin-bottom:0;">
+  <div class="status-strip">
+    <div style="display:flex;align-items:center;gap:8px;flex:0 0 auto;">
+      <span style="font-size:16px;">🖥</span>
+      <div>
+        <div style="font-size:14px;font-weight:800;">mc.loca.lol</div>
+        <div style="font-size:11px;color:var(--muted);font-weight:600;">☕ Java &nbsp;·&nbsp; 🛟 Backup: 15.235.145.164 &nbsp;·&nbsp; 🪨 Bedrock: mc.loca.lol:25972</div>
+      </div>
+    </div>
+    <div style="width:1px;height:32px;background:var(--border);flex-shrink:0;"></div>
+    <div class="status-item">
+      <span class="label">Status</span>
+      <span id="ss-status"><span class="chip chip-off">Loading…</span></span>
+    </div>
+    <div class="status-item">
+      <span class="label">Players</span>
+      <span class="val" id="ss-players">—</span>
+    </div>
+    <div class="status-item">
+      <span class="label">Version</span>
+      <span class="val" id="ss-version">—</span>
+    </div>
+    <div class="status-item" style="flex:1;">
+      <span class="label">MOTD</span>
+      <span class="val" id="ss-motd" style="font-size:12px;color:var(--muted);font-weight:600;">—</span>
+    </div>
+    <button class="btn btn-ghost" onclick="loadStatus()" style="flex-shrink:0;padding:6px 10px;">↻</button>
+  </div>
+</div>
+
+<!-- Features -->
+<div class="section fu2" style="padding-top:40px;">
+  <div class="section-label">
+    <div class="section-label-dot" style="background:var(--blue);"></div>
+    <p style="color:var(--blue);">What we offer</p>
+  </div>
+  <h2 class="section-title">Features &amp; Info</h2>
+  <p class="section-sub">Everything Cloudrend SMP has to offer — and there's a lot.</p>
+
+  <!-- Getting Started -->
+  <div class="cat-header">
+    <div class="cat-dot" style="background:var(--blue);"></div>
+    <span class="cat-label" style="color:var(--blue);">Getting Started</span>
+    <div class="cat-line"></div>
+  </div>
+  <div class="feat-grid" style="margin-bottom:0;">
+    <div class="feat-card">
+      <div class="feat-icon" style="background:var(--blue-dim);">🌍</div>
+      <h3>Java &amp; Bedrock</h3>
+      <p>Cross-platform from day one — play on any edition.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(35,165,90,0.15);">✅</div>
+      <h3>/register</h3>
+      <p>Cracked server — register to play. Bedrock gets auto register &amp; login.</p>
+      <code>/register yourpassword yourpassword</code>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(79,107,255,0.12);">🔑</div>
+      <h3>/login</h3>
+      <p>Already registered? Login every session with your password.</p>
+      <code>/login yourpassword</code>
+    </div>
+  </div>
+
+  <!-- World -->
+  <div class="cat-header">
+    <div class="cat-dot" style="background:#23A55A;"></div>
+    <span class="cat-label" style="color:#23A55A;">World</span>
+    <div class="cat-line"></div>
+  </div>
+  <div class="feat-grid" style="margin-bottom:0;">
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(35,165,90,0.15);">🌲</div>
+      <h3>Custom Biomes</h3>
+      <p>Custom biomes and new structures scattered across the Overworld.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(242,63,67,0.12);">🐉</div>
+      <h3>Buffed Ender Dragon</h3>
+      <p>The Ender Dragon is significantly harder to kill — come prepared.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(250,168,26,0.12);">🪤</div>
+      <h3>Mobnet</h3>
+      <p>Catch and carry mobs — except Warden, Wither, and Ender Dragon.</p>
+    </div>
+  </div>
+
+  <!-- Customization -->
+  <div class="cat-header">
+    <div class="cat-dot" style="background:var(--lav);"></div>
+    <span class="cat-label" style="color:var(--lav);">Customization</span>
+    <div class="cat-line"></div>
+  </div>
+  <div class="feat-grid" style="margin-bottom:0;">
+    <div class="feat-card">
+      <div class="feat-icon" style="background:var(--lav-dim);">🎨</div>
+      <h3>/gradient</h3>
+      <p>Change your name color with a gradient — pick whatever colors you like.</p>
+      <code>/gradient</code>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:var(--lav-dim);">💬</div>
+      <h3>/chatcolor</h3>
+      <p>Change your chat color to whatever suits you best.</p>
+      <code>/chatcolor</code>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:var(--lav-dim);">✨</div>
+      <h3>/icons</h3>
+      <p>Add an icon to your nametag — choose whichever fits your vibe.</p>
+      <code>/icons</code>
+    </div>
+  </div>
+
+  <!-- Quality of Life -->
+  <div class="cat-header">
+    <div class="cat-dot" style="background:#0891B2;"></div>
+    <span class="cat-label" style="color:#0891B2;">Quality of Life</span>
+    <div class="cat-line"></div>
+  </div>
+  <div class="feat-grid" style="margin-bottom:0;">
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(8,145,178,0.12);">🏠</div>
+      <h3>20 Home Slots</h3>
+      <p>20 free home slots for every player — no premium needed.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(35,165,90,0.12);">🗺</div>
+      <h3>Infinite Villager Trade</h3>
+      <p>Trade as many times as you want — no restock waiting ever.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(250,168,26,0.12);">🧵</div>
+      <h3>/string</h3>
+      <p>Fill your inventory with string and trade with the Fletcher for easy emeralds.</p>
+      <code>/string</code>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:var(--blue-dim);">🚀</div>
+      <h3>/tpa</h3>
+      <p>Teleport to friends with /tpa, /tpaccept, and /tpahere.</p>
+      <code>/tpa &lt;player&gt;</code>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(242,63,67,0.10);">🔒</div>
+      <h3>/chestprotect</h3>
+      <p>Lock your chests from thieves — your stuff stays yours.</p>
+      <code>/chestprotect</code>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(35,165,90,0.12);">📍</div>
+      <h3>/lands</h3>
+      <p>Claim and protect your land by chunk. F3+B on Java, chunk border pack on Bedrock.</p>
+      <code>/lands claim</code>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     SHOWCASE SECTION
+     Replace the "coming soon" cards below with real screenshots,
+     videos, or images once you have them.
+
+     HOW TO USE:
+     - Each .showcase-card is one slide/item
+     - Replace the placeholder emoji + text inside .showcase-media
+       with an <img> or <video> tag pointing to your asset
+     - Remove the .coming-soon-badge once the content is real
+     - You can add/remove .showcase-card blocks freely
+
+     Example image replacement:
+     BEFORE: <div class="showcase-media">🖼</div>
+     AFTER:  <img src="/assets/screenshots/base.png" class="showcase-media" alt="Player base" />
+============================================================ -->
+<div class="section fu3" style="padding-top:0;">
+  <div class="section-label">
+    <div class="section-label-dot" style="background:var(--lav);"></div>
+    <p style="color:var(--lav);">Showcase</p>
+  </div>
+  <h2 class="section-title">See it in action</h2>
+  <p class="section-sub">Screenshots, builds, and moments from the server.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+
+    <!-- SHOWCASE CARD 1 — replace content when ready -->
+    <div class="showcase-card">
+      <!-- Coming soon badge — remove this div once you have real content -->
+      <div class="coming-soon-badge">Coming Soon</div>
+      <!-- Replace this div with <img src="..." /> or <video> -->
+      <div class="showcase-media">🏔</div>
+      <div class="showcase-info">
+        <p class="showcase-title">Spawn Area</p>
+        <p class="showcase-desc">The main spawn hub where players first arrive.</p>
+      </div>
+    </div>
+
+    <!-- SHOWCASE CARD 2 — replace content when ready -->
+    <div class="showcase-card">
+      <!-- Coming soon badge — remove this div once you have real content -->
+      <div class="coming-soon-badge">Coming Soon</div>
+      <!-- Replace this div with <img src="..." /> or <video> -->
+      <div class="showcase-media">⚔️</div>
+      <div class="showcase-info">
+        <p class="showcase-title">PvP Arena</p>
+        <p class="showcase-desc">Designated PvP zones for consensual combat.</p>
+      </div>
+    </div>
+
+    <!-- SHOWCASE CARD 3 — replace content when ready -->
+    <div class="showcase-card">
+      <!-- Coming soon badge — remove this div once you have real content -->
+      <div class="coming-soon-badge">Coming Soon</div>
+      <!-- Replace this div with <img src="..." /> or <video> -->
+      <div class="showcase-media">🌲</div>
+      <div class="showcase-info">
+        <p class="showcase-title">Custom Biomes</p>
+        <p class="showcase-desc">Explore new terrain types across the overworld.</p>
+      </div>
+    </div>
+
+    <!-- SHOWCASE CARD 4 — replace content when ready -->
+    <div class="showcase-card">
+      <!-- Coming soon badge — remove this div once you have real content -->
+      <div class="coming-soon-badge">Coming Soon</div>
+      <!-- Replace this div with <img src="..." /> or <video> -->
+      <div class="showcase-media">🏡</div>
+      <div class="showcase-info">
+        <p class="showcase-title">Player Builds</p>
+        <p class="showcase-desc">Community creations from our players.</p>
+      </div>
+    </div>
+
+    <!-- ADD MORE CARDS HERE — copy the block above and paste below -->
+
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="fu3">
+  <p>Cloudrend SMP &nbsp;·&nbsp; <a href="/policies.html">Rules</a> &nbsp;·&nbsp; <a href="/auth.html">Login</a> &nbsp;·&nbsp; <a href="https://discord.gg/3hcTp5JV3H" target="_blank">Discord</a></p>
+  <p style="margin-top:6px;font-size:11px;">Not affiliated with Mojang or Microsoft.</p>
+</footer>
+
+<script>
+  function toast(msg, err=false) {
+    const t=document.getElementById('toast');
+    document.getElementById('tm').textContent=msg;
+    t.className=err?'err show':'show';
+    clearTimeout(t._t); t._t=setTimeout(()=>t.className=err?'err':'',3000);
+  }
+
+  function copyIP(ip = 'mc.loca.lol') {
+    navigator.clipboard.writeText(ip);
+    toast(`${ip} copied! ⎘`);
+  }
+
+  let joinExpanded = false;
+  function expandJoin() {
+    if (joinExpanded) return;
+    joinExpanded = true;
+    const btn = document.getElementById('join-btn');
+    btn.classList.add('expanding');
+    setTimeout(() => {
+      window.location.href = '/auth.html?mode=register';
+    }, 1400);
+  }
+
+  async function loadStatus() {
+    try {
+      const d = await fetch('https://api.mcsrvstat.us/3/mc.loca.lol').then(r=>r.json());
+      const statusEl = document.getElementById('ss-status');
+      const hcStatus = document.getElementById('hc-status');
+      const hcLabel = document.getElementById('hc-status-label');
+      if (d.online) {
+        statusEl.innerHTML = '<span class="chip chip-on">● Online</span>';
+        document.getElementById('ss-players').textContent = `${d.players?.online??0} / ${d.players?.max??'?'}`;
+        document.getElementById('ss-version').textContent = d.version??'?';
+        document.getElementById('ss-motd').textContent = d.motd?.clean?.join(' ')??'—';
+        if (hcStatus) hcStatus.innerHTML = '<span class="chip chip-on">● Online</span>';
+        if (document.getElementById('hc-players')) document.getElementById('hc-players').textContent = `${d.players?.online??0} / ${d.players?.max??'?'}`;
+        if (document.getElementById('hc-version')) document.getElementById('hc-version').textContent = d.version??'?';
+        if (hcLabel) hcLabel.textContent = 'Ready to join!';
+      } else {
+        statusEl.innerHTML = '<span class="chip chip-off">● Offline</span>';
+        document.getElementById('ss-players').textContent = '0';
+        document.getElementById('ss-version').textContent = '—';
+        document.getElementById('ss-motd').textContent = '—';
+        if (hcStatus) hcStatus.innerHTML = '<span class="chip chip-off">● Offline</span>';
+        if (document.getElementById('hc-players')) document.getElementById('hc-players').textContent = '0';
+        if (document.getElementById('hc-version')) document.getElementById('hc-version').textContent = '—';
+        if (hcLabel) hcLabel.textContent = 'Server offline';
+      }
+    } catch {
+      document.getElementById('ss-status').innerHTML='<span class="chip chip-off">Error</span>';
+      const hcStatus = document.getElementById('hc-status');
+      if (hcStatus) hcStatus.innerHTML = '<span class="chip chip-off">Error</span>';
+    }
+  }
+
+  // Stars
+  (function() {
+    const s = document.getElementById('stars');
+    for (let i = 0; i < 70; i++) {
+      const el = document.createElement('div');
+      el.className = 'star';
+      el.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${1.5+Math.random()*3}s;--delay:${Math.random()*5}s;width:${Math.random()>.8?4:2}px;height:${Math.random()>.8?4:2}px;`;
+      s.appendChild(el);
+    }
+  })();
+
+  // Redirect logged-in users straight to portal
+  window.onload = async () => {
+    loadStatus();
+    const token = localStorage.getItem('smp_token');
+    if (!token) return;
+    try {
+      const res = await fetch('/api/me', { headers: { 'Authorization': `Bearer ${token}` } });
+      if (res.ok) {
+        const u = await res.json();
+        // Only redirect if not banned and MC is linked
+        if (u.mc_username) window.location.href = '/portal.html';
+        else if (!u.banned) window.location.href = '/link-mc.html';
+      } else {
+        localStorage.removeItem('smp_token');
+      }
+    } catch {}
+  };
+</script>
+</body>
+</html>

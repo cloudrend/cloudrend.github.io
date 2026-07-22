@@ -1,0 +1,62 @@
+CLOUDREND SMP — COMPLETE SITE PACKAGE
+Generated from live repo state (commit b5cb6eb) + this session's work.
+
+═══════════════════════════════════════
+WHAT TO DO
+═══════════════════════════════════════
+
+1. DELETE this file from your repo:
+   - rules.html   (superseded by policies.html — this is a leftover duplicate
+                    from before the rename; policies.html has the extra TOS
+                    purchase-terms section rules.html is missing)
+
+2. REPLACE these files in your repo root with the ones in this zip:
+   - index.html                     (this IS your html.html content, moved to
+                                      the correct filename, plus one added
+                                      "📋 Forms" nav link — see note below)
+   - auth.html                      (adds the required TOS/Rules checkbox gate)
+   - portal.html                    (adds the new "Applications" staff sub-tab)
+   - policies.html                  (unchanged from live — included for completeness)
+   - tos.html                       (unchanged from live — included for completeness)
+
+3. ADD these NEW files (didn't exist in your repo yet):
+   - staff-application-manual.html
+   - staff-application-discord.html
+   - creator-application.html
+   - forms.html
+   - api/staff-application.js
+   - api/creator-application.js
+   - api/discord-notify.js
+
+4. Also delete the stray html.html from your repo root once index.html is
+   live and confirmed working — html.html was your real homepage content
+   sitting under the wrong filename. It's included in THIS zip too, purely
+   so you can diff it against the new index.html and see they're the same
+   content (index.html = html.html + one "📋 Forms" nav link). Don't upload
+   the zip's html.html to your repo — it's reference-only.
+
+═══════════════════════════════════════
+BEFORE IT'LL FULLY WORK
+═══════════════════════════════════════
+
+- Set DISCORD_BOT_TOKEN in Vercel env vars (Settings → Environment Variables).
+  This must be an actual Discord BOT token (Developer Portal → your app → Bot
+  → Reset Token), not the OAuth client secret you already use for login.
+  The bot also needs to be a member of your Discord server with permission
+  to send messages in channel 1504278051461005402.
+
+- assets/logo_cloudrend.png and assets/preview.png must exist in your repo's
+  /assets folder — sent separately as cloudrend-assets.zip earlier in this
+  conversation.
+
+═══════════════════════════════════════
+VERIFY AFTER DEPLOY
+═══════════════════════════════════════
+
+□ Homepage loads with hero, logo, screenshot panel (not blank/maintenance)
+□ /auth.html shows the TOS checkbox and gates the Discord login button
+□ /forms.html shows both application cards
+□ /staff-application-manual.html and /staff-application-discord.html both work
+□ /creator-application.html — try the "(+) Add Social Media Link" modal
+□ /portal.html — staff panel shows "Applications" sub-tab with pending badge
+□ Submitting a test application posts to the configured Discord channel

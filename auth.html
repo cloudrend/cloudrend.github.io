@@ -29,9 +29,16 @@
       display: flex; align-items: center; justify-content: center;
       background: linear-gradient(135deg, #F3E5F5 0%, #EDE7F6 50%, #E8EAF6 100%);
       padding: 24px; overflow: hidden;
+      position: relative;
+    }
+    .auth-bg-photo {
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url('/assets/preview.png');
+      background-size: cover; background-position: center 65%;
+      opacity: 1;
     }
     body::before {
-      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
       background:
         radial-gradient(ellipse 60% 50% at 10% 20%, rgba(103,80,164,0.12) 0%, transparent 70%),
         radial-gradient(ellipse 50% 40% at 90% 80%, rgba(139,127,212,0.10) 0%, transparent 70%);
@@ -115,7 +122,36 @@
     .btn-discord:hover { background: var(--discord-hover); }
     .btn-discord:active { transform: scale(0.98); }
     .btn-discord:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-discord[aria-disabled="true"] { opacity: 0.6; pointer-events: none; cursor: not-allowed; }
     .btn-discord svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+    /* ── TOS checkbox ── */
+    .tos-check {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 14px; text-align: left;
+      cursor: pointer; user-select: none;
+    }
+    .tos-check input[type="checkbox"] {
+      appearance: none; -webkit-appearance: none;
+      width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;
+      border: 1.5px solid var(--outline); border-radius: 5px;
+      cursor: pointer; position: relative; transition: background 0.15s, border-color 0.15s;
+    }
+    .tos-check input[type="checkbox"]:checked {
+      background: var(--primary); border-color: var(--primary);
+    }
+    .tos-check input[type="checkbox"]:checked::after {
+      content: ''; position: absolute; left: 5px; top: 1px;
+      width: 5px; height: 9px;
+      border: solid #fff; border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    .tos-check label {
+      font-size: 12.5px; line-height: 1.6; color: var(--on-surface-var);
+      cursor: pointer;
+    }
+    .tos-check label a { color: var(--primary); font-weight: 700; text-decoration: none; }
+    .tos-check label a:hover { text-decoration: underline; }
 
     /* ── Appeal link ── */
     .appeal-link {
@@ -149,6 +185,7 @@
   </style>
 </head>
 <body>
+<div class="auth-bg-photo"></div>
 <div class="card">
 
   <!-- Header -->
@@ -180,8 +217,14 @@
       <div class="reason" id="banned-reason">—</div>
     </div>
 
+    <!-- TOS agreement checkbox -->
+    <div class="tos-check">
+      <input type="checkbox" id="tos-checkbox" />
+      <label for="tos-checkbox">To continue visiting our website, you agree to the <a href="/tos.html">Terms of Service</a> and <a href="/policies.html">In-Game Rules</a></label>
+    </div>
+
     <!-- Discord login button -->
-    <a class="btn-discord" id="discord-btn" href="/api/auth">
+    <a class="btn-discord" id="discord-btn" href="/api/auth" aria-disabled="true">
       <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028z"/>
       </svg>
@@ -200,7 +243,6 @@
     </a>
 
     <p class="footer-note">
-      By logging in you agree to our <a href="/rules.html" style="color:var(--primary);">server rules</a>.<br/>
       We only request your Discord username and avatar.
     </p>
 
@@ -219,6 +261,23 @@
   };
 
   window.onload = async () => {
+    // ── TOS checkbox gating ──
+    const tosCheckbox = document.getElementById('tos-checkbox');
+    const discordBtn = document.getElementById('discord-btn');
+    const updateBtnState = () => {
+      if (tosCheckbox.checked) {
+        discordBtn.removeAttribute('aria-disabled');
+        discordBtn.style.pointerEvents = '';
+        discordBtn.style.opacity = '';
+      } else {
+        discordBtn.setAttribute('aria-disabled', 'true');
+        discordBtn.style.pointerEvents = 'none';
+        discordBtn.style.opacity = '0.6';
+      }
+    };
+    tosCheckbox.addEventListener('change', updateBtnState);
+    updateBtnState();
+
     const params = new URLSearchParams(location.search);
 
     // ── Handle banned redirect from discord-callback ──

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Application — Cloudrend SMP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary:     #6750A4;
+      --primary-dim: rgba(103,80,164,0.08);
+      --grad:        linear-gradient(135deg,#6750A4 0%,#9C4DCC 100%);
+      --bg:          #F9F5FF;
+      --card:        #FFFFFF;
+      --border:      #E7E0EC;
+      --border-hi:   #C9B8E8;
+      --text:        #1C1B1F;
+      --muted:       #6F6A78;
+      --error:       #B3261E;
+      --error-cont:  #F9DEDC;
+      --success:     #2E7D32;
+      --discord:     #5865F2;
+      --discord-hover: #4752C4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
+      background: var(--bg); color: var(--text);
+      min-height: 100vh;
+    }
+    h1, h2, h3, .nav-logo { font-family: 'Syne', sans-serif; }
+
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,0.9); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: var(--text); text-decoration: none; }
+    .nav-logo img { height: 30px; width: auto; }
+    .nav-back {
+      font-size: 13px; font-weight: 700; color: var(--primary);
+      border: 1.5px solid var(--border-hi); border-radius: 999px;
+      padding: 8px 16px; text-decoration: none; transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--primary-dim); }
+
+    .page { max-width: 760px; margin: 0 auto; padding: 48px 20px 100px; }
+
+    .hero { text-align: center; margin-bottom: 36px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary-dim); border: 1px solid var(--border-hi);
+      color: var(--primary); font-size: 12px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.4px;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 18px;
+    }
+    .hero h1 { font-size: clamp(28px,4vw,38px); font-weight: 800; margin-bottom: 10px; }
+    .hero p { color: var(--muted); font-size: 14.5px; max-width: 480px; margin: 0 auto; line-height: 1.6; }
+
+    /* ── Locked gate ── */
+    #gate {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 48px 32px; text-align: center;
+      box-shadow: 0 4px 24px rgba(103,80,164,0.1);
+    }
+    .gate-icon {
+      width: 64px; height: 64px; border-radius: 18px; margin: 0 auto 18px;
+      background: var(--grad); display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+    #gate h2 { font-size: 19px; font-weight: 800; margin-bottom: 8px; }
+    #gate p { color: var(--muted); font-size: 13.5px; margin-bottom: 22px; line-height: 1.6; }
+    .btn-discord {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--discord); color: #fff; font-weight: 700; font-size: 14.5px;
+      border: none; border-radius: 999px; padding: 12px 26px; cursor: pointer;
+      text-decoration: none; transition: background 0.15s;
+    }
+    .btn-discord:hover { background: var(--discord-hover); }
+    .btn-discord svg { width: 20px; height: 20px; }
+    .gate-note { font-size: 11.5px; color: var(--muted); margin-top: 16px; }
+
+    /* ── Gate: two-option choice ── */
+    .gate-choices { display: flex; gap: 12px; margin-bottom: 4px; }
+    .gate-choice {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      background: #fff; border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 18px 14px; cursor: pointer; font-family: inherit;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+    .gate-choice:hover { border-color: var(--border-hi); background: var(--primary-dim); }
+    .gate-choice:active { transform: scale(0.98); }
+    .gate-choice.selected { border-color: var(--primary); background: var(--primary-dim); }
+    .gate-choice-icon {
+      width: 40px; height: 40px; border-radius: 12px; background: var(--grad);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .gate-choice-text { text-align: center; }
+    .gate-choice-text strong { display: block; font-size: 13.5px; color: var(--text); }
+    .gate-choice-text span { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+    .manual-entry, .discord-entry {
+      display: none; text-align: left; margin-top: 20px;
+      border-top: 1px solid var(--border); padding-top: 20px;
+    }
+    .manual-entry.show, .discord-entry.show { display: block; }
+    .discord-entry.show { text-align: center; }
+    .manual-entry input[type="text"] { margin-bottom: 4px; }
+    .manual-hint { font-size: 11.5px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+    /* ── Logged-in banner ── */
+    #session-banner {
+      display: none; align-items: center; gap: 10px;
+      background: rgba(46,125,50,0.08); border: 1px solid rgba(46,125,50,0.25);
+      border-radius: 14px; padding: 12px 16px; margin-bottom: 24px;
+      font-size: 13px; color: var(--success); font-weight: 700;
+    }
+    #session-banner img { width: 28px; height: 28px; border-radius: 50%; }
+    #session-banner .who { flex: 1; }
+    #session-banner .who span { display: block; font-size: 11px; color: var(--muted); font-weight: 600; }
+    #session-banner .switch { font-size: 11.5px; color: var(--muted); text-decoration: underline; cursor: pointer; font-weight: 700; background: none; border: none; }
+
+    /* ── Form ── */
+    #form-wrap { display: none; }
+    .section {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 26px 26px 8px; margin-bottom: 22px;
+      box-shadow: 0 2px 10px rgba(103,80,164,0.06);
+    }
+    .section-head { margin-bottom: 20px; }
+    .section-head h2 { font-size: 16px; font-weight: 800; color: var(--primary); }
+    .section-head p { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+
+    .q { margin-bottom: 22px; }
+    .q-label { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; display: block; }
+    .q-hint { font-size: 12px; color: var(--muted); margin-bottom: 8px; line-height: 1.5; }
+    .q-required::after { content: ' *'; color: var(--error); }
+
+    input[type="text"], input[type="number"], textarea {
+      width: 100%; font-family: inherit; font-size: 13.5px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 10px 13px; color: var(--text); background: #fff;
+      transition: border-color 0.15s;
+    }
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+      outline: none; border-color: var(--primary);
+    }
+    textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+    .radio-row { display: flex; gap: 10px; }
+    .radio-opt {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1.5px solid var(--border); border-radius: 10px; padding: 10px;
+      font-size: 13px; font-weight: 700; cursor: pointer; transition: border-color 0.15s, background 0.15s;
+      color: var(--muted);
+    }
+    .radio-opt input { accent-color: var(--primary); }
+    .radio-opt:has(input:checked) { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
+
+    .locked-field {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--primary-dim); border: 1.5px solid var(--border-hi);
+      border-radius: 10px; padding: 10px 13px; font-size: 13.5px; font-weight: 700;
+      color: var(--text);
+    }
+    .locked-field .tag {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      color: var(--primary); background: rgba(255,255,255,0.6);
+      padding: 2px 7px; border-radius: 999px; letter-spacing: 0.3px;
+    }
+
+    .honor-box {
+      background: var(--error-cont); border: 1px solid rgba(179,38,30,0.2);
+      border-radius: 12px; padding: 14px 16px; font-size: 12.5px;
+      color: #7a1f1a; line-height: 1.6; margin-bottom: 14px;
+    }
+
+    .submit-bar {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      box-shadow: 0 2px 10px rgba(103,80,164,0.06);
+    }
+    .submit-bar p { font-size: 12px; color: var(--muted); }
+    .btn-submit {
+      background: var(--grad); color: #fff; border: none; border-radius: 999px;
+      padding: 13px 28px; font-size: 14.5px; font-weight: 800; cursor: pointer;
+      font-family: inherit; transition: opacity 0.15s; white-space: nowrap;
+    }
+    .btn-submit:hover { opacity: 0.9; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    #success-msg {
+      display: none; text-align: center; background: var(--card);
+      border: 1px solid var(--border); border-radius: 20px; padding: 48px 32px;
+      box-shadow: 0 4px 24px rgba(103,80,164,0.1);
+    }
+    #success-msg .ok-icon { font-size: 44px; margin-bottom: 14px; }
+    #success-msg h2 { font-size: 19px; font-weight: 800; margin-bottom: 8px; }
+    #success-msg p { color: var(--muted); font-size: 13.5px; }
+
+    @media (max-width: 600px) {
+      .page { padding: 32px 14px 80px; }
+      .section { padding: 20px 18px 4px; }
+      .submit-bar { flex-direction: column; align-items: stretch; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo_cloudrend.png" alt="Cloudrend SMP" /></a>
+  <a href="/" class="nav-back">← Back to home</a>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-badge">📋 Now Accepting</div>
+    <h1>Staff Application</h1>
+    <p>Help us keep Cloudrend SMP fair, fun, and well-run. Read every question carefully — we value honest, personal answers over polished ones.</p>
+  </div>
+
+  <!-- ── Discord OAuth gate ── -->
+  <div id="gate">
+    <div class="gate-icon">🔒</div>
+    <h2>Login required</h2>
+    <p>You need to sign in with Discord before applying. This verifies your identity and auto-fills your Discord username, so you can't apply on someone else's behalf.</p>
+
+    <div id="discord-entry" class="discord-entry show" style="border-top:none;padding-top:0;">
+      <a class="btn-discord" href="/auth.html?next=/staff-application-discord.html">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028z"/></svg>
+        Continue with Discord
+      </a>
+      <p class="gate-note">You'll be brought back here right after logging in.</p>
+    </div>
+
+    <p class="gate-note">Prefer not to log in? <a href="/staff-application-manual.html" style="color:var(--primary);font-weight:700;">Type your username manually instead →</a></p>
+    <p class="gate-note" id="gate-refresh-note">Already logged in but seeing this? Try refreshing — your session may have expired.</p>
+  </div>
+
+  <!-- ── Form (shown once identity is chosen) ── -->
+
+  <div id="form-wrap">
+
+    <div id="session-banner">
+      <img id="session-avatar" src="" alt="" />
+      <div class="who">Logged in as <strong id="session-username">—</strong><span>Discord verified · auto-filled below</span></div>
+      <button type="button" class="switch" onclick="location.href='/auth.html'">Not you?</button>
+    </div>
+
+    <form id="app-form">
+
+      <!-- SECTION 1 -->
+      <div class="section">
+        <div class="section-head">
+          <h2>Section 1 — Applicant Profile</h2>
+          <p>Basic background and contact details.</p>
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Minecraft Username (IGN)</label>
+          <input type="text" name="ign" required placeholder="e.g. Orchid_MC" />
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Discord Username</label>
+          <div class="locked-field" id="discord-locked-field">
+            <span id="discord-username-display">Loading…</span>
+            <span class="tag" id="discord-verify-tag">Verified via login</span>
+          </div>
+          <input type="hidden" name="discord_username" id="discord_username_input" />
+          <input type="hidden" name="discord_id" id="discord_id_input" />
+          <input type="hidden" name="identity_method" id="identity_method_input" />
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Age <span style="font-weight:400;color:var(--muted);">(must be 15 or older)</span></label>
+          <input type="number" name="age" min="15" max="99" required placeholder="e.g. 17" />
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Time Zone / Country</label>
+          <input type="text" name="timezone" required placeholder="e.g. GMT+8, Philippines" />
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">How many hours per week can you actively dedicate to moderating CloudrendSMP?</label>
+          <input type="text" name="hours_per_week" required placeholder="e.g. 10-15 hours" />
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Do you have a working microphone and the ability to join Discord voice channels if needed?</label>
+          <div class="radio-row">
+            <label class="radio-opt"><input type="radio" name="has_mic" value="yes" required /> Yes</label>
+            <label class="radio-opt"><input type="radio" name="has_mic" value="no" /> No</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="section">
+        <div class="section-head">
+          <h2>Section 2 — Experience &amp; Background</h2>
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Do you have prior experience moderating Minecraft servers or Discord communities?</label>
+          <p class="q-hint">If yes, please list the server names, your roles, and why you are no longer staff there.</p>
+          <textarea name="prior_experience" required></textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">What unique skills, traits, or values do you possess that make you a better fit for the team than other applicants?</label>
+          <textarea name="unique_fit" required></textarea>
+        </div>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="section">
+        <div class="section-head">
+          <h2>Section 3 — Situation &amp; Scenario-Based Questions</h2>
+          <p>Please answer these in your own words. We value your personal reasoning over perfect, robotic answers.</p>
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Scenario A — In-Game Dispute</label>
+          <p class="q-hint">Player A opens a ticket claiming Player B just griefed their base. However, Player B claims that Player A gave them verbal permission to build there earlier that day. There is no written evidence in public chat. How do you investigate this, and what steps do you take to resolve it fairly?</p>
+          <textarea name="scenario_a" required></textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Scenario B — Staff Disagreement</label>
+          <p class="q-hint">You witness another staff member abusing their powers (e.g., giving themselves items or punishing a player without proper proof). They are a higher rank than you. What do you do?</p>
+          <textarea name="scenario_b" required></textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Scenario C — High-Stress Chat</label>
+          <p class="q-hint">Chat is moving incredibly fast, and multiple players are arguing about a controversial topic. Amidst the chaos, a player begins subtly bypassing the chat filter to post toxic remarks, while another is spamming. You are the only staff member online. How do you handle this situation step-by-step?</p>
+          <textarea name="scenario_c" required></textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Scenario D — Cheating Suspect</label>
+          <p class="q-hint">You suspect a prominent, well-known community member of using X-ray, but you do not have 100% concrete proof yet. How do you proceed without causing drama or alerting the player?</p>
+          <textarea name="scenario_d" required></textarea>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="section">
+        <div class="section-head">
+          <h2>Section 4 — Anti-AI Verification &amp; Honor Pledge</h2>
+        </div>
+
+        <div class="honor-box">
+          We want to get to know you, not a chatbot. All applications are run through commercial AI detection tools (such as GPTZero and CopyLeaks). If your application is flagged for AI generation, it will be instantly rejected without review, and you will be blacklisted from applying in the future.
+        </div>
+
+        <div class="q">
+          <label class="q-label q-required">Type the following phrase exactly to confirm your understanding:</label>
+          <p class="q-hint">"I certify that all answers in this application were written entirely by me, without the use of ChatGPT or any other AI writing assistants."</p>
+          <input type="text" name="honor_pledge" required placeholder="Type the phrase exactly as shown above" />
+        </div>
+      </div>
+
+      <div class="submit-bar">
+        <p>Double-check your answers — applications can't be edited after submitting.</p>
+        <button type="submit" class="btn-submit" id="submit-btn">Submit Application</button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ── Success state ── -->
+  <div id="success-msg">
+    <div class="ok-icon">✅</div>
+    <h2>Application submitted!</h2>
+    <p>Thanks for applying to Cloudrend SMP staff. We review every application manually — expect a reply on Discord within a week or two.</p>
+  </div>
+
+</div>
+
+<script>
+  const HONOR_PHRASE = "I certify that all answers in this application were written entirely by me, without the use of ChatGPT or any other AI writing assistants.";
+
+  window.onload = async () => {
+    const token = localStorage.getItem('smp_token');
+    const gate = document.getElementById('gate');
+    const formWrap = document.getElementById('form-wrap');
+
+    if (!token) {
+      gate.style.display = 'block';
+      formWrap.style.display = 'none';
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/me', { headers: { 'Authorization': `Bearer ${token}` } });
+      if (!res.ok) throw new Error('invalid session');
+      const u = await res.json();
+      unlockWithVerifiedDiscord(u);
+
+    } catch {
+      localStorage.removeItem('smp_token');
+      gate.style.display = 'block';
+      formWrap.style.display = 'none';
+    }
+  };
+
+  function unlockWithVerifiedDiscord(u) {
+    const name = u.discord_username ?? u.username ?? 'Unknown';
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('form-wrap').style.display = 'block';
+
+    document.getElementById('discord-username-display').textContent = name;
+    document.getElementById('discord-verify-tag').textContent = 'Verified via login';
+    document.getElementById('discord-verify-tag').style.background = 'rgba(46,125,50,0.15)';
+    document.getElementById('discord-verify-tag').style.color = 'var(--success)';
+    document.getElementById('discord_username_input').value = name;
+    document.getElementById('discord_id_input').value = u.discord_id ?? u.id ?? '';
+    document.getElementById('identity_method_input').value = 'discord_oauth';
+
+    document.getElementById('session-username').textContent = name;
+    if (u.avatar_url) document.getElementById('session-avatar').src = u.avatar_url;
+    document.getElementById('session-banner').style.display = 'flex';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.getElementById('app-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const pledgeInput = form.honor_pledge.value.trim();
+    if (pledgeInput !== HONOR_PHRASE) {
+      alert('The honor pledge must be typed exactly as shown, word-for-word.');
+      return;
+    }
+
+    const submitBtn = document.getElementById('submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+    const token = localStorage.getItem('smp_token');
+
+    try {
+      const res = await fetch('/api/staff-application', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('submit failed');
+
+      document.getElementById('form-wrap').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch {
+      alert('Something went wrong submitting your application. Please try again.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Application';
+    }
+  });
+</script>
+</body>
+</html>

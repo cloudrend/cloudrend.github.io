@@ -61,6 +61,7 @@
     .btn-outlined { background:transparent; color:var(--primary); border:1.5px solid var(--outline-var); }
     .btn-outlined:hover { background:var(--primary-cont); border-color:var(--primary); }
     .btn-tonal { background:var(--primary-cont); color:var(--on-primary-cont); }
+    .staff-subtab.active { background:var(--primary); color:#fff; }
     .btn-tonal:hover { filter:brightness(0.96); }
     .btn-icon { width:30px; height:30px; padding:0; justify-content:center; border-radius:8px; font-size:14px; }
     .btn-icon.danger-icon { background:var(--error-cont); color:var(--error); }
@@ -641,47 +642,80 @@
           </div>
         </div>
 
-        <!-- Quick actions -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
-          <div class="staff-section">
-            <div class="staff-section-h" style="background:#FFF5F5;border-bottom-color:#FCE4EC;"><span>🔨</span><h3 style="color:var(--error);">Quick Ban</h3></div>
-            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;">
-              <input class="input" id="ban-u" placeholder="Username" />
-              <input class="input" id="ban-r" placeholder="Reason (optional)" />
-              <button class="btn btn-filled danger" onclick="adminBan()" style="justify-content:center;">🔨 Ban Player</button>
+        <!-- Sub-tabs: Players vs Staff Applications -->
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <button class="btn btn-tonal staff-subtab active" id="subtab-players" onclick="showStaffSubtab('players')" style="flex:1;justify-content:center;">👥 Players</button>
+          <button class="btn btn-tonal staff-subtab" id="subtab-apps" onclick="showStaffSubtab('apps')" style="flex:1;justify-content:center;">
+            📋 Applications
+            <span id="apps-pending-badge" style="display:none;background:var(--error);color:#fff;font-size:10px;font-weight:800;border-radius:100px;padding:1px 7px;margin-left:4px;">0</span>
+          </button>
+        </div>
+
+        <div id="staff-view-players">
+          <!-- Quick actions -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+            <div class="staff-section">
+              <div class="staff-section-h" style="background:#FFF5F5;border-bottom-color:#FCE4EC;"><span>🔨</span><h3 style="color:var(--error);">Quick Ban</h3></div>
+              <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;">
+                <input class="input" id="ban-u" placeholder="Username" />
+                <input class="input" id="ban-r" placeholder="Reason (optional)" />
+                <button class="btn btn-filled danger" onclick="adminBan()" style="justify-content:center;">🔨 Ban Player</button>
+              </div>
+            </div>
+            <div class="staff-section">
+              <div class="staff-section-h" style="background:#F5F3FF;border-bottom-color:var(--primary-cont);"><span>🎭</span><h3 style="color:var(--primary);">Quick Role</h3></div>
+              <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;">
+                <input class="input" id="qrole-u" placeholder="Username" />
+                <select class="input" id="qrole-r">
+                  <option value="member">member</option><option value="builder">builder</option>
+                  <option value="developer">developer</option><option value="mod">mod</option><option value="admin">admin</option>
+                </select>
+                <button class="btn btn-filled" onclick="quickRoleAssign()" style="justify-content:center;">🎭 Set Role</button>
+              </div>
             </div>
           </div>
+
+          <!-- Search + filter -->
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
+            <input class="input" id="search-u" placeholder="🔍  Search players…" oninput="filterTable()" style="flex:1;" />
+            <select class="input" id="filter-role" onchange="filterTable()" style="width:130px;">
+              <option value="">All Roles</option>
+              <option value="owner">owner</option><option value="admin">admin</option>
+              <option value="mod">mod</option><option value="developer">developer</option>
+              <option value="builder">builder</option><option value="member">member</option>
+            </select>
+            <select class="input" id="filter-status" onchange="filterTable()" style="width:120px;">
+              <option value="">All Status</option><option value="active">active</option><option value="banned">banned</option>
+            </select>
+            <button class="btn btn-tonal" onclick="loadUsers()" style="flex-shrink:0;padding:8px 14px;">↻</button>
+          </div>
+
           <div class="staff-section">
-            <div class="staff-section-h" style="background:#F5F3FF;border-bottom-color:var(--primary-cont);"><span>🎭</span><h3 style="color:var(--primary);">Quick Role</h3></div>
-            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;">
-              <input class="input" id="qrole-u" placeholder="Username" />
-              <select class="input" id="qrole-r">
-                <option value="member">member</option><option value="builder">builder</option>
-                <option value="developer">developer</option><option value="mod">mod</option><option value="admin">admin</option>
-              </select>
-              <button class="btn btn-filled" onclick="quickRoleAssign()" style="justify-content:center;">🎭 Set Role</button>
-            </div>
+            <div class="staff-section-h"><span>👥</span><h3>All Players</h3><span id="user-count" style="font-size:12px;color:var(--on-surface-var);margin-left:auto;font-weight:600;"></span></div>
+            <div id="user-table"><p style="padding:24px;text-align:center;font-size:13px;color:var(--on-surface-var);">Loading players…</p></div>
           </div>
         </div>
 
-        <!-- Search + filter -->
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
-          <input class="input" id="search-u" placeholder="🔍  Search players…" oninput="filterTable()" style="flex:1;" />
-          <select class="input" id="filter-role" onchange="filterTable()" style="width:130px;">
-            <option value="">All Roles</option>
-            <option value="owner">owner</option><option value="admin">admin</option>
-            <option value="mod">mod</option><option value="developer">developer</option>
-            <option value="builder">builder</option><option value="member">member</option>
-          </select>
-          <select class="input" id="filter-status" onchange="filterTable()" style="width:120px;">
-            <option value="">All Status</option><option value="active">active</option><option value="banned">banned</option>
-          </select>
-          <button class="btn btn-tonal" onclick="loadUsers()" style="flex-shrink:0;padding:8px 14px;">↻</button>
-        </div>
+        <!-- ── Staff Applications sub-view ── -->
+        <div id="staff-view-apps" style="display:none;">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
+            <select class="input" id="apps-filter-status" onchange="loadApplications()" style="width:150px;">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="accepted">Accepted</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <div style="flex:1;"></div>
+            <div class="staff-stat"><div class="sv" id="apps-stat-pending">—</div><div class="sl">Pending</div></div>
+            <div class="staff-stat"><div class="sv" id="apps-stat-accepted" style="color:var(--success,#2E7D32);">—</div><div class="sl">Accepted</div></div>
+            <div class="staff-stat"><div class="sv" id="apps-stat-rejected" style="color:var(--error);">—</div><div class="sl">Rejected</div></div>
+            <button class="btn btn-tonal" onclick="loadApplications()" style="flex-shrink:0;padding:8px 14px;">↻</button>
+          </div>
 
-        <div class="staff-section">
-          <div class="staff-section-h"><span>👥</span><h3>All Players</h3><span id="user-count" style="font-size:12px;color:var(--on-surface-var);margin-left:auto;font-weight:600;"></span></div>
-          <div id="user-table"><p style="padding:24px;text-align:center;font-size:13px;color:var(--on-surface-var);">Loading players…</p></div>
+          <div class="staff-section">
+            <div class="staff-section-h"><span>📋</span><h3>Staff Applications</h3><span id="apps-count" style="font-size:12px;color:var(--on-surface-var);margin-left:auto;font-weight:600;"></span></div>
+            <div id="apps-table"><p style="padding:24px;text-align:center;font-size:13px;color:var(--on-surface-var);">Loading applications…</p></div>
+          </div>
         </div>
       </div>
 
@@ -741,7 +775,7 @@
     document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
     $(`panel-${p}`)?.classList.add('active');
     $(`nav-${p}`)?.classList.add('active');
-    if (p==='staff') loadUsers();
+    if (p==='staff') { loadUsers(); loadApplications(); }
     if (p==='tiers') loadTiers();
     if (p==='announce') loadAnnouncements();
     if (p==='home') loadServerStatus();
@@ -1135,6 +1169,123 @@
   async function quickBan(u){const r=prompt(`Ban reason for ${u}:`);if(r===null)return;try{const d=await adminFetch('ban','POST',{username:u,reason:r||undefined});toast(d.message,'🔨');loadUsers();}catch(e){toast(e.message,'⚠',true);}}
   async function quickUnban(u){try{const d=await adminFetch('unban','POST',{username:u});toast(d.message,'✓');loadUsers();}catch(e){toast(e.message,'⚠',true);}}
   async function quickDelete(u){if(!confirm(`Delete "${u}" permanently?`))return;try{const d=await adminFetch('delete','DELETE',{username:u});toast(d.message,'🗑');loadUsers();}catch(e){toast(e.message,'⚠',true);}}
+
+  // ══════════════════════════════════════
+  // STAFF APPLICATIONS (separate from admin.js / users table)
+  // ══════════════════════════════════════
+  let ALL_APPS = [];
+
+  function showStaffSubtab(tab) {
+    document.getElementById('subtab-players').classList.toggle('active', tab === 'players');
+    document.getElementById('subtab-apps').classList.toggle('active', tab === 'apps');
+    document.getElementById('staff-view-players').style.display = tab === 'players' ? 'block' : 'none';
+    document.getElementById('staff-view-apps').style.display = tab === 'apps' ? 'block' : 'none';
+    if (tab === 'apps' && ALL_APPS.length === 0) loadApplications();
+  }
+
+  async function appsFetch(action, method = 'GET', body = null, query = '') {
+    const opts = { method, headers: ah() };
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(`/api/staff-application?action=${action}${query}`, opts);
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.error || 'Applications error');
+    return d;
+  }
+
+  async function loadApplications() {
+    const tbl = $('apps-table');
+    tbl.innerHTML = `<div style="padding:20px;text-align:center;"><div class="spinner" style="width:22px;height:22px;border:3px solid var(--primary-cont);border-top-color:var(--primary);margin:0 auto;"></div></div>`;
+    try {
+      const statusFilter = $('apps-filter-status').value;
+      const query = statusFilter ? `&status=${statusFilter}` : '';
+      const { applications, summary } = await appsFetch('list', 'GET', null, query);
+      ALL_APPS = applications;
+
+      $('apps-stat-pending').textContent = summary.pending ?? 0;
+      $('apps-stat-accepted').textContent = summary.accepted ?? 0;
+      $('apps-stat-rejected').textContent = summary.rejected ?? 0;
+
+      const pendingBadge = $('apps-pending-badge');
+      if (summary.pending > 0) {
+        pendingBadge.textContent = summary.pending;
+        pendingBadge.style.display = 'inline-block';
+      } else {
+        pendingBadge.style.display = 'none';
+      }
+
+      renderAppsTable(applications);
+    } catch (e) {
+      tbl.innerHTML = `<p style="padding:16px;text-align:center;font-size:13px;color:var(--error);">${esc(e.message)}</p>`;
+    }
+  }
+
+  function renderAppsTable(apps) {
+    const tbl = $('apps-table');
+    $('apps-count').textContent = `${apps.length} application${apps.length !== 1 ? 's' : ''}`;
+    if (!apps.length) { tbl.innerHTML = `<p style="padding:24px;text-align:center;font-size:13px;color:var(--on-surface-var);">No applications yet.</p>`; return; }
+
+    const statusChip = s => ({
+      pending:  `<span class="chip" style="background:#FFF3E0;color:#B57D0A;">pending</span>`,
+      accepted: `<span class="chip chip-active">accepted</span>`,
+      rejected: `<span class="chip chip-banned">rejected</span>`,
+    })[s] ?? s;
+
+    const identityBadge = a => a.identity_method === 'discord_oauth'
+      ? `<span style="font-size:10px;font-weight:800;color:var(--success,#2E7D32);background:rgba(46,125,50,0.1);padding:2px 7px;border-radius:100px;">✓ Verified</span>`
+      : `<span style="font-size:10px;font-weight:800;color:var(--error);background:rgba(179,38,30,0.1);padding:2px 7px;border-radius:100px;">⚠ Self-reported</span>`;
+
+    tbl.innerHTML = apps.map(a => `
+      <div class="user-row" style="align-items:flex-start;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;width:100%;">
+          ${avHTML(a.discord_username, null, 32)}
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <p style="font-weight:700;font-size:13px;">${esc(a.ign)}</p>
+              ${statusChip(a.status)}
+              ${identityBadge(a)}
+            </div>
+            <p style="font-size:11px;color:var(--on-surface-var);margin-top:1px;">
+              <span style="color:#5865F2;">⬡ ${esc(a.discord_username)}</span>
+              &nbsp;·&nbsp;Age ${esc(String(a.age))} &nbsp;·&nbsp;${esc(a.timezone)}
+              &nbsp;·&nbsp;${new Date(a.submitted_at).toLocaleDateString()}
+            </p>
+          </div>
+          <button class="btn btn-icon prof-icon" onclick="toggleAppDetail(${a.id})" title="View answers">👁</button>
+          ${a.status === 'pending' ? `
+          <button class="btn btn-icon unban-icon" onclick="reviewApplication(${a.id},'accepted')" title="Accept">✓</button>
+          <button class="btn btn-icon danger-icon" onclick="reviewApplication(${a.id},'rejected')" title="Reject">✕</button>
+          ` : `<span style="font-size:11px;color:var(--outline);padding:0 6px;">by ${esc(a.reviewed_by ?? '—')}</span>`}
+        </div>
+        <div id="app-detail-${a.id}" style="display:none;width:100%;background:var(--surface-var);border-radius:10px;padding:14px 16px;font-size:12.5px;line-height:1.7;">
+          <p><strong>Hours/week:</strong> ${esc(a.hours_per_week)} &nbsp;·&nbsp; <strong>Mic:</strong> ${esc(a.has_mic)}</p>
+          <p style="margin-top:8px;"><strong>Prior experience:</strong><br>${esc(a.prior_experience)}</p>
+          <p style="margin-top:8px;"><strong>Unique fit:</strong><br>${esc(a.unique_fit)}</p>
+          <p style="margin-top:8px;"><strong>Scenario A (in-game dispute):</strong><br>${esc(a.scenario_a)}</p>
+          <p style="margin-top:8px;"><strong>Scenario B (staff disagreement):</strong><br>${esc(a.scenario_b)}</p>
+          <p style="margin-top:8px;"><strong>Scenario C (high-stress chat):</strong><br>${esc(a.scenario_c)}</p>
+          <p style="margin-top:8px;"><strong>Scenario D (cheating suspect):</strong><br>${esc(a.scenario_d)}</p>
+          ${a.review_note ? `<p style="margin-top:8px;"><strong>Review note:</strong> ${esc(a.review_note)}</p>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function toggleAppDetail(id) {
+    const el = $(`app-detail-${id}`);
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
+
+  async function reviewApplication(id, decision) {
+    const note = prompt(decision === 'accepted' ? 'Optional note for acceptance:' : 'Reason for rejection (optional):');
+    if (note === null) return; // cancelled
+    try {
+      const d = await appsFetch('review', 'POST', { id, decision, note: note || undefined });
+      toast(d.message, decision === 'accepted' ? '✓' : '✕');
+      loadApplications();
+    } catch (e) {
+      toast(e.message, '⚠', true);
+    }
+  }
 </script>
 </body>
 </html>
