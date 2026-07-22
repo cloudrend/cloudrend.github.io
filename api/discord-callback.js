@@ -1,8 +1,6 @@
 import { sql } from '@vercel/postgres';
 import jwt from 'jsonwebtoken';
 
-const ALLOWED_ORIGIN = 'https://cloudrend.vercel.app';
-
 // Parse cookies from request header
 function parseCookies(req) {
   const raw = req.headers.cookie ?? '';
@@ -12,20 +10,24 @@ function parseCookies(req) {
 }
 
 export default async function handler(req, res) {
-  // ── Restrict CORS to own domain ──
-  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-
   const { code, state: returnedState, error } = req.query;
 
-  if (error) return res.redirect(`/auth.html?error=discord_denied`);
-  if (!code || !returnedState) return res.redirect(`/auth.html?error=missing_params`);
+  if (error) {
+    res.writeHead(302, { Location: '/auth.html?error=discord_denied' });
+    return res.end();
+  }
+  if (!code || !returnedState) {
+    res.writeHead(302, { Location: '/auth.html?error=missing_params' });
+    return res.end();
+  }
 
   // ── CSRF: validate state against cookie ──
   const cookies = parseCookies(req);
   const expectedState = cookies['oauth_state'];
 
   if (!expectedState || expectedState !== returnedState) {
-    return res.redirect(`/auth.html?error=csrf_mismatch`);
+    res.writeHead(302, { Location: '/auth.html?error=csrf_mismatch' });
+    return res.end();
   }
 
   // Clear the state cookie immediately — single use
@@ -61,7 +63,8 @@ export default async function handler(req, res) {
 
     if (!tokenRes.ok) {
       console.error('[discord-callback] token exchange failed:', await tokenRes.text());
-      return res.redirect(`/auth.html?error=token_exchange`);
+      res.writeHead(302, { Location: '/auth.html?error=token_exchange' });
+      return res.end();
     }
 
     const { access_token } = await tokenRes.json();
@@ -76,7 +79,10 @@ export default async function handler(req, res) {
       ),
     ]);
 
-    if (!userRes.ok) return res.redirect(`/auth.html?error=user_fetch`);
+    if (!userRes.ok) {
+      res.writeHead(302, { Location: '/auth.html?error=user_fetch' });
+      return res.end();
+    }
 
     const { id: discord_id, username: discord_username, avatar } = await userRes.json();
 
@@ -100,7 +106,8 @@ export default async function handler(req, res) {
     // ── Step 4: Block banned users immediately ──
     if (user.status === 'banned') {
       const reason = encodeURIComponent(user.ban_reason ?? 'No reason provided.');
-      return res.redirect(`/auth.html?banned=1&reason=${reason}`);
+      res.writeHead(302, { Location: `/auth.html?banned=1&reason=${reason}` });
+      return res.end();
     }
 
     // ── Step 5: Issue JWT ──
@@ -112,11 +119,13 @@ export default async function handler(req, res) {
 
     // ── Step 6: Redirect ──
     const dest = user.mc_username ? '/portal.html' : '/link-mc.html';
-    return res.redirect(`${dest}#token=${token}`);
+    res.writeHead(302, { Location: `${dest}#token=${token}` });
+    return res.end();
 
   } catch (err) {
     console.error('[discord-callback] unhandled error:', err.message);
     const isTimeout = err.message.includes('timeout');
-    return res.redirect(`/auth.html?error=${isTimeout ? 'timeout' : 'server_error'}`);
+    res.writeHead(302, { Location: `/auth.html?error=${isTimeout ? 'timeout' : 'server_error'}` });
+    return res.end();
   }
 }
