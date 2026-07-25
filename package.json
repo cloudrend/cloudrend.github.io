@@ -1,0 +1,22 @@
+{
+  "name": "cloudrend-portal",
+  "version": "1.0.0",
+  "description": "Cloudrend SMP application portal — Staff & Media applications with Discord webhook delivery.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build:zip": "node build-zip.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1"
+  }
+}
