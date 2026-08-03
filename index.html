@@ -56,6 +56,11 @@
 
   .page{display:none;}
   .page.active{display:block;}
+  .page.enter-right{animation:m3EnterRight .38s cubic-bezier(.05,.7,.1,1);}
+  .page.enter-left{animation:m3EnterLeft .38s cubic-bezier(.05,.7,.1,1);}
+  @keyframes m3EnterRight{from{opacity:0;transform:translateX(32px);}to{opacity:1;transform:translateX(0);}}
+  @keyframes m3EnterLeft{from{opacity:0;transform:translateX(-32px);}to{opacity:1;transform:translateX(0);}}
+  @media (prefers-reduced-motion:reduce){.page.enter-right,.page.enter-left{animation:none;}}
 
   /* ---------- NAV ---------- */
   .nav{
@@ -250,10 +255,9 @@
   .tab-btn:hover:not(.active){border-color:var(--honey);}
 
   .store-grid{
-    max-width:1100px;margin:40px auto;padding:0 24px;
-    display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+    max-width:1180px;margin:40px auto;padding:0 24px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;
   }
-  @media (max-width:980px){.store-grid{grid-template-columns:repeat(2,1fr);}}
   @media (max-width:560px){.store-grid{grid-template-columns:1fr;}}
   .store-panel{display:none;}
   .store-panel.active{display:grid;}
@@ -313,6 +317,46 @@
     color:var(--ink-soft);text-align:left;
   }
   .modal .btn{margin-top:22px;width:100%;}
+  .modal-checkout{max-width:440px;text-align:left;}
+  .modal-checkout h3,.modal-checkout > p#modalSummary{text-align:center;}
+  .modal-checkout .icon-wrap{margin-bottom:14px;}
+
+  .checkout-form{margin-top:18px;display:flex;flex-direction:column;}
+  .field-label{font-size:.82rem;font-weight:800;color:var(--ink);margin:14px 0 6px;}
+  .field-label:first-child{margin-top:0;}
+  .field-optional{font-weight:600;color:var(--ink-soft);font-size:.76rem;}
+  .field-input{
+    width:100%;border:2px solid var(--parchment-dark);border-radius:10px;padding:10px 13px;
+    font-family:var(--font-body);font-size:.92rem;color:var(--ink);background:var(--parchment);
+    transition:border-color .15s;
+  }
+  .field-input:focus{outline:none;border-color:var(--honey-dark);background:#fff;}
+  .field-textarea{resize:vertical;min-height:64px;line-height:1.5;}
+  .field-error{color:var(--berry);font-size:.8rem;font-weight:700;margin:8px 0 0;min-height:1em;}
+
+  .gift-toggle-row{display:flex;align-items:center;gap:10px;margin-top:18px;}
+  .gift-toggle-label{font-size:.88rem;font-weight:700;color:var(--ink);cursor:pointer;}
+  .switch{display:inline-block;position:relative;flex-shrink:0;}
+  .switch input{position:absolute;opacity:0;width:1px;height:1px;}
+  .switch-track{
+    display:block;width:44px;height:26px;background:var(--parchment-dark);border-radius:999px;
+    border:2px solid var(--parchment-dark);position:relative;transition:background .2s,border-color .2s;cursor:pointer;
+  }
+  .switch-knob{
+    position:absolute;top:1px;left:1px;width:18px;height:18px;background:#fff;border-radius:50%;
+    box-shadow:0 1px 3px rgba(0,0,0,0.3);transition:transform .2s;
+  }
+  .switch input:checked + .switch-track{background:var(--moss);border-color:var(--moss);}
+  .switch input:checked + .switch-track .switch-knob{transform:translateX(18px);}
+  .switch input:focus-visible + .switch-track{outline:3px solid var(--honey-dark);outline-offset:2px;}
+
+  .gift-field-wrap{margin-top:2px;}
+
+  .ticket-output{margin-top:18px;}
+  .ticket-textarea{font-family:var(--font-mono);font-size:.78rem;background:var(--wood-deep);color:var(--parchment);border-color:var(--wood-deep);white-space:pre-wrap;}
+  .ticket-actions{display:flex;gap:10px;margin-top:10px;}
+  .btn-ghost-light{background:transparent;border:2px solid var(--parchment-dark);color:var(--ink-soft);border-radius:10px;padding:9px 14px;font-weight:700;font-size:.85rem;}
+  .btn-ghost-light:hover{border-color:var(--honey-dark);color:var(--ink);}
 
   /* ---------- LEADERBOARDS ---------- */
   .lb-header{background:linear-gradient(180deg,var(--sky-top),var(--parchment));padding:70px 24px 30px;text-align:center;}
@@ -365,6 +409,70 @@
   .board-value{font-family:var(--font-mono);color:var(--moss-dark);font-weight:600;font-size:.92rem;}
 
   .lb-note{text-align:center;margin-top:20px;font-size:.82rem;color:var(--ink-soft);}
+
+  /* ---------- STATUS ---------- */
+  .status-header{background:linear-gradient(180deg,var(--sky-top),var(--parchment));padding:70px 24px 30px;text-align:center;}
+  .status-header h1{font-size:clamp(2.1rem,5vw,3rem);margin-top:10px;}
+  .status-header p{color:var(--ink-soft);max-width:520px;margin:14px auto 0;}
+
+  .status-page-content{max-width:900px;margin:0 auto;padding:40px 24px 90px;}
+
+  .server-card{
+    background:var(--cloud-white);border:2px solid var(--parchment-dark);border-radius:var(--radius-lg);
+    padding:28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    box-shadow:var(--shadow-soft);
+  }
+  .server-card-left{display:flex;align-items:center;gap:16px;}
+  .status-dot{width:14px;height:14px;border-radius:50%;background:var(--ink-soft);flex-shrink:0;position:relative;}
+  .status-dot.online{background:var(--moss);}
+  .status-dot.online::after{
+    content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--moss);
+    animation:pulseRing 1.8s ease-out infinite;
+  }
+  .status-dot.offline{background:var(--berry);}
+  .status-dot.maintenance{background:var(--honey);}
+  .status-dot.maintenance::after{
+    content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--honey);
+    animation:pulseRing 1.8s ease-out infinite;
+  }
+  @keyframes pulseRing{0%{opacity:.8;transform:scale(.8);}100%{opacity:0;transform:scale(1.8);}}
+  @media (prefers-reduced-motion:reduce){.status-dot.online::after,.status-dot.maintenance::after{animation:none;}}
+
+  .maintenance-banner{
+    display:none;background:linear-gradient(90deg,var(--honey),var(--honey-dark));color:var(--wood-deep);
+    text-align:center;font-weight:800;font-size:.85rem;padding:11px 16px;
+  }
+  .maintenance-banner.show{display:block;}
+  .server-card-title{font-family:var(--font-display);font-weight:600;font-size:1.15rem;}
+  .server-card-sub{font-family:var(--font-mono);font-size:.82rem;color:var(--ink-soft);margin-top:2px;}
+  .server-card-right{text-align:right;}
+  .player-count{font-family:var(--font-mono);font-weight:600;font-size:1.6rem;color:var(--moss-dark);}
+  .player-count-label{font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;}
+
+  .status-motd{
+    margin-top:18px;background:var(--parchment-dark);border-radius:12px;padding:14px 18px;
+    font-family:var(--font-mono);font-size:.85rem;color:var(--ink-soft);text-align:center;
+  }
+
+  .status-updated{text-align:center;font-size:.78rem;color:var(--ink-soft);margin-top:14px;}
+
+  .player-section-head{margin:44px 0 20px;text-align:center;}
+  .player-section-head h2{font-size:1.4rem;}
+  .player-section-head p{color:var(--ink-soft);font-size:.88rem;margin-top:6px;}
+
+  .player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px;}
+  .player-tile{
+    background:var(--cloud-white);border:2px solid var(--parchment-dark);border-radius:var(--radius-md);
+    padding:14px 10px;text-align:center;transition:transform .15s, box-shadow .15s;
+  }
+  .player-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-soft);}
+  .player-tile img{width:48px;height:48px;border-radius:10px;margin:0 auto 8px;image-rendering:pixelated;}
+  .player-tile .pname{font-weight:800;font-size:.82rem;word-break:break-word;}
+
+  .status-empty{
+    text-align:center;padding:40px 24px;color:var(--ink-soft);background:var(--cloud-white);
+    border:2px dashed var(--parchment-dark);border-radius:var(--radius-md);font-size:.92rem;
+  }
 
   /* ---------- RULES / TOS ---------- */
   .rules-header{background:linear-gradient(180deg,var(--sky-top),var(--parchment));padding:70px 24px 30px;text-align:center;}
@@ -440,6 +548,7 @@
       <li><button data-page="home" class="active">Home</button></li>
       <li><button data-page="store">Store</button></li>
       <li><button data-page="leaderboards">Leaderboards</button></li>
+      <li><button data-page="status">Status</button></li>
       <li><button data-page="rules">Rules &amp; TOS</button></li>
     </ul>
     <div class="nav-actions">
@@ -453,6 +562,10 @@
     </div>
   </div>
 </nav>
+
+<div class="maintenance-banner" id="maintenanceBanner">
+  🛠️ <span id="maintenanceText">CloudrendSMP is currently under maintenance.</span>
+</div>
 
 <div class="toast" id="toast">Copied server IP!</div>
 
@@ -541,14 +654,14 @@
 <!-- ================= PAGE: STORE ================= -->
 <div class="page" id="page-store">
   <div class="store-header">
-    <div class="kicker">SUPPORT OUR COMMUNITY</div>
-    <h1>Cosmetics, ranks &amp; keys</h1>
-    <p>By supporting the server through ranks or perks, you help cover hosting and development. Every item here is cosmetic or convenience only — never pay-to-win.</p>
+    <div class="kicker">PREMIUM RANKS AND PERKS</div>
+    <h1>Support the server, unlock your tier</h1>
+    <p>Running a completely custom-engineered survival world takes care, development time, and resources. Every purchase directly funds hosting, high-performance hardware, custom plugin development, and future content updates.</p>
     <div class="fair-play-badge">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
       Never pay-to-win — Minecraft EULA compliant
     </div>
-    <p style="font-size:.78rem;color:var(--ink-soft);margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto;">Ranks are a symbolic gift of appreciation and hold no real-world value — see our <button onclick="document.querySelector('[data-page=rules]').click()" style="background:none;border:none;padding:0;font:inherit;color:var(--moss-dark);text-decoration:underline;cursor:pointer;">Terms of Service</button> for full details.</p>
+    <p style="font-size:.78rem;color:var(--ink-soft);margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto;">Ranks are a symbolic gift of appreciation and hold no real-world value — see our <button onclick="document.querySelector('[data-page=rules]').click()" style="background:none;border:none;padding:0;font:inherit;color:var(--moss-dark);text-decoration:underline;cursor:pointer;">Terms of Service</button> for full details.</p>
   </div>
 
   <div class="tabs">
@@ -559,46 +672,69 @@
 
   <div class="store-grid store-panel active" data-panel="ranks">
     <div class="item-card">
-      <div class="item-emoji">🌱</div>
-      <h3>Sprout</h3>
+      <div class="item-emoji">☁️</div>
+      <h3>Mistborn</h3>
       <ul class="item-perks">
-        <li>Colored name in chat</li>
-        <li>+2 homes</li>
-        <li>/hat command</li>
+        <li>/chatcolor (3 colors)</li>
+        <li>/gradient (3 colors)</li>
+        <li>/anvil, /craft, /smithingtable, /loom</li>
+        <li>/lands</li>
+        <li>7 home slots</li>
       </ul>
-      <div class="item-footer"><span class="price">$4.99</span><button class="add-btn" data-item="Sprout Rank" data-price="4.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱20.00</span><button class="add-btn" data-item="Mistborn Rank" data-price="20.00">Add</button></div>
     </div>
     <div class="item-card">
-      <div class="item-emoji">🌿</div>
-      <h3>Sapling</h3>
+      <div class="item-emoji">🗡️</div>
+      <h3>Cloudblade</h3>
       <ul class="item-perks">
-        <li>Everything in Sprout</li>
-        <li>+4 homes</li>
-        <li>Monthly cosmetic kit</li>
+        <li>/chatcolor (6 colors)</li>
+        <li>/gradient (6 colors)</li>
+        <li>/anvil, /craft, /smithingtable, /loom</li>
+        <li>/lands</li>
+        <li>14 home slots</li>
       </ul>
-      <div class="item-footer"><span class="price">$9.99</span><button class="add-btn" data-item="Sapling Rank" data-price="9.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱50.00</span><button class="add-btn" data-item="Cloudblade Rank" data-price="50.00">Add</button></div>
     </div>
     <div class="item-card">
-      <div class="item-emoji">🌸</div>
-      <h3>Bloom</h3>
+      <div class="item-emoji">🏔️</div>
+      <h3>Skywarden</h3>
       <ul class="item-perks">
-        <li>Everything in Sapling</li>
-        <li>+6 homes</li>
-        <li>Particle trail unlock</li>
-        <li>Discord booster color</li>
+        <li>/endervault (+1 row)</li>
+        <li>/chatcolor (8 colors)</li>
+        <li>/gradient (8 colors)</li>
+        <li>/anvil, /craft, /smithingtable, /loom</li>
+        <li>/lands</li>
+        <li>21 home slots</li>
       </ul>
-      <div class="item-footer"><span class="price">$19.99</span><button class="add-btn" data-item="Bloom Rank" data-price="19.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱100.00</span><button class="add-btn" data-item="Skywarden Rank" data-price="100.00">Add</button></div>
     </div>
     <div class="item-card">
-      <div class="item-emoji">🌳</div>
-      <h3>Elder Oak</h3>
+      <div class="item-emoji">⚡</div>
+      <h3>Stormlord</h3>
       <ul class="item-perks">
-        <li>Everything in Bloom</li>
-        <li>+10 homes</li>
-        <li>Custom join message</li>
-        <li>Early access to seasonal builds</li>
+        <li>Nickname change (ticket, max 5)</li>
+        <li>/endervault (+2 rows)</li>
+        <li>/chatcolor (10 colors)</li>
+        <li>/gradient (10 colors)</li>
+        <li>/anvil, /craft, /smithingtable, /loom, /lands</li>
+        <li>/lootbox</li>
+        <li>28 home slots</li>
       </ul>
-      <div class="item-footer"><span class="price">$34.99</span><button class="add-btn" data-item="Elder Oak Rank" data-price="34.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱200.00</span><button class="add-btn" data-item="Stormlord Rank" data-price="200.00">Add</button></div>
+    </div>
+    <div class="item-card">
+      <div class="item-emoji">🌪️</div>
+      <h3>Tempest</h3>
+      <ul class="item-perks">
+        <li>Nickname change (ticket, unlimited)</li>
+        <li>/chatcolor — all colors</li>
+        <li>/gradient — all colors</li>
+        <li>/endervault (+3 rows)</li>
+        <li>/repair, /lootbox</li>
+        <li>/anvil, /craft, /smithingtable, /loom, /lands</li>
+        <li>35 home slots</li>
+      </ul>
+      <div class="item-footer"><span class="price">₱350.00</span><button class="add-btn" data-item="Tempest Rank" data-price="350.00">Add</button></div>
     </div>
   </div>
 
@@ -610,7 +746,7 @@
         <li>Unlock full color palette</li>
         <li>Gradient name option</li>
       </ul>
-      <div class="item-footer"><span class="price">$3.99</span><button class="add-btn" data-item="Nickname Colors" data-price="3.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱30.00</span><button class="add-btn" data-item="Nickname Colors" data-price="30.00">Add</button></div>
     </div>
     <div class="item-card">
       <div class="item-emoji">✨</div>
@@ -619,7 +755,7 @@
         <li>8 trail effects</li>
         <li>Toggle on/off in-game</li>
       </ul>
-      <div class="item-footer"><span class="price">$5.99</span><button class="add-btn" data-item="Particle Trails" data-price="5.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱60.00</span><button class="add-btn" data-item="Particle Trails" data-price="60.00">Add</button></div>
     </div>
     <div class="item-card">
       <div class="item-emoji">🎩</div>
@@ -628,7 +764,7 @@
         <li>12 cosmetic head items</li>
         <li>Purely visual, no armor slot</li>
       </ul>
-      <div class="item-footer"><span class="price">$2.99</span><button class="add-btn" data-item="Player Hats" data-price="2.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱25.00</span><button class="add-btn" data-item="Player Hats" data-price="25.00">Add</button></div>
     </div>
     <div class="item-card">
       <div class="item-emoji">💬</div>
@@ -637,7 +773,7 @@
         <li>Custom flavor text on death</li>
         <li>4 themed packs</li>
       </ul>
-      <div class="item-footer"><span class="price">$2.49</span><button class="add-btn" data-item="Death Message Themes" data-price="2.49">Add</button></div>
+      <div class="item-footer"><span class="price">₱20.00</span><button class="add-btn" data-item="Death Message Themes" data-price="20.00">Add</button></div>
     </div>
   </div>
 
@@ -649,7 +785,7 @@
         <li>Cosmetic crate — decorative blocks</li>
         <li>1 guaranteed uncommon+</li>
       </ul>
-      <div class="item-footer"><span class="price">$2.99</span><button class="add-btn" data-item="Harvest Key" data-price="2.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱25.00</span><button class="add-btn" data-item="Harvest Key" data-price="25.00">Add</button></div>
     </div>
     <div class="item-card">
       <div class="item-emoji">🗝️</div>
@@ -658,7 +794,7 @@
         <li>Cosmetic crate — pets &amp; trails</li>
         <li>1 guaranteed rare+</li>
       </ul>
-      <div class="item-footer"><span class="price">$4.99</span><button class="add-btn" data-item="Blossom Key" data-price="4.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱50.00</span><button class="add-btn" data-item="Blossom Key" data-price="50.00">Add</button></div>
     </div>
     <div class="item-card">
       <div class="item-emoji">🏺</div>
@@ -667,7 +803,7 @@
         <li>Cosmetic crate — rare cosmetics</li>
         <li>1 guaranteed legendary cosmetic</li>
       </ul>
-      <div class="item-footer"><span class="price">$7.99</span><button class="add-btn" data-item="Legacy Key" data-price="7.99">Add</button></div>
+      <div class="item-footer"><span class="price">₱90.00</span><button class="add-btn" data-item="Legacy Key" data-price="90.00">Add</button></div>
     </div>
   </div>
 </div>
@@ -695,6 +831,40 @@
     <div class="podium" id="ptPodium"></div>
     <div class="board" id="ptBoard"></div>
     <p class="lb-note" id="ptNote">Updated nightly after the server restart.</p>
+  </div>
+</div>
+
+<!-- ================= PAGE: STATUS ================= -->
+<div class="page" id="page-status">
+  <div class="status-header">
+    <div class="kicker" style="font-family:var(--font-mono);color:var(--moss-dark);font-size:.8rem;letter-spacing:.1em;font-weight:600;">LIVE</div>
+    <h1>Server Status</h1>
+    <p>Who's online right now on Bedrock (15.235.159.75:25681).</p>
+  </div>
+
+  <div class="status-page-content">
+    <div class="server-card">
+      <div class="server-card-left">
+        <div class="status-dot" id="statusDot"></div>
+        <div>
+          <div class="server-card-title" id="statusTitle">Checking status…</div>
+          <div class="server-card-sub">15.235.159.75:25681 · Bedrock</div>
+        </div>
+      </div>
+      <div class="server-card-right">
+        <div class="player-count" id="statusCount">—</div>
+        <div class="player-count-label">Players Online</div>
+      </div>
+    </div>
+
+    <div class="status-motd" id="statusMotd" style="display:none;"></div>
+    <p class="status-updated" id="statusUpdated"></p>
+
+    <div class="player-section-head">
+      <h2>Who's on right now</h2>
+      <p>Names shown only when the server pushes its player list — otherwise you'll just see the live count above.</p>
+    </div>
+    <div id="playerGrid"></div>
   </div>
 </div>
 
@@ -885,7 +1055,7 @@
 <!-- ================= CART BAR & MODAL ================= -->
 <div class="cart-bar" id="cartBar">
   <div class="cart-bar-inner">
-    <div class="cart-info"><span id="cartCount">0</span> item(s) in cart<span class="cart-total" id="cartTotal">$0.00</span></div>
+    <div class="cart-info"><span id="cartCount">0</span> item(s) in cart<span class="cart-total" id="cartTotal">₱0.00</span></div>
     <div class="cart-buttons">
       <button class="btn-ghost" id="clearCartBtn">Clear</button>
       <button class="btn btn-primary" id="checkoutBtn" style="padding:9px 20px;">Checkout</button>
@@ -894,14 +1064,49 @@
 </div>
 
 <div class="modal-overlay" id="checkoutModal">
-  <div class="modal">
+  <div class="modal modal-checkout">
     <div class="icon-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
     </div>
-    <h3>Order summary</h3>
-    <p id="modalSummary">Your cart total is $0.00.</p>
-    <div class="note">This storefront is a working demo. Connect a real payment processor (e.g. Tebex, Stripe, or a custom checkout) to accept live payments.</div>
-    <button class="btn btn-primary" id="closeModalBtn">Got it</button>
+    <h3>Almost there</h3>
+    <p id="modalSummary">Your cart total is ₱0.00.</p>
+
+    <div class="checkout-form" id="checkoutForm">
+      <label class="field-label" for="checkoutIgn">Your Minecraft IGN</label>
+      <input type="text" id="checkoutIgn" class="field-input" placeholder="e.g. Basalttide" maxlength="16" autocomplete="off">
+
+      <div class="gift-toggle-row">
+        <label class="switch">
+          <input type="checkbox" id="checkoutGiftToggle">
+          <span class="switch-track"><span class="switch-knob"></span></span>
+        </label>
+        <label for="checkoutGiftToggle" class="gift-toggle-label">This is a gift for someone else</label>
+      </div>
+
+      <div id="giftFieldWrap" class="gift-field-wrap" style="display:none;">
+        <label class="field-label" for="checkoutRecipient">Recipient's Minecraft IGN</label>
+        <input type="text" id="checkoutRecipient" class="field-input" placeholder="e.g. Willowick" maxlength="16" autocomplete="off">
+      </div>
+
+      <label class="field-label" for="checkoutMessage">Message <span class="field-optional">(optional)</span></label>
+      <textarea id="checkoutMessage" class="field-input field-textarea" placeholder="Anything the staff team should know?" maxlength="300"></textarea>
+
+      <p class="field-error" id="checkoutError"></p>
+
+      <button class="btn btn-primary" id="generateTicketBtn" style="width:100%;margin-top:6px;">Generate Ticket Message</button>
+    </div>
+
+    <div class="ticket-output" id="ticketOutput" style="display:none;">
+      <label class="field-label">Copy this into a Discord ticket</label>
+      <textarea class="field-input field-textarea ticket-textarea" id="ticketText" readonly rows="10"></textarea>
+      <div class="ticket-actions">
+        <button class="btn btn-moss" id="copyTicketBtn" style="flex:1;">Copy Ticket Message</button>
+        <button class="btn-ghost-light" id="editTicketBtn">Edit details</button>
+      </div>
+    </div>
+
+    <div class="note">This generates a ticket message to paste into our Discord — it doesn't charge you. A staff member will follow up with payment instructions there.</div>
+    <button class="btn btn-secondary" id="closeModalBtn" style="width:100%;margin-top:14px;">Close</button>
   </div>
 </div>
 
@@ -920,6 +1125,7 @@
         <button data-page="home">Home</button>
         <button data-page="store">Store</button>
         <button data-page="leaderboards">Leaderboards</button>
+        <button data-page="status">Status</button>
       </div>
       <div>
         <h4>Info</h4>
@@ -934,20 +1140,52 @@
 
 <script>
 (function(){
-  // ---------- Nav routing ----------
+  // ---------- Nav routing (with Material 3 shared-axis transition) ----------
   var pages = document.querySelectorAll('.page');
   var navButtons = document.querySelectorAll('[data-page]');
+  var pageOrder = ['home','store','leaderboards','status','rules'];
+  var currentPage = 'home';
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   function goToPage(name){
-    pages.forEach(function(p){ p.classList.toggle('active', p.id === 'page-' + name); });
+    if(name === currentPage || pageOrder.indexOf(name) === -1) return;
+    var oldIndex = pageOrder.indexOf(currentPage);
+    var newIndex = pageOrder.indexOf(name);
+    var forward = newIndex > oldIndex;
+
+    pages.forEach(function(p){ p.classList.remove('active','enter-right','enter-left'); });
+    var target = document.getElementById('page-' + name);
+    target.classList.add('active');
+    if(!prefersReduced) target.classList.add(forward ? 'enter-right' : 'enter-left');
+
     navButtons.forEach(function(b){
       if(b.closest('.nav-links')) b.classList.toggle('active', b.dataset.page === name);
     });
     document.getElementById('navLinks').classList.remove('open');
     window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    currentPage = name;
   }
   navButtons.forEach(function(b){
     b.addEventListener('click', function(){ goToPage(b.dataset.page); });
   });
+
+  // ---------- Swipe between pages (mobile) ----------
+  var swipeStartX = null, swipeStartY = null;
+  document.addEventListener('touchstart', function(e){
+    if(e.touches.length !== 1) return;
+    swipeStartX = e.touches[0].clientX;
+    swipeStartY = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(swipeStartX === null) return;
+    var dx = e.changedTouches[0].clientX - swipeStartX;
+    var dy = e.changedTouches[0].clientY - swipeStartY;
+    swipeStartX = null; swipeStartY = null;
+    if(Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    var idx = pageOrder.indexOf(currentPage);
+    if(dx < 0 && idx < pageOrder.length - 1){ goToPage(pageOrder[idx + 1]); }
+    else if(dx > 0 && idx > 0){ goToPage(pageOrder[idx - 1]); }
+  }, {passive:true});
 
   // ---------- Mobile hamburger ----------
   document.getElementById('hamburger').addEventListener('click', function(){
@@ -999,7 +1237,7 @@
     var count = cart.length;
     var total = cart.reduce(function(sum, item){ return sum + item.price; }, 0);
     cartCount.textContent = count;
-    cartTotal.textContent = '$' + total.toFixed(2);
+    cartTotal.textContent = '₱' + total.toFixed(2);
     cartBar.classList.toggle('show', count > 0);
   }
 
@@ -1020,9 +1258,20 @@
   });
 
   var checkoutModal = document.getElementById('checkoutModal');
+  var checkoutForm = document.getElementById('checkoutForm');
+  var ticketOutput = document.getElementById('ticketOutput');
+  var checkoutError = document.getElementById('checkoutError');
+
+  function resetCheckoutModal(){
+    checkoutForm.style.display = 'block';
+    ticketOutput.style.display = 'none';
+    checkoutError.textContent = '';
+  }
+
   document.getElementById('checkoutBtn').addEventListener('click', function(){
     var total = cart.reduce(function(sum, item){ return sum + item.price; }, 0);
-    document.getElementById('modalSummary').textContent = cart.length + ' item(s) — total $' + total.toFixed(2) + '.';
+    document.getElementById('modalSummary').textContent = cart.length + ' item(s) — total ₱' + total.toFixed(2) + '.';
+    resetCheckoutModal();
     checkoutModal.classList.add('show');
   });
   document.getElementById('closeModalBtn').addEventListener('click', function(){
@@ -1030,6 +1279,78 @@
   });
   checkoutModal.addEventListener('click', function(e){
     if(e.target === checkoutModal) checkoutModal.classList.remove('show');
+  });
+
+  // ---------- Gift toggle ----------
+  var giftToggle = document.getElementById('checkoutGiftToggle');
+  var giftFieldWrap = document.getElementById('giftFieldWrap');
+  giftToggle.addEventListener('change', function(){
+    giftFieldWrap.style.display = giftToggle.checked ? 'block' : 'none';
+  });
+
+  // ---------- Unicode bold-sans converter (matches the site's ticket/marketing style) ----------
+  function toBoldSans(str){
+    return str.replace(/[A-Za-z0-9]/g, function(ch){
+      var code = ch.charCodeAt(0);
+      if(ch >= 'A' && ch <= 'Z') return String.fromCodePoint(0x1D5D4 + (code - 65));
+      if(ch >= 'a' && ch <= 'z') return String.fromCodePoint(0x1D5EE + (code - 97));
+      if(ch >= '0' && ch <= '9') return String.fromCodePoint(0x1D7EC + (code - 48));
+      return ch;
+    });
+  }
+
+  document.getElementById('generateTicketBtn').addEventListener('click', function(){
+    var ign = document.getElementById('checkoutIgn').value.trim();
+    var isGift = giftToggle.checked;
+    var recipient = document.getElementById('checkoutRecipient').value.trim();
+    var message = document.getElementById('checkoutMessage').value.trim();
+
+    if(!ign){
+      checkoutError.textContent = 'Please enter your Minecraft IGN.';
+      return;
+    }
+    if(isGift && !recipient){
+      checkoutError.textContent = "Please enter the recipient's Minecraft IGN.";
+      return;
+    }
+    if(cart.length === 0){
+      checkoutError.textContent = 'Your cart is empty.';
+      return;
+    }
+    checkoutError.textContent = '';
+
+    var total = cart.reduce(function(sum, item){ return sum + item.price; }, 0);
+    var lines = [];
+    lines.push(toBoldSans('CloudrendSMP Order Ticket'));
+    lines.push('');
+    lines.push(toBoldSans('IGN') + ': ' + ign);
+    if(isGift){
+      lines.push(toBoldSans('Gift for') + ': ' + recipient);
+    }
+    lines.push('');
+    lines.push(toBoldSans('Items') + ':');
+    cart.forEach(function(item){
+      lines.push('• ' + item.name + ' — ₱' + item.price.toFixed(2));
+    });
+    lines.push('');
+    lines.push(toBoldSans('Total') + ': ₱' + total.toFixed(2));
+    if(message){
+      lines.push('');
+      lines.push(toBoldSans('Message') + ': ' + message);
+    }
+
+    document.getElementById('ticketText').value = lines.join('\n');
+    checkoutForm.style.display = 'none';
+    ticketOutput.style.display = 'block';
+  });
+
+  document.getElementById('editTicketBtn').addEventListener('click', function(){
+    checkoutForm.style.display = 'block';
+    ticketOutput.style.display = 'none';
+  });
+
+  document.getElementById('copyTicketBtn').addEventListener('click', function(){
+    copyText(document.getElementById('ticketText').value, 'Ticket message copied!');
   });
 
   // ---------- Leaderboards ----------
@@ -1123,6 +1444,100 @@
       lbPanels.forEach(function(p){ p.classList.toggle('active', p.dataset.lbpanel === btn.dataset.lb); });
     });
   });
+
+  // ---------- Server Status & Maintenance Banner ----------
+  // GET /api/status is served by /api/status.js, which combines a live
+  // ping (player count) with anything pushed from the server (player
+  // names, maintenance mode). Runs site-wide so the maintenance banner
+  // shows no matter which page someone's on.
+  var STATUS_API_URL = "/api/status";
+
+  function timeAgo(iso){
+    if(!iso) return '';
+    var diff = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+    if(diff < 60) return 'Updated just now';
+    if(diff < 3600) return 'Updated ' + Math.floor(diff/60) + ' min ago';
+    return 'Updated ' + Math.floor(diff/3600) + 'h ago';
+  }
+
+  function renderMaintenanceBanner(data){
+    var banner = document.getElementById('maintenanceBanner');
+    var text = document.getElementById('maintenanceText');
+    var inMaintenance = !!(data && data.maintenance);
+    banner.classList.toggle('show', inMaintenance);
+    if(inMaintenance){
+      text.textContent = (data.maintenanceMessage && data.maintenanceMessage.trim())
+        ? data.maintenanceMessage
+        : 'CloudrendSMP is currently under maintenance.';
+    }
+  }
+
+  function renderStatus(data){
+    var dot = document.getElementById('statusDot');
+    var title = document.getElementById('statusTitle');
+    var count = document.getElementById('statusCount');
+    var motd = document.getElementById('statusMotd');
+    var updated = document.getElementById('statusUpdated');
+    var grid = document.getElementById('playerGrid');
+
+    var maintenance = !!(data && data.maintenance);
+    var online = !!(data && data.online);
+
+    if(maintenance){
+      dot.className = 'status-dot maintenance';
+      title.textContent = 'Under Maintenance';
+      count.textContent = '—';
+    } else {
+      dot.className = 'status-dot ' + (online ? 'online' : 'offline');
+      title.textContent = online ? 'Server Online' : 'Server Offline';
+      count.textContent = online ? (data.playerCount != null ? data.playerCount : '—') + (data.maxPlayers ? ' / ' + data.maxPlayers : '') : '0';
+    }
+
+    if(maintenance && data.maintenanceMessage){
+      motd.style.display = 'block';
+      motd.textContent = data.maintenanceMessage;
+    } else if(!maintenance && data && data.motd){
+      motd.style.display = 'block';
+      motd.textContent = data.motd;
+    } else {
+      motd.style.display = 'none';
+    }
+
+    updated.textContent = data && data.updatedAt ? timeAgo(data.updatedAt) : '';
+
+    if(maintenance){
+      grid.innerHTML = '<div class="status-empty">The server is offline for maintenance right now — check back soon.</div>';
+    } else if(online && data.players && data.players.length){
+      grid.innerHTML = '<div class="player-grid">' + data.players.map(function(name){
+        return '<div class="player-tile">'
+          + '<img src="https://mc-heads.net/avatar/' + encodeURIComponent(name) + '/64" alt="" loading="lazy">'
+          + '<div class="pname">' + name + '</div>'
+          + '</div>';
+      }).join('') + '</div>';
+    } else if(online){
+      grid.innerHTML = '<div class="status-empty">'
+        + (data.playerCount ? data.playerCount + ' player(s) online, but the name list hasn\'t been pushed yet.' : 'No one online right now.')
+        + '</div>';
+    } else {
+      grid.innerHTML = '<div class="status-empty">Server is offline or unreachable.</div>';
+    }
+  }
+
+  function loadStatus(){
+    fetch(STATUS_API_URL).then(function(res){
+      if(!res.ok) throw new Error('bad response');
+      return res.json();
+    }).then(function(data){
+      renderMaintenanceBanner(data);
+      renderStatus(data);
+    }).catch(function(){
+      renderMaintenanceBanner({ maintenance:false });
+      renderStatus({ online:false });
+    });
+  }
+
+  loadStatus();
+  setInterval(loadStatus, 30000); // refresh every 30s while the site is open
 
   // ---------- Rules / TOS toggle ----------
   var rtToggle = document.querySelectorAll('.rules-toggle button');
