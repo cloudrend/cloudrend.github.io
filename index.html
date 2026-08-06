@@ -1191,6 +1191,14 @@
   var currentPage = 'home';
   var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ---------- URL <-> page name mapping ----------
+  var slugToPage = { '': 'home', 'shop': 'store', 'store': 'store', 'leaderboards': 'leaderboards', 'status': 'status', 'rules': 'rules', 'tos': 'rules' };
+  var pageToSlug = { home: '/', store: '/shop', leaderboards: '/leaderboards', status: '/status', rules: '/rules' };
+  function pageFromPath(path){
+    var clean = String(path || '').replace(/^\/+|\/+$/g, '').toLowerCase();
+    return slugToPage.hasOwnProperty(clean) ? slugToPage[clean] : 'home';
+  }
+
   // ---------- Scroll/visibility entrance animations ----------
   var revealObserver = null;
   if(!prefersReduced && 'IntersectionObserver' in window){
@@ -1220,7 +1228,8 @@
     });
   }
 
-  function goToPage(name){
+  function goToPage(name, opts){
+    opts = opts || {};
     if(name === currentPage || pageOrder.indexOf(name) === -1) return;
     var oldIndex = pageOrder.indexOf(currentPage);
     var newIndex = pageOrder.indexOf(name);
@@ -1237,9 +1246,41 @@
     document.getElementById('navLinks').classList.remove('open');
     window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
     currentPage = name;
+
+    if(!opts.skipHistory){
+      var url = pageToSlug[name] || '/';
+      if(opts.replace){ history.replaceState({page:name}, '', url); }
+      else { history.pushState({page:name}, '', url); }
+    }
   }
   navButtons.forEach(function(b){
     b.addEventListener('click', function(){ goToPage(b.dataset.page); });
+  });
+
+  // ---------- Real URLs: initial load + browser back/forward ----------
+  (function initRoute(){
+    var name = pageFromPath(window.location.pathname);
+    if(name !== 'home'){
+      pages.forEach(function(p){ p.classList.remove('active'); });
+      var target = document.getElementById('page-' + name);
+      if(target){
+        target.classList.add('active');
+        navButtons.forEach(function(b){
+          if(b.closest('.nav-links')) b.classList.toggle('active', b.dataset.page === name);
+        });
+        currentPage = name;
+      }
+    }
+    // normalize the URL (e.g. trailing slash, /store -> /shop) without adding a history entry
+    var canonical = pageToSlug[currentPage] || '/';
+    if(window.location.pathname !== canonical){
+      history.replaceState({page:currentPage}, '', canonical);
+    }
+  })();
+
+  window.addEventListener('popstate', function(){
+    var name = pageFromPath(window.location.pathname);
+    goToPage(name, { skipHistory:true });
   });
 
   // ---------- Swipe between pages (mobile) ----------
