@@ -1,6 +1,6 @@
 // /api/leaderboards.js
 // Vercel Serverless Function — stores/serves the ELO and Playtime
-// leaderboards using Vercel KV (a small hosted key-value store).
+// leaderboards using your Neon Postgres database.
 //
 // GET  /api/leaderboards?type=elo        -> returns the stored array
 // GET  /api/leaderboards?type=playtime   -> returns the stored array
@@ -8,19 +8,19 @@
 //      body: [ { "name": "Basalttide", "value": 2184 }, ... ]
 //      header: Authorization: Bearer <UPDATE_SECRET>
 //
-// Setup (one-time, in the Vercel dashboard):
-//   1. Project -> Storage -> Create Database -> KV. Connect it to this
-//      project. Vercel auto-adds the KV_REST_API_URL / KV_REST_API_TOKEN
-//      environment variables for you.
-//   2. Project -> Settings -> Environment Variables -> add UPDATE_SECRET
-//      (any long random string you make up). This is the password your
-//      Minecraft server uses to push new standings in.
-//   3. In this project's terminal: npm install @vercel/kv
-//   4. Deploy. That's it — no separate server needed.
+// Setup (one-time):
+//   1. In Neon, run the SQL in schema.sql (creates the leaderboards table).
+//   2. In Vercel: Project -> Settings -> Environment Variables -> add
+//      DATABASE_URL = your Neon connection string (the "pooled connection"
+//      one from the Neon dashboard).
+//   3. Also add UPDATE_SECRET = any long random string you make up. This
+//      is the password your Minecraft server uses to push new standings in.
+//   4. npm install (installs @neondatabase/serverless), then deploy.
 
-import { kv } from '@vercel/kv';
+import { neon } from '@neondatabase/serverless';
 
 const ALLOWED_TYPES = ['elo', 'playtime'];
+const sql = neon(process.env.DATABASE_URL);
 
 export default async function handler(req, res) {
   const type = req.query.type;
@@ -29,12 +29,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'type must be "elo" or "playtime"' });
   }
 
-  const key = `leaderboard:${type}`;
-
   if (req.method === 'GET') {
-    const data = (await kv.get(key)) || [];
-    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
-    return res.status(200).json(data);
+    try {
+      const rows = await sql`
+        SELECT name, value FROM leaderboards
+        WHERE type = ${type}
+        ORDER BY value DESC
+      `;
+      res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
+      return res.status(200).json(rows);
+    } catch (err) {
+      return res.status(500).json({ error: 'database error', detail: String(err) });
+    }
   }
 
   if (req.method === 'POST') {
@@ -48,9 +54,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'body must be an array of { name, value }' });
     }
 
-    const sorted = [...body].sort((a, b) => b.value - a.value);
-    await kv.set(key, sorted);
-    return res.status(200).json({ ok: true, count: sorted.length });
+    try {
+      await sql`DELETE FROM leaderboards WHERE type = ${type}`;
+      for (const row of body) {
+        await sql`
+          INSERT INTO leaderboards (type, name, value)
+          VALUES (${type}, ${row.name}, ${row.value})
+        `;
+      }
+      return res.status(200).json({ ok: true, count: body.length });
+    } catch (err) {
+      return res.status(500).json({ error: 'database error', detail: String(err) });
+    }
   }
 
   res.setHeader('Allow', 'GET, POST');
