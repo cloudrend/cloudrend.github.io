@@ -315,6 +315,22 @@
   .add-btn:active{transform:translateY(1px);box-shadow:0 1px 0 var(--honey-dark);}
   .add-btn.added{background:var(--moss);color:#fff;box-shadow:0 3px 0 var(--moss-dark);}
 
+  .renewal-note{
+    grid-column:1/-1;display:flex;gap:14px;align-items:flex-start;
+    background:var(--parchment-dark);border-left:4px solid var(--honey-dark);border-radius:10px;
+    padding:16px 24px;font-size:.88rem;color:var(--ink-soft);
+  }
+  .renewal-note svg{width:20px;height:20px;flex-shrink:0;color:var(--honey-dark);margin-top:2px;}
+  .renewal-note strong{color:var(--ink);}
+
+  .coming-soon-card{
+    grid-column:1/-1;text-align:center;padding:50px 24px;background:var(--cloud-white);
+    border:2px dashed var(--parchment-dark);border-radius:var(--radius-md);
+  }
+  .coming-soon-icon{font-size:2.2rem;margin-bottom:12px;}
+  .coming-soon-card h3{font-size:1.15rem;}
+  .coming-soon-card p{margin-top:8px;color:var(--ink-soft);font-size:.9rem;max-width:400px;margin-left:auto;margin-right:auto;}
+
   .cart-bar{
     position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--wood-deep);color:var(--parchment);
     padding:16px 24px;display:flex;align-items:center;justify-content:space-between;
@@ -708,8 +724,8 @@
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="ranks">Ranks</button>
-    <button class="tab-btn" data-tab="cosmetics">Cosmetics</button>
-    <button class="tab-btn" data-tab="keys">Crate Keys</button>
+    <button class="tab-btn" data-tab="keys">Premium Keys</button>
+    <button class="tab-btn" data-tab="weapons">Weapons</button>
   </div>
 
   <div class="store-grid store-panel active" data-panel="ranks">
@@ -717,9 +733,10 @@
       <div class="item-emoji">☁️</div>
       <h3>Mistborn</h3>
       <ul class="item-perks">
+        <li>5 Mistborn Keys</li>
+        <li>5 Amethyst Keys</li>
         <li>/chatcolor (3 colors)</li>
-        <li>/gradient (3 colors)</li>
-        <li>/anvil, /craft, /smithingtable, /loom</li>
+        <li>/craft, /loom, /anvil, /smithingtable</li>
         <li>/lands</li>
         <li>7 home slots</li>
       </ul>
@@ -729,9 +746,10 @@
       <div class="item-emoji">🗡️</div>
       <h3>Cloudblade</h3>
       <ul class="item-perks">
+        <li>5 Cloudblade Keys</li>
+        <li>5 Amethyst Keys</li>
         <li>/chatcolor (6 colors)</li>
-        <li>/gradient (6 colors)</li>
-        <li>/anvil, /craft, /smithingtable, /loom</li>
+        <li>/craft, /loom, /anvil, /smithingtable</li>
         <li>/lands</li>
         <li>14 home slots</li>
       </ul>
@@ -741,10 +759,11 @@
       <div class="item-emoji">🏔️</div>
       <h3>Skywarden</h3>
       <ul class="item-perks">
+        <li>5 Skywarden Keys</li>
+        <li>5 Amethyst Keys</li>
         <li>/endervault (+1 row)</li>
         <li>/chatcolor (8 colors)</li>
-        <li>/gradient (8 colors)</li>
-        <li>/anvil, /craft, /smithingtable, /loom</li>
+        <li>/craft, /loom, /anvil, /smithingtable</li>
         <li>/lands</li>
         <li>21 home slots</li>
       </ul>
@@ -754,12 +773,12 @@
       <div class="item-emoji">⚡</div>
       <h3>Stormlord</h3>
       <ul class="item-perks">
-        <li>Nickname change (ticket, max 5)</li>
+        <li>5 Stormlord Keys, 5 Amethyst Keys, 2 Staff Keys</li>
+        <li>/nick — change nickname</li>
         <li>/endervault (+2 rows)</li>
         <li>/chatcolor (10 colors)</li>
-        <li>/gradient (10 colors)</li>
-        <li>/anvil, /craft, /smithingtable, /loom, /lands</li>
-        <li>/lootbox</li>
+        <li>/craft, /loom, /anvil, /smithingtable</li>
+        <li>/premiumpets, /lands, /claimpoints, /lootbox</li>
         <li>28 home slots</li>
       </ul>
       <div class="item-footer"><span class="price">₱200.00</span><button class="add-btn" data-item="Stormlord Rank" data-price="200.00">Add</button></div>
@@ -768,84 +787,77 @@
       <div class="item-emoji">🌪️</div>
       <h3>Tempest</h3>
       <ul class="item-perks">
-        <li>Nickname change (ticket, unlimited)</li>
-        <li>/chatcolor — all colors</li>
-        <li>/gradient — all colors</li>
+        <li>5 Tempest Keys, 5 Amethyst Keys, 5 Staff Keys</li>
+        <li>/nick — change nickname</li>
         <li>/endervault (+3 rows)</li>
-        <li>/repair, /lootbox</li>
-        <li>/anvil, /craft, /smithingtable, /loom, /lands</li>
+        <li>/chatcolor — all colors</li>
+        <li>/craft, /loom, /anvil, /smithingtable</li>
+        <li>/premiumpets, /lands, /claimpoints, /lootbox</li>
         <li>35 home slots</li>
       </ul>
       <div class="item-footer"><span class="price">₱350.00</span><button class="add-btn" data-item="Tempest Rank" data-price="350.00">Add</button></div>
     </div>
-  </div>
-
-  <div class="store-grid store-panel" data-panel="cosmetics">
-    <div class="item-card">
-      <div class="item-emoji">🎨</div>
-      <h3>Nickname Colors</h3>
-      <ul class="item-perks">
-        <li>Unlock full color palette</li>
-        <li>Gradient name option</li>
-      </ul>
-      <div class="item-footer"><span class="price">₱30.00</span><button class="add-btn" data-item="Nickname Colors" data-price="30.00">Add</button></div>
-    </div>
-    <div class="item-card">
-      <div class="item-emoji">✨</div>
-      <h3>Particle Trails</h3>
-      <ul class="item-perks">
-        <li>8 trail effects</li>
-        <li>Toggle on/off in-game</li>
-      </ul>
-      <div class="item-footer"><span class="price">₱60.00</span><button class="add-btn" data-item="Particle Trails" data-price="60.00">Add</button></div>
-    </div>
-    <div class="item-card">
-      <div class="item-emoji">🎩</div>
-      <h3>Player Hats</h3>
-      <ul class="item-perks">
-        <li>12 cosmetic head items</li>
-        <li>Purely visual, no armor slot</li>
-      </ul>
-      <div class="item-footer"><span class="price">₱25.00</span><button class="add-btn" data-item="Player Hats" data-price="25.00">Add</button></div>
-    </div>
-    <div class="item-card">
-      <div class="item-emoji">💬</div>
-      <h3>Death Message Themes</h3>
-      <ul class="item-perks">
-        <li>Custom flavor text on death</li>
-        <li>4 themed packs</li>
-      </ul>
-      <div class="item-footer"><span class="price">₱20.00</span><button class="add-btn" data-item="Death Message Themes" data-price="20.00">Add</button></div>
+    <div class="renewal-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+      <div>
+        <strong>Ranks renew monthly.</strong> Keep your perks active with a renewal each month — if a rank expires, it's automatically removed and its perks stop working until you renew.
+      </div>
     </div>
   </div>
 
   <div class="store-grid store-panel" data-panel="keys">
     <div class="item-card">
       <div class="item-emoji">🔑</div>
-      <h3>Harvest Key</h3>
+      <h3>Mistborn Keys</h3>
       <ul class="item-perks">
-        <li>Cosmetic crate — decorative blocks</li>
-        <li>1 guaranteed uncommon+</li>
+        <li>7 keys</li>
+        <li>Opens Mistborn-tier crates</li>
       </ul>
-      <div class="item-footer"><span class="price">₱25.00</span><button class="add-btn" data-item="Harvest Key" data-price="25.00">Add</button></div>
+      <div class="item-footer"><span class="price">₱15.00</span><button class="add-btn" data-item="Mistborn Keys (7)" data-price="15.00">Add</button></div>
     </div>
     <div class="item-card">
       <div class="item-emoji">🗝️</div>
-      <h3>Blossom Key</h3>
+      <h3>Cloudblade Keys</h3>
       <ul class="item-perks">
-        <li>Cosmetic crate — pets &amp; trails</li>
-        <li>1 guaranteed rare+</li>
+        <li>7 keys</li>
+        <li>Opens Cloudblade-tier crates</li>
       </ul>
-      <div class="item-footer"><span class="price">₱50.00</span><button class="add-btn" data-item="Blossom Key" data-price="50.00">Add</button></div>
+      <div class="item-footer"><span class="price">₱45.00</span><button class="add-btn" data-item="Cloudblade Keys (7)" data-price="45.00">Add</button></div>
     </div>
     <div class="item-card">
-      <div class="item-emoji">🏺</div>
-      <h3>Legacy Key</h3>
+      <div class="item-emoji">🏔️</div>
+      <h3>Skywarden Keys</h3>
       <ul class="item-perks">
-        <li>Cosmetic crate — rare cosmetics</li>
-        <li>1 guaranteed legendary cosmetic</li>
+        <li>7 keys</li>
+        <li>Opens Skywarden-tier crates</li>
       </ul>
-      <div class="item-footer"><span class="price">₱90.00</span><button class="add-btn" data-item="Legacy Key" data-price="90.00">Add</button></div>
+      <div class="item-footer"><span class="price">₱95.00</span><button class="add-btn" data-item="Skywarden Keys (7)" data-price="95.00">Add</button></div>
+    </div>
+    <div class="item-card">
+      <div class="item-emoji">⚡</div>
+      <h3>Stormlord Keys</h3>
+      <ul class="item-perks">
+        <li>10 keys</li>
+        <li>Opens Stormlord-tier crates</li>
+      </ul>
+      <div class="item-footer"><span class="price">₱195.00</span><button class="add-btn" data-item="Stormlord Keys (10)" data-price="195.00">Add</button></div>
+    </div>
+    <div class="item-card">
+      <div class="item-emoji">🌪️</div>
+      <h3>Tempest Keys</h3>
+      <ul class="item-perks">
+        <li>10 keys</li>
+        <li>Opens Tempest-tier crates</li>
+      </ul>
+      <div class="item-footer"><span class="price">₱345.00</span><button class="add-btn" data-item="Tempest Keys (10)" data-price="345.00">Add</button></div>
+    </div>
+  </div>
+
+  <div class="store-grid store-panel" data-panel="weapons">
+    <div class="coming-soon-card">
+      <div class="coming-soon-icon">⚔️</div>
+      <h3>Premium Weapons — coming soon</h3>
+      <p>We're finalizing this section to make sure it lines up with our "never pay-to-win" promise. Check back soon.</p>
     </div>
   </div>
 </div>
