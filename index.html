@@ -56,6 +56,35 @@
 
   .page{display:none;}
   .page.active{display:block;}
+
+  /* ---------- ENTRANCE ANIMATIONS ---------- */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.05,.7,.1,1), transform .6s cubic-bezier(.05,.7,.1,1);}
+  .reveal.revealed{opacity:1;transform:translateY(0);}
+  .reveal-scale{opacity:0;transform:translateY(16px) scale(.94);transition:opacity .5s cubic-bezier(.05,.7,.1,1), transform .5s cubic-bezier(.05,.7,.1,1);}
+  .reveal-scale.revealed{opacity:1;transform:translateY(0) scale(1);}
+  @media (prefers-reduced-motion:reduce){
+    .reveal,.reveal-scale{opacity:1 !important;transform:none !important;transition:none !important;}
+  }
+
+  .why-grid .reveal:nth-child(1){transition-delay:0ms;}
+  .why-grid .reveal:nth-child(2){transition-delay:80ms;}
+  .why-grid .reveal:nth-child(3){transition-delay:160ms;}
+  .why-grid .reveal:nth-child(4){transition-delay:240ms;}
+  .stat-strip .reveal:nth-child(1){transition-delay:0ms;}
+  .stat-strip .reveal:nth-child(2){transition-delay:70ms;}
+  .stat-strip .reveal:nth-child(3){transition-delay:140ms;}
+  .stat-strip .reveal:nth-child(4){transition-delay:210ms;}
+  .tier-grid .reveal:nth-child(1){transition-delay:0ms;}
+  .tier-grid .reveal:nth-child(2){transition-delay:100ms;}
+  .tier-grid .reveal:nth-child(3){transition-delay:200ms;}
+
+  @keyframes heroIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+  .hero-content .eyebrow{animation:heroIn .65s cubic-bezier(.05,.7,.1,1) both;animation-delay:.05s;}
+  .hero-content h1{animation:heroIn .65s cubic-bezier(.05,.7,.1,1) both;animation-delay:.15s;}
+  .hero-content .sub{animation:heroIn .65s cubic-bezier(.05,.7,.1,1) both;animation-delay:.26s;}
+  .hero-content .hero-ctas{animation:heroIn .65s cubic-bezier(.05,.7,.1,1) both;animation-delay:.37s;}
+  .hero-content .ip-subline{animation:heroIn .65s cubic-bezier(.05,.7,.1,1) both;animation-delay:.47s;}
+  @media (prefers-reduced-motion:reduce){.hero-content *{animation:none !important;}}
   .page.enter-right{animation:m3EnterRight .38s cubic-bezier(.05,.7,.1,1);}
   .page.enter-left{animation:m3EnterLeft .38s cubic-bezier(.05,.7,.1,1);}
   @keyframes m3EnterRight{from{opacity:0;transform:translateX(32px);}to{opacity:1;transform:translateX(0);}}
@@ -449,6 +478,19 @@
   .player-count{font-family:var(--font-mono);font-weight:600;font-size:1.6rem;color:var(--moss-dark);}
   .player-count-label{font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;}
 
+  .status-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+  @media (max-width:520px){.status-breakdown{grid-template-columns:1fr;}}
+  .breakdown-card{
+    background:var(--cloud-white);border:2px solid var(--parchment-dark);border-radius:var(--radius-md);
+    padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
+  .breakdown-left{display:flex;align-items:center;gap:10px;}
+  .status-dot.small{width:10px;height:10px;}
+  .status-dot.small.online::after,.status-dot.small.maintenance::after{inset:-3px;}
+  .breakdown-name{font-weight:800;font-size:.9rem;}
+  .breakdown-sub{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-soft);}
+  .breakdown-count{font-family:var(--font-mono);font-weight:600;font-size:1.05rem;color:var(--moss-dark);}
+
   .status-motd{
     margin-top:18px;background:var(--parchment-dark);border-radius:12px;padding:14px 18px;
     font-family:var(--font-mono);font-size:.85rem;color:var(--ink-soft);text-align:center;
@@ -601,36 +643,36 @@
     </svg>
 
     <div class="stat-strip">
-      <div class="stat-card"><div class="num">cloudrend.srein.xyz</div><div class="label">Java IP</div></div>
-      <div class="stat-card"><div class="num">15.235.159.75</div><div class="label">Bedrock IP</div></div>
-      <div class="stat-card"><div class="num">25681</div><div class="label">Bedrock Port</div></div>
-      <div class="stat-card"><div class="num">Family-friendly</div><div class="label">Chat Policy</div></div>
+      <div class="stat-card reveal"><div class="num">cloudrend.srein.xyz</div><div class="label">Java IP</div></div>
+      <div class="stat-card reveal"><div class="num">15.235.159.75</div><div class="label">Bedrock IP</div></div>
+      <div class="stat-card reveal"><div class="num">25681</div><div class="label">Bedrock Port</div></div>
+      <div class="stat-card reveal"><div class="num">Family-friendly</div><div class="label">Chat Policy</div></div>
     </div>
   </section>
 
   <section class="section">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">WHY CLOUDREND</div>
       <h2>Classic survival, community first</h2>
       <p>The core Minecraft feel you love, enhanced with better visuals and discovery — built alongside a friendly, dedicated player base.</p>
     </div>
     <div class="why-grid">
-      <div class="why-card">
+      <div class="why-card reveal">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v8"/><path d="M8 22h8l-1-8H9l-1 8Z"/><circle cx="12" cy="12" r="6"/></svg>
         <h3>Classic survival</h3>
         <p>The core Minecraft feel you already know, enhanced with better visuals and discovery — not reinvented, just improved.</p>
       </div>
-      <div class="why-card">
+      <div class="why-card reveal">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4.5 8-11a8 8 0 1 0-16 0c0 6.5 8 11 8 11Z"/><circle cx="12" cy="11" r="3"/></svg>
         <h3>Community first</h3>
         <p>Build your legacy alongside a friendly, dedicated player base. This world is only as good as the people playing on it.</p>
       </div>
-      <div class="why-card">
+      <div class="why-card reveal">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 12h6M3 12l3-3M3 12l3 3"/></svg>
         <h3>Seasonal resets</h3>
         <p>To keep the world healthy and prevent economic inflation, CloudrendSMP runs on a seasonal model with fresh worlds between seasons.</p>
       </div>
-      <div class="why-card">
+      <div class="why-card reveal">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15a4 4 0 0 0 4-4V7a4 4 0 0 0-8 0v4a4 4 0 0 0 4 4Z"/><path d="M19 11a7 7 0 0 1-14 0M12 19v3"/></svg>
         <h3>Fair, active moderation</h3>
         <p>A tiered strike system keeps things fair and consistent, and every ban appeal gets a private ticket instead of a public argument.</p>
@@ -639,7 +681,7 @@
   </section>
 
   <section class="section" style="padding-top:0;">
-    <div class="cta-banner">
+    <div class="cta-banner reveal">
       <h2>Your adventure starts at the edge of the unknown</h2>
       <p>Grab your gear, choose a direction, and make your mark on a world that's truly one of a kind.</p>
       <div class="hero-ctas">
@@ -839,7 +881,7 @@
   <div class="status-header">
     <div class="kicker" style="font-family:var(--font-mono);color:var(--moss-dark);font-size:.8rem;letter-spacing:.1em;font-weight:600;">LIVE</div>
     <h1>Server Status</h1>
-    <p>Who's online right now on Bedrock (15.235.159.75:25681).</p>
+    <p>Who's online right now, across both Java and Bedrock.</p>
   </div>
 
   <div class="status-page-content">
@@ -848,7 +890,7 @@
         <div class="status-dot" id="statusDot"></div>
         <div>
           <div class="server-card-title" id="statusTitle">Checking status…</div>
-          <div class="server-card-sub">15.235.159.75:25681 · Bedrock</div>
+          <div class="server-card-sub">cloudrend.srein.xyz · 15.235.159.75:25681</div>
         </div>
       </div>
       <div class="server-card-right">
@@ -857,12 +899,14 @@
       </div>
     </div>
 
+    <div class="status-breakdown" id="statusBreakdown"></div>
+
     <div class="status-motd" id="statusMotd" style="display:none;"></div>
     <p class="status-updated" id="statusUpdated"></p>
 
     <div class="player-section-head">
       <h2>Who's on right now</h2>
-      <p>Names shown only when the server pushes its player list — otherwise you'll just see the live count above.</p>
+      <p>Live Java names show automatically. Bedrock only ever reports a count — names there need the server to push its list.</p>
     </div>
     <div id="playerGrid"></div>
   </div>
@@ -949,7 +993,7 @@
       <p>Our staff team uses a tiered strike system to manage rule infractions. Infractions reset at the end of each season.</p>
     </div>
     <div class="tier-grid">
-      <div class="tier-card tier-minor">
+      <div class="tier-card tier-minor reveal">
         <h3>⚠️ Minor Infractions</h3>
         <p class="tier-desc">Swearing, minor spam, light toxicity, or building slightly too close to a neighbor.</p>
         <ul class="tier-ladder">
@@ -958,7 +1002,7 @@
           <li><span>3rd Offense</span>24-Hour Temp-Ban</li>
         </ul>
       </div>
-      <div class="tier-card tier-major">
+      <div class="tier-card tier-major reveal">
         <h3>🚫 Major Infractions</h3>
         <p class="tier-desc">Griefing, stealing, server disrespect, or continuous chat harassment after a mute.</p>
         <ul class="tier-ladder">
@@ -967,7 +1011,7 @@
           <li><span>3rd Offense</span>Permanent Server Ban</li>
         </ul>
       </div>
-      <div class="tier-card tier-severe">
+      <div class="tier-card tier-severe reveal">
         <h3>🔨 Severe Infractions</h3>
         <p class="tier-desc">Hacking/cheating clients, X-ray, lag machines, advertising, or NSFW distribution.</p>
         <ul class="tier-ladder">
@@ -1147,6 +1191,35 @@
   var currentPage = 'home';
   var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ---------- Scroll/visibility entrance animations ----------
+  var revealObserver = null;
+  if(!prefersReduced && 'IntersectionObserver' in window){
+    revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  }
+  function observeReveals(root){
+    var els = (root || document).querySelectorAll('.reveal:not(.revealed), .reveal-scale:not(.revealed)');
+    if(!revealObserver){
+      els.forEach(function(el){ el.classList.add('revealed'); });
+      return;
+    }
+    els.forEach(function(el){ revealObserver.observe(el); });
+  }
+  function applyStagger(containerEl, childSelector, stepMs, cls){
+    if(!containerEl) return;
+    var els = containerEl.querySelectorAll(childSelector);
+    els.forEach(function(el, i){
+      el.classList.add(cls || 'reveal');
+      if(!prefersReduced) el.style.transitionDelay = (i * stepMs) + 'ms';
+    });
+  }
+
   function goToPage(name){
     if(name === currentPage || pageOrder.indexOf(name) === -1) return;
     var oldIndex = pageOrder.indexOf(currentPage);
@@ -1219,6 +1292,10 @@
   // ---------- Store tabs ----------
   var tabBtns = document.querySelectorAll('.tab-btn');
   var storePanels = document.querySelectorAll('.store-panel');
+  storePanels.forEach(function(panel){
+    applyStagger(panel, '.item-card', 70);
+    observeReveals(panel);
+  });
   tabBtns.forEach(function(btn){
     btn.addEventListener('click', function(){
       tabBtns.forEach(function(b){ b.classList.remove('active'); });
@@ -1226,6 +1303,9 @@
       storePanels.forEach(function(p){ p.classList.toggle('active', p.dataset.panel === btn.dataset.tab); });
     });
   });
+
+  // Static Home-page cards already have .reveal in markup — just observe them.
+  observeReveals(document.getElementById('page-home'));
 
   // ---------- Cart ----------
   var cart = [];
@@ -1384,29 +1464,33 @@
   function renderPodium(elId, data, unit){
     var el = document.getElementById(elId);
     var order = [1,0,2]; // display 2nd, 1st, 3rd for the classic podium shape
-    el.innerHTML = order.map(function(i){
+    el.innerHTML = order.map(function(i, pos){
       if(!data[i]) return '';
       var p = data[i];
       var cls = ['p1','p2','p3'][i];
-      return '<div class="podium-card ' + cls + '">'
+      var delay = prefersReduced ? '' : ' style="transition-delay:' + (pos * 100) + 'ms;"';
+      return '<div class="podium-card ' + cls + ' reveal-scale"' + delay + '>'
         + '<div class="podium-rank">' + (i+1) + '</div>'
         + '<div class="podium-avatar">' + p.name.charAt(0).toUpperCase() + '</div>'
         + '<div class="podium-name">' + p.name + '</div>'
         + '<div class="podium-value">' + formatValue(p.value, unit) + '</div>'
         + '</div>';
     }).join('');
+    observeReveals(el);
   }
 
   function buildBoard(elId, data, unit){
     var el = document.getElementById(elId);
     el.innerHTML = data.map(function(row, i){
-      return '<div class="board-row">'
+      var delay = prefersReduced ? '' : ' style="transition-delay:' + (i * 40) + 'ms;"';
+      return '<div class="board-row reveal"' + delay + '>'
         + '<div class="board-rank">#' + (i+4) + '</div>'
         + '<div class="board-avatar">' + row.name.charAt(0).toUpperCase() + '</div>'
         + '<div class="board-name">' + row.name + '</div>'
         + '<div class="board-value">' + formatValue(row.value, unit) + '</div>'
         + '</div>';
     }).join('');
+    observeReveals(el);
   }
 
   function renderLeaderboard(podiumId, boardId, noteId, data, unit, isLive){
@@ -1505,11 +1589,39 @@
 
     updated.textContent = data && data.updatedAt ? timeAgo(data.updatedAt) : '';
 
+    var breakdown = document.getElementById('statusBreakdown');
+    if(breakdown){
+      if(maintenance){
+        breakdown.innerHTML = '';
+      } else {
+        var j = data.java || {};
+        var b = data.bedrock || {};
+        breakdown.innerHTML = [
+          { label:'Java', addr:'cloudrend.srein.xyz', d:j },
+          { label:'Bedrock', addr:'15.235.159.75:25681', d:b }
+        ].map(function(edition){
+          var eOnline = !!edition.d.online;
+          var eCount = eOnline ? (edition.d.playerCount != null ? edition.d.playerCount : '—') : 0;
+          var eMax = edition.d.maxPlayers ? (' / ' + edition.d.maxPlayers) : '';
+          return '<div class="breakdown-card reveal">'
+            + '<div class="breakdown-left">'
+            + '<div class="status-dot small ' + (eOnline ? 'online' : 'offline') + '"></div>'
+            + '<div><div class="breakdown-name">' + edition.label + '</div>'
+            + '<div class="breakdown-sub">' + edition.addr + '</div></div>'
+            + '</div>'
+            + '<div class="breakdown-count">' + eCount + eMax + '</div>'
+            + '</div>';
+        }).join('');
+        observeReveals(breakdown);
+      }
+    }
+
     if(maintenance){
       grid.innerHTML = '<div class="status-empty">The server is offline for maintenance right now — check back soon.</div>';
     } else if(online && data.players && data.players.length){
-      grid.innerHTML = '<div class="player-grid">' + data.players.map(function(name){
-        return '<div class="player-tile">'
+      grid.innerHTML = '<div class="player-grid">' + data.players.map(function(name, i){
+        var delay = prefersReduced ? '' : ' style="transition-delay:' + (i * 35) + 'ms;"';
+        return '<div class="player-tile reveal-scale"' + delay + '>'
           + '<img src="https://mc-heads.net/avatar/' + encodeURIComponent(name) + '/64" alt="" loading="lazy">'
           + '<div class="pname">' + name + '</div>'
           + '</div>';
@@ -1521,6 +1633,7 @@
     } else {
       grid.innerHTML = '<div class="status-empty">Server is offline or unreachable.</div>';
     }
+    observeReveals(grid);
   }
 
   function loadStatus(){
@@ -1542,6 +1655,11 @@
   // ---------- Rules / TOS toggle ----------
   var rtToggle = document.querySelectorAll('.rules-toggle button');
   var rtPanels = document.querySelectorAll('.rules-panel');
+  rtPanels.forEach(function(panel){
+    applyStagger(panel, '.accordion-item', 50);
+    observeReveals(panel);
+  });
+  observeReveals(document.querySelector('.tier-grid'));
   rtToggle.forEach(function(btn){
     btn.addEventListener('click', function(){
       rtToggle.forEach(function(b){ b.classList.remove('active'); });

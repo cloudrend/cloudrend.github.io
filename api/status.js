@@ -1,10 +1,11 @@
 // /api/status.js
 // Vercel Serverless Function — reports whether CloudrendSMP is online,
-// how many players are connected, and whether it's in maintenance mode.
+// how many players are connected (Java + Bedrock combined), and whether
+// it's in maintenance mode. Uses the mcsrvstat.us API for live pings.
 //
 // GET  /api/status
-//   -> { online, playerCount, maxPlayers, motd, players, maintenance,
-//        maintenanceMessage, updatedAt }
+//   -> { online, playerCount, maxPlayers, motd, players, java, bedrock,
+//        maintenance, maintenanceMessage, updatedAt }
 //
 // POST /api/status   (any subset of these fields; only what you send gets updated)
 //   { "players": ["Steve","Alex"] }
@@ -12,24 +13,47 @@
 //   { "maintenance": false }
 //   header: Authorization: Bearer <UPDATE_SECRET>
 //
-// Player COUNT works out of the box via a public ping API (mcsrvstat.us).
-// Player NAMES and MAINTENANCE STATE only show up once your server starts
-// POSTing them here — see SETUP.md for the Skript + SkBee script that does
-// this. For maintenance mode specifically, tie the POST into whatever
-// toggles your "Maintenance" plugin on/off (a command block, a Skript
-// command hook, etc.) so the banner flips automatically.
+// Player COUNT and, on Java, the real player NAME LIST work out of the box
+// via mcsrvstat.us — no plugin needed, as long as your server doesn't hide
+// its player sample. Bedrock's ping protocol only ever returns a count,
+// never names. If Java also comes back without names (some server configs
+// hide the sample), the site falls back to whatever's been POSTed here —
+// see SETUP.md for the Skript + SkBee push script that does that.
+// Maintenance mode always requires a POST either way.
 
 import { neon } from '@neondatabase/serverless';
 
+const JAVA_ADDRESS = 'cloudrend.srein.xyz';
 const BEDROCK_ADDRESS = '15.235.159.75:25681';
 const sql = neon(process.env.DATABASE_URL);
 
-async function pingServer() {
+async function pingJava() {
+  try {
+    const res = await fetch(`https://api.mcsrvstat.us/3/${JAVA_ADDRESS}`, {
+      headers: { 'User-Agent': 'CloudrendSMP-status-page' }
+    });
+    if (!res.ok) return { online: false, playerCount: null, maxPlayers: null, motd: null, players: [] };
+    const data = await res.json();
+    return {
+      online: !!data.online,
+      playerCount: data.players ? data.players.online : null,
+      maxPlayers: data.players ? data.players.max : null,
+      motd: data.motd && data.motd.clean ? data.motd.clean.join(' ') : null,
+      players: (data.players && Array.isArray(data.players.list))
+        ? data.players.list.map(p => (typeof p === 'string' ? p : p.name)).filter(Boolean)
+        : []
+    };
+  } catch (err) {
+    return { online: false, playerCount: null, maxPlayers: null, motd: null, players: [] };
+  }
+}
+
+async function pingBedrock() {
   try {
     const res = await fetch(`https://api.mcsrvstat.us/bedrock/3/${BEDROCK_ADDRESS}`, {
       headers: { 'User-Agent': 'CloudrendSMP-status-page' }
     });
-    if (!res.ok) return { online: false };
+    if (!res.ok) return { online: false, playerCount: null, maxPlayers: null, motd: null };
     const data = await res.json();
     return {
       online: !!data.online,
@@ -38,7 +62,7 @@ async function pingServer() {
       motd: data.motd && data.motd.clean ? data.motd.clean.join(' ') : null
     };
   } catch (err) {
-    return { online: false };
+    return { online: false, playerCount: null, maxPlayers: null, motd: null };
   }
 }
 
@@ -56,16 +80,27 @@ async function getLatestRow() {
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
-    const ping = await pingServer();
+    const [java, bedrock] = await Promise.all([pingJava(), pingBedrock()]);
     const latest = await getLatestRow();
+
+    const online = java.online || bedrock.online;
+    const playerCount = (java.playerCount || 0) + (bedrock.playerCount || 0);
+    const maxPlayers = (java.maxPlayers || 0) + (bedrock.maxPlayers || 0);
+    const motd = java.motd || bedrock.motd || null;
+
+    // Prefer the live Java name list (real-time, no setup needed). If Java
+    // hides its sample, fall back to whatever's been pushed via POST.
+    const players = java.players.length ? java.players : (latest ? latest.players : []);
 
     res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate=30');
     return res.status(200).json({
-      online: ping.online,
-      playerCount: ping.playerCount,
-      maxPlayers: ping.maxPlayers,
-      motd: ping.motd,
-      players: latest ? latest.players : [],
+      online,
+      playerCount,
+      maxPlayers,
+      motd,
+      players,
+      java: { online: java.online, playerCount: java.playerCount, maxPlayers: java.maxPlayers },
+      bedrock: { online: bedrock.online, playerCount: bedrock.playerCount, maxPlayers: bedrock.maxPlayers },
       maintenance: latest ? !!latest.maintenance : false,
       maintenanceMessage: latest ? latest.maintenance_message : null,
       updatedAt: new Date().toISOString()
