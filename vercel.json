@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": false,
+  "buildCommand": null,
   "outputDirectory": ".",
   "functions": {
     "api/leaderboards.js": {
