@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grand Casino - Public Color Game</title>
+  <title>Grand Casino - Public Color Game Display</title>
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <style>
     * {
@@ -24,12 +24,12 @@
     }
     header {
       width: 100%;
-      max-width: 650px;
+      max-width: 800px;
       margin-bottom: 16px;
       text-align: center;
     }
     .casino-title {
-      font-size: 1.8rem;
+      font-size: 2.2rem;
       color: #facc15;
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -37,13 +37,13 @@
       margin-bottom: 4px;
     }
     .casino-subtitle {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       color: #94a3b8;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    /* Lobby & Room Bar */
+    /* Room Bar */
     .room-bar {
       background: rgba(30, 41, 59, 0.8);
       border: 1px solid #334155;
@@ -55,15 +55,16 @@
       gap: 10px;
       margin-bottom: 16px;
       width: 100%;
-      max-width: 650px;
+      max-width: 800px;
     }
     .room-status-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
     }
     .room-status {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #cbd5e1;
       display: flex;
       align-items: center;
@@ -107,45 +108,45 @@
     button:hover { background: #1d4ed8; }
     button.btn-host { background: #059669; }
     button.btn-host:hover { background: #047857; }
-    button.btn-claim { background: #d97706; }
-    button.btn-claim:hover { background: #b45309; }
+    button.btn-toggle { background: #7c3aed; }
+    button.btn-toggle:hover { background: #6d28d9; }
 
     /* Main Casino Table Frame */
     .casino-table {
       width: 100%;
-      max-width: 650px;
-      background: #064e3b; /* Classic Felt Green */
-      border: 8px solid #78350f; /* Mahogany Border */
+      max-width: 800px;
+      background: #064e3b;
+      border: 8px solid #78350f;
       border-radius: 24px;
-      padding: 20px;
+      padding: 24px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 0 40px rgba(0,0,0,0.5);
     }
 
     .info-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       padding-bottom: 12px;
       border-bottom: 2px solid rgba(255,255,255,0.15);
     }
     .stat-box { text-align: center; }
-    .stat-label { font-size: 0.7rem; color: #a7f3d0; text-transform: uppercase; letter-spacing: 1px; }
-    .stat-val { font-size: 1.4rem; font-weight: 800; color: #facc15; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+    .stat-label { font-size: 0.8rem; color: #a7f3d0; text-transform: uppercase; letter-spacing: 1px; }
+    .stat-val { font-size: 1.8rem; font-weight: 800; color: #facc15; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
 
     /* Dice Box */
     .dice-area {
       display: flex;
       justify-content: center;
-      gap: 16px;
-      margin: 16px 0 24px 0;
+      gap: 24px;
+      margin: 20px 0 32px 0;
     }
     .die {
-      width: 72px;
-      height: 72px;
-      border-radius: 14px;
-      border: 3px solid rgba(255,255,255,0.3);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+      width: 90px;
+      height: 90px;
+      border-radius: 18px;
+      border: 4px solid rgba(255,255,255,0.3);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
       background-color: #1e293b;
     }
     .die.rolling { animation: casinoShake 0.12s infinite alternate; }
@@ -154,23 +155,23 @@
       100% { transform: rotate(12deg) scale(1.08); }
     }
 
-    /* Colors Felt Grid */
+    /* Colors Grid */
     .color-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 16px;
+      margin-bottom: 24px;
     }
     .color-box {
       aspect-ratio: 1;
-      border-radius: 14px;
+      border-radius: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      padding: 10px;
+      justify-content: center;
+      padding: 12px;
       cursor: pointer;
-      border: 3px solid rgba(0,0,0,0.2);
+      border: 4px solid rgba(0,0,0,0.2);
       box-shadow: inset 0 0 10px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.4);
       transition: transform 0.1s;
     }
@@ -181,11 +182,11 @@
     }
     @keyframes winnerGlow {
       0% { box-shadow: 0 0 10px #fff, inset 0 0 10px #fff; }
-      100% { box-shadow: 0 0 25px #facc15, inset 0 0 20px #facc15; }
+      100% { box-shadow: 0 0 30px #facc15, inset 0 0 20px #facc15; }
     }
 
-    .color-name { font-weight: 900; font-size: 0.95rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); text-transform: uppercase; }
-    .color-bet-badge { background: rgba(0,0,0,0.7); padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; color: #facc15; border: 1px solid rgba(250, 204, 21, 0.4); }
+    .color-name { font-weight: 900; font-size: 1.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); text-transform: uppercase; }
+    .color-bet-badge { background: rgba(0,0,0,0.7); padding: 4px 12px; border-radius: 20px; font-size: 0.95rem; font-weight: 800; color: #facc15; border: 1px solid rgba(250, 204, 21, 0.4); margin-top: 8px; }
 
     /* Swatches */
     .c-red { background-color: #dc2626; color: #fff; }
@@ -195,31 +196,34 @@
     .c-pink { background-color: #db2777; color: #fff; }
     .c-white { background-color: #f1f5f9; color: #0f172a; }
 
-    /* Casino Chips Selector */
+    /* Interactive Betting Controls (Hidden on Display Mode) */
+    .betting-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
     .chip-bar {
       display: flex;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 20px;
       background: rgba(0,0,0,0.3);
       padding: 10px;
       border-radius: 50px;
     }
     .chip {
-      width: 46px;
-      height: 46px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       border: 4px dashed rgba(255,255,255,0.6);
       cursor: pointer;
       box-shadow: 0 4px 6px rgba(0,0,0,0.4);
-      transition: transform 0.15s, border-color 0.15s;
+      transition: transform 0.15s;
     }
-    .chip:hover { transform: translateY(-4px); }
     .chip.selected {
       border: 4px solid #fff;
       transform: scale(1.15);
@@ -235,41 +239,39 @@
     .btn-roll { background-color: #facc15; color: #0f172a; font-weight: 900; }
     .btn-clear { background-color: #334155; }
 
-    /* Live Casino Floor Feed */
-    .feed-panel {
-      width: 100%;
-      max-width: 650px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid #334155;
-      border-radius: 12px;
-      margin-top: 16px;
-      padding: 12px;
-      font-size: 0.8rem;
+    /* Display Mode Overrides */
+    body.display-mode .betting-section {
+      display: none !important;
     }
-    .feed-header { color: #94a3b8; font-weight: bold; margin-bottom: 6px; text-transform: uppercase; font-size: 0.7rem; }
-    .feed-list { list-style: none; max-height: 80px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
-    .feed-item { color: #cbd5e1; }
-    .feed-item span { color: #facc15; font-weight: bold; }
+    body.display-mode .color-bet-badge {
+      display: none !important;
+    }
+    body.display-mode .stat-coins {
+      display: none !important;
+    }
+    body.display-mode .color-box {
+      cursor: default;
+    }
   </style>
 </head>
 <body>
 
   <header>
     <div class="casino-title">🎰 Grand Public Casino</div>
-    <div class="casino-subtitle">Live Multi-Device Color Game Table</div>
+    <div class="casino-subtitle" id="subtitleText">Player View</div>
   </header>
 
   <div class="room-bar">
     <div class="room-status-row">
       <div class="room-status">
         <div class="status-dot" id="statusDot"></div>
-        <span id="statusText">Solo Table (Public)</span>
+        <span id="statusText">Table: YKSP</span>
       </div>
-      <button class="btn-claim" id="claimBtn">+ $1,000 Free Chips</button>
+      <button class="btn-toggle" id="toggleDisplayBtn">🖥️ Switch to TV Display Mode</button>
     </div>
 
     <div class="room-inputs">
-      <input type="text" id="roomCodeInput" maxlength="4" placeholder="TABLE CODE">
+      <input type="text" id="roomCodeInput" maxlength="4" value="YKSP" placeholder="TABLE CODE">
       <button id="joinBtn">Join Table</button>
       <button id="hostBtn" class="btn-host">Open Public Table</button>
     </div>
@@ -277,17 +279,13 @@
 
   <div class="casino-table">
     <div class="info-header">
-      <div class="stat-box">
-        <div class="stat-label">Chips</div>
+      <div class="stat-box stat-coins">
+        <div class="stat-label">Your Chips</div>
         <div class="stat-val" id="coinsDisplay">$1,000</div>
       </div>
       <div class="stat-box">
         <div class="stat-label">Next Roll</div>
         <div class="stat-val" id="timerDisplay">10s</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Table Total</div>
-        <div class="stat-val" id="totalBetDisplay">$0</div>
       </div>
     </div>
 
@@ -297,7 +295,7 @@
       <div class="die c-yellow" id="die2"></div>
     </div>
 
-    <!-- Color Betting Felt -->
+    <!-- Color Grid -->
     <div class="color-grid">
       <div class="color-box c-red" data-color="red"><span class="color-name">Red</span><span class="color-bet-badge" id="bet-red">$0</span></div>
       <div class="color-box c-blue" data-color="blue"><span class="color-name">Blue</span><span class="color-bet-badge" id="bet-blue">$0</span></div>
@@ -307,25 +305,20 @@
       <div class="color-box c-white" data-color="white"><span class="color-name">White</span><span class="color-bet-badge" id="bet-white">$0</span></div>
     </div>
 
-    <!-- Casino Chips Denominations -->
-    <div class="chip-bar">
-      <div class="chip chip-10 selected" data-val="10">$10</div>
-      <div class="chip chip-50" data-val="50">$50</div>
-      <div class="chip chip-100" data-val="100">$100</div>
-      <div class="chip chip-500" data-val="500">$500</div>
-    </div>
+    <!-- Interactive Betting Controls (Hidden on Public TV Display) -->
+    <div class="betting-section">
+      <div class="chip-bar">
+        <div class="chip chip-10 selected" data-val="10">$10</div>
+        <div class="chip chip-50" data-val="50">$50</div>
+        <div class="chip chip-100" data-val="100">$100</div>
+        <div class="chip chip-500" data-val="500">$500</div>
+      </div>
 
-    <div class="controls">
-      <button class="btn-action btn-clear" id="clearBetBtn">Clear Bets</button>
-      <button class="btn-action btn-roll" id="rollBtn">Force Roll</button>
+      <div class="controls">
+        <button class="btn-action btn-clear" id="clearBetBtn">Clear Bets</button>
+        <button class="btn-action btn-roll" id="rollBtn">Force Roll</button>
+      </div>
     </div>
-  </div>
-
-  <div class="feed-panel">
-    <div class="feed-header">Live Casino Activity Log</div>
-    <ul class="feed-list" id="feedList">
-      <li class="feed-item">Welcome to the Public Casino Floor. Place your chips!</li>
-    </ul>
   </div>
 
   <script>
@@ -337,29 +330,28 @@
     let isRolling = false;
     let timeLeft = 10;
     let timerInterval = null;
+    let isDisplayMode = false;
 
     // Networking State
     let peer = null;
     let connections = [];
-    let isHost = true;
-    let roomCode = null;
+    let isHost = false;
 
     // Elements
     const coinsDisplay = document.getElementById('coinsDisplay');
-    const totalBetDisplay = document.getElementById('totalBetDisplay');
     const timerDisplay = document.getElementById('timerDisplay');
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
     const roomCodeInput = document.getElementById('roomCodeInput');
     const hostBtn = document.getElementById('hostBtn');
     const joinBtn = document.getElementById('joinBtn');
-    const claimBtn = document.getElementById('claimBtn');
+    const toggleDisplayBtn = document.getElementById('toggleDisplayBtn');
+    const subtitleText = document.getElementById('subtitleText');
     const rollBtn = document.getElementById('rollBtn');
     const clearBetBtn = document.getElementById('clearBetBtn');
-    const feedList = document.getElementById('feedList');
     const dieEls = [document.getElementById('die0'), document.getElementById('die1'), document.getElementById('die2')];
 
-    // Web Audio Synthesizer
+    // Audio Context
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -387,22 +379,29 @@
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
         osc.start(); osc.stop(audioCtx.currentTime + 0.03);
       } else if (type === 'win') {
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08); // E5
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
         gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
         osc.start(); osc.stop(audioCtx.currentTime + 0.25);
       }
     }
 
-    function logFeed(msg) {
-      const li = document.createElement('li');
-      li.className = 'feed-item';
-      li.innerHTML = msg;
-      feedList.prepend(li);
-    }
+    // Toggle Public TV Display Mode
+    toggleDisplayBtn.addEventListener('click', () => {
+      isDisplayMode = !isDisplayMode;
+      if (isDisplayMode) {
+        document.body.classList.add('display-mode');
+        toggleDisplayBtn.textContent = "📱 Switch to Player View";
+        subtitleText.textContent = "Public Display Mode";
+      } else {
+        document.body.classList.remove('display-mode');
+        toggleDisplayBtn.textContent = "🖥️ Switch to TV Display Mode";
+        subtitleText.textContent = "Player View";
+      }
+    });
 
-    // Engine Logic
+    // Game Engine
     function startTimer() {
       if (timerInterval) clearInterval(timerInterval);
       timeLeft = 10;
@@ -421,7 +420,7 @@
     }
 
     function placeBet(color) {
-      if (isRolling || coins < selectedChip) return;
+      if (isDisplayMode || isRolling || coins < selectedChip) return;
       bets[color] += selectedChip;
       coins -= selectedChip;
       playSound('chip');
@@ -477,9 +476,6 @@
       if (winnings > 0) {
         coins += winnings;
         playSound('win');
-        logFeed(`🎉 Table Payout! You won <span>+$${winnings}</span> chips!`);
-      } else if (Object.values(bets).reduce((a, b) => a + b, 0) > 0) {
-        logFeed(`No hits this round. Better luck next roll!`);
       }
 
       for (let c of COLORS) bets[c] = 0;
@@ -489,8 +485,6 @@
     function updateUI() {
       coinsDisplay.textContent = `$${coins.toLocaleString()}`;
       timerDisplay.textContent = `${timeLeft}s`;
-      let totalBet = Object.values(bets).reduce((a, b) => a + b, 0);
-      totalBetDisplay.textContent = `$${totalBet.toLocaleString()}`;
 
       COLORS.forEach(c => {
         document.getElementById(`bet-${c}`).textContent = `$${bets[c]}`;
@@ -509,38 +503,38 @@
       rollBtn.style.display = isHost ? 'block' : 'none';
     }
 
-    // Public Networking
-    function initHost() {
+    // Networking Logic
+    function initHost(customCode) {
       if (peer) peer.destroy();
 
-      roomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
-      const peerId = `casino-color-game-${roomCode}`;
+      const code = (customCode || roomCodeInput.value).trim().toUpperCase() || 'YKSP';
+      const peerId = `casino-color-game-${code}`;
       
       peer = new Peer(peerId);
 
       peer.on('open', () => {
         isHost = true;
         statusDot.className = "status-dot online";
-        statusText.textContent = `Public Table: ${roomCode}`;
-        roomCodeInput.value = roomCode;
-        logFeed(`Public casino table <span>#${roomCode}</span> opened.`);
+        statusText.textContent = `Table: ${code} (Host)`;
+        roomCodeInput.value = code;
         startTimer();
       });
 
       peer.on('connection', (conn) => {
         connections.push(conn);
-        logFeed(`A new player joined table #${roomCode}!`);
         conn.on('open', () => broadcastState());
       });
 
-      peer.on('error', () => alert("Could not open table. Try again."));
+      peer.on('error', () => {
+        alert(`Table code ${code} is already open elsewhere or unavailable.`);
+      });
     }
 
-    function joinRoom(code) {
-      if (!code) return;
+    function joinRoom(customCode) {
+      const code = (customCode || roomCodeInput.value).trim().toUpperCase() || 'YKSP';
       if (peer) peer.destroy();
 
-      const targetId = `casino-color-game-${code.toUpperCase()}`;
+      const targetId = `casino-color-game-${code}`;
       peer = new Peer();
 
       peer.on('open', () => {
@@ -549,8 +543,7 @@
         conn.on('open', () => {
           isHost = false;
           statusDot.className = "status-dot online";
-          statusText.textContent = `At Table: ${code.toUpperCase()}`;
-          logFeed(`Connected to public casino table <span>#${code.toUpperCase()}</span>.`);
+          statusText.textContent = `Connected: ${code}`;
           if (timerInterval) clearInterval(timerInterval);
         });
 
@@ -569,7 +562,9 @@
         });
       });
 
-      peer.on('error', () => alert("Table not found. Verify the code."));
+      peer.on('error', () => {
+        alert(`Could not connect to table ${code}. Make sure it is hosted first.`);
+      });
     }
 
     function broadcastState() {
@@ -598,18 +593,12 @@
 
     clearBetBtn.addEventListener('click', clearBets);
     rollBtn.addEventListener('click', () => { if (isHost) executeRoll(); });
-    claimBtn.addEventListener('click', () => {
-      coins += 1000;
-      playSound('win');
-      logFeed(`Claimed <span>+$1,000</span> free casino chips!`);
-      updateUI();
-    });
 
-    hostBtn.addEventListener('click', initHost);
-    joinBtn.addEventListener('click', () => joinRoom(roomCodeInput.value));
+    hostBtn.addEventListener('click', () => initHost());
+    joinBtn.addEventListener('click', () => joinRoom());
 
+    // Default setup
     updateUI();
-    startTimer();
   </script>
 </body>
 </html>
