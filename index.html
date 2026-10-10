@@ -31,11 +31,12 @@
     --font-display: 'Fredoka', sans-serif;
     --font-body: 'Nunito', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --radius-lg: 22px;
-    --radius-md: 14px;
-    --radius-sm: 8px;
-    --shadow-soft: 0 8px 24px rgba(58,46,34,0.14);
-    --shadow-lift: 0 14px 34px rgba(58,46,34,0.22);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --shadow-soft: 0 10px 30px rgba(58,46,34,0.12);
+    --shadow-lift: 0 18px 40px rgba(58,46,34,0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   * { box-sizing: border-box; }
@@ -57,38 +58,27 @@
   .page { display: none; }
   .page.active { display: block; }
 
-  /* ---------- ENTRANCE ANIMATIONS ---------- */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s cubic-bezier(.05,.7,.1,1), transform .6s cubic-bezier(.05,.7,.1,1); }
+  /* ---------- SMOOTH ENTRANCE ANIMATIONS ---------- */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
   .reveal.revealed { opacity: 1; transform: translateY(0); }
-  .reveal-scale { opacity: 0; transform: translateY(16px) scale(.94); transition: opacity .5s cubic-bezier(.05,.7,.1,1), transform .5s cubic-bezier(.05,.7,.1,1); }
+  .reveal-scale { opacity: 0; transform: translateY(20px) scale(0.92); transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
   .reveal-scale.revealed { opacity: 1; transform: translateY(0) scale(1); }
   @media (prefers-reduced-motion: reduce) {
     .reveal, .reveal-scale { opacity: 1 !important; transform: none !important; transition: none !important; }
   }
 
-  .why-grid .reveal:nth-child(1) { transition-delay: 0ms; }
-  .why-grid .reveal:nth-child(2) { transition-delay: 80ms; }
-  .why-grid .reveal:nth-child(3) { transition-delay: 160ms; }
-  .why-grid .reveal:nth-child(4) { transition-delay: 240ms; }
-  .stat-strip .reveal:nth-child(1) { transition-delay: 0ms; }
-  .stat-strip .reveal:nth-child(2) { transition-delay: 70ms; }
-  .stat-strip .reveal:nth-child(3) { transition-delay: 140ms; }
-  .stat-strip .reveal:nth-child(4) { transition-delay: 210ms; }
-  .tier-grid .reveal:nth-child(1) { transition-delay: 0ms; }
-  .tier-grid .reveal:nth-child(2) { transition-delay: 100ms; }
-  .tier-grid .reveal:nth-child(3) { transition-delay: 200ms; }
-
-  @keyframes heroIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-  .hero-content .eyebrow { animation: heroIn .65s cubic-bezier(.05,.7,.1,1) both; animation-delay: .05s; }
-  .hero-content h1 { animation: heroIn .65s cubic-bezier(.05,.7,.1,1) both; animation-delay: .15s; }
-  .hero-content .sub { animation: heroIn .65s cubic-bezier(.05,.7,.1,1) both; animation-delay: .26s; }
-  .hero-content .hero-ctas { animation: heroIn .65s cubic-bezier(.05,.7,.1,1) both; animation-delay: .37s; }
-  .hero-content .ip-subline { animation: heroIn .65s cubic-bezier(.05,.7,.1,1) both; animation-delay: .47s; }
+  @keyframes heroIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-content .eyebrow { animation: heroIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.1s; }
+  .hero-content h1 { animation: heroIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.2s; }
+  .hero-content .sub { animation: heroIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.3s; }
+  .hero-content .hero-ctas { animation: heroIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.4s; }
+  .hero-content .ip-subline { animation: heroIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.5s; }
   @media (prefers-reduced-motion: reduce) { .hero-content * { animation: none !important; } }
-  .page.enter-right { animation: m3EnterRight .38s cubic-bezier(.05,.7,.1,1); }
-  .page.enter-left { animation: m3EnterLeft .38s cubic-bezier(.05,.7,.1,1); }
-  @keyframes m3EnterRight { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
-  @keyframes m3EnterLeft { from { opacity: 0; transform: translateX(-32px); } to { opacity: 1; transform: translateX(0); } }
+  
+  .page.enter-right { animation: m3EnterRight 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+  .page.enter-left { animation: m3EnterLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes m3EnterRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes m3EnterLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
   @media (prefers-reduced-motion: reduce) { .page.enter-right, .page.enter-left { animation: none; } }
 
   /* ---------- NAV ---------- */
@@ -108,25 +98,25 @@
   .nav-links button {
     background: transparent; border: none; color: var(--parchment-dark);
     font-family: var(--font-body); font-weight: 700; font-size: 0.95rem;
-    padding: 9px 16px; border-radius: 999px; transition: background .18s, color .18s;
+    padding: 9px 16px; border-radius: 999px; transition: var(--transition-smooth);
   }
-  .nav-links button:hover { background: rgba(255,255,255,0.12); }
+  .nav-links button:hover { background: rgba(255,255,255,0.15); transform: translateY(-1px); }
   .nav-links button.active { background: var(--honey); color: var(--wood-deep); }
   .nav-actions { display: flex; align-items: center; gap: 10px; }
   .btn-ip {
     display: flex; align-items: center; gap: 8px; background: var(--parchment); color: var(--ink);
     border: none; border-radius: 999px; padding: 9px 16px; font-weight: 700; font-size: .88rem;
-    font-family: var(--font-mono); box-shadow: 0 3px 0 var(--wood-deep); transition: transform .12s;
+    font-family: var(--font-mono); box-shadow: 0 3px 0 var(--wood-deep); transition: var(--transition-smooth);
   }
-  .btn-ip:hover { transform: translateY(-2px); }
-  .btn-ip:active { transform: translateY(1px); }
+  .btn-ip:hover { transform: translateY(-3px); box-shadow: 0 5px 0 var(--wood-deep); }
+  .btn-ip:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--wood-deep); }
   .hamburger { display: none; background: transparent; border: none; padding: 8px; }
-  .hamburger span { display: block; width: 24px; height: 3px; background: var(--parchment); margin: 5px 0; border-radius: 3px; }
+  .hamburger span { display: block; width: 24px; height: 3px; background: var(--parchment); margin: 5px 0; border-radius: 3px; transition: var(--transition-smooth); }
 
   @media (max-width: 860px) {
     .nav-links {
       position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch;
-      background: var(--wood-deep); padding: 10px 16px 16px; gap: 2px;
+      background: var(--wood-deep); padding: 12px 16px 20px; gap: 4px;
       border-bottom: 5px solid var(--wood-mid);
       display: none;
     }
@@ -138,10 +128,10 @@
 
   /* ---------- TOAST ---------- */
   .toast {
-    position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--wood-deep); color: var(--parchment); padding: 12px 22px; border-radius: 999px;
+    position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(30px);
+    background: var(--wood-deep); color: var(--parchment); padding: 12px 24px; border-radius: 999px;
     font-weight: 700; font-size: .9rem; box-shadow: var(--shadow-lift); opacity: 0; pointer-events: none;
-    transition: opacity .25s, transform .25s; z-index: 1000;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -169,8 +159,9 @@
   }
   .eyebrow {
     display: inline-block; font-family: var(--font-mono); font-size: .78rem; letter-spacing: .14em;
-    background: rgba(255,255,255,0.55); color: var(--wood-deep); padding: 6px 16px; border-radius: 999px;
+    background: rgba(255,255,255,0.65); color: var(--wood-deep); padding: 6px 16px; border-radius: 999px;
     font-weight: 600; margin-bottom: 18px; border: 1px solid rgba(74,50,34,0.15);
+    backdrop-filter: blur(6px);
   }
   .hero h1 { font-size: clamp(2.6rem, 7vw, 4.6rem); font-weight: 700; color: var(--wood-deep); letter-spacing: -.01em; line-height: 1; }
   .hero .sub { margin-top: 16px; font-size: 1.18rem; color: var(--ink-soft); max-width: 560px; margin-left: auto; margin-right: auto; }
@@ -178,23 +169,23 @@
   .ip-subline { margin-top: 16px; }
   .ip-subline button {
     background: none; border: none; font-family: var(--font-mono); font-size: .82rem; color: var(--ink-soft);
-    padding: 6px 10px; border-radius: 8px; transition: background .15s, color .15s;
+    padding: 6px 10px; border-radius: 8px; transition: var(--transition-smooth);
   }
-  .ip-subline button:hover { background: rgba(74,50,34,0.08); color: var(--ink); }
+  .ip-subline button:hover { background: rgba(74,50,34,0.08); color: var(--ink); transform: translateY(-1px); }
   .ip-subline .copy-hint { opacity: .65; font-family: var(--font-body); }
 
   .btn {
-    font-family: var(--font-body); font-weight: 800; font-size: .98rem; padding: 14px 26px; border-radius: 14px;
-    border: none; transition: transform .15s, box-shadow .15s; display: inline-block; text-decoration: none; text-align: center;
+    font-family: var(--font-body); font-weight: 800; font-size: .98rem; padding: 14px 26px; border-radius: var(--radius-md);
+    border: none; transition: var(--transition-smooth); display: inline-block; text-decoration: none; text-align: center;
   }
   .btn-primary { background: var(--honey); color: var(--wood-deep); box-shadow: 0 5px 0 var(--honey-dark); }
-  .btn-primary:hover { transform: translateY(-2px); }
-  .btn-primary:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--honey-dark); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 0 var(--honey-dark); }
+  .btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--honey-dark); }
   .btn-secondary { background: transparent; color: var(--wood-deep); border: 2.5px solid var(--wood-deep); }
-  .btn-secondary:hover { background: rgba(74,50,34,0.08); }
+  .btn-secondary:hover { background: rgba(74,50,34,0.08); transform: translateY(-2px); }
   .btn-moss { background: var(--moss); color: #fff; box-shadow: 0 5px 0 var(--moss-dark); }
-  .btn-moss:hover { transform: translateY(-2px); }
-  .btn-moss:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--moss-dark); }
+  .btn-moss:hover { transform: translateY(-3px); box-shadow: 0 8px 0 var(--moss-dark); }
+  .btn-moss:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--moss-dark); }
 
   .skyline { width: 100%; display: block; position: relative; z-index: 2; margin-top: 20px; }
 
@@ -204,8 +195,9 @@
   }
   .stat-card {
     background: var(--parchment); border: 2px solid var(--parchment-dark); border-radius: var(--radius-md);
-    padding: 18px 14px; text-align: center; box-shadow: var(--shadow-soft);
+    padding: 18px 14px; text-align: center; box-shadow: var(--shadow-soft); transition: var(--transition-smooth);
   }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
   .stat-card .num { font-family: var(--font-mono); font-weight: 600; font-size: clamp(.85rem, 2.4vw, 1.1rem); color: var(--moss-dark); word-break: break-word; }
   .stat-card .label { font-size: .78rem; color: var(--ink-soft); margin-top: 4px; text-transform: uppercase; letter-spacing: .06em; }
   @media (max-width: 760px) { .stat-strip { grid-template-columns: repeat(2, 1fr); } }
@@ -222,22 +214,24 @@
   @media (max-width: 560px) { .why-grid { grid-template-columns: 1fr; } }
   .why-card {
     background: var(--cloud-white); border-radius: var(--radius-md); padding: 26px 20px;
-    border: 2px solid var(--parchment-dark); transition: transform .18s, box-shadow .18s;
+    border: 2px solid var(--parchment-dark); transition: var(--transition-smooth);
   }
-  .why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+  .why-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
   .why-card .icon { width: 44px; height: 44px; color: var(--moss-dark); margin-bottom: 14px; }
   .why-card h3 { font-size: 1.08rem; }
   .why-card p { margin-top: 8px; color: var(--ink-soft); font-size: .92rem; }
 
   .cta-banner {
     background: linear-gradient(135deg, var(--moss), var(--moss-dark));
-    border-radius: 28px; max-width: 1100px; margin: 0 auto 80px; padding: 50px 40px; text-align: center; color: #fff;
+    border-radius: var(--radius-lg); max-width: 1100px; margin: 0 auto 80px; padding: 50px 40px; text-align: center; color: #fff;
+    box-shadow: var(--shadow-lift); transition: var(--transition-smooth);
   }
+  .cta-banner:hover { transform: translateY(-2px); }
   .cta-banner h2 { color: #fff; font-size: clamp(1.7rem, 4vw, 2.3rem); }
   .cta-banner p { color: rgba(255,255,255,0.88); margin-top: 10px; max-width: 480px; margin-left: auto; margin-right: auto; }
   .cta-banner .hero-ctas { margin-top: 26px; }
   .cta-banner .btn-secondary { border-color: #fff; color: #fff; }
-  .cta-banner .btn-secondary:hover { background: rgba(255,255,255,0.14); }
+  .cta-banner .btn-secondary:hover { background: rgba(255,255,255,0.15); }
 
   footer {
     background: var(--wood-deep); color: var(--parchment-dark); padding: 50px 24px 26px;
@@ -249,9 +243,9 @@
   .footer-links div h4 { color: var(--parchment); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; font-family: var(--font-body); }
   .footer-links a, .footer-links button {
     display: block; background: none; border: none; color: var(--parchment-dark); opacity: .85; padding: 4px 0;
-    font-size: .9rem; text-align: left;
+    font-size: .9rem; text-align: left; transition: var(--transition-smooth);
   }
-  .footer-links a:hover, .footer-links button:hover { opacity: 1; text-decoration: underline; }
+  .footer-links a:hover, .footer-links button:hover { opacity: 1; text-decoration: underline; transform: translateX(2px); }
   .footer-bottom { max-width: 1100px; margin: 34px auto 0; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.12);
     font-size: .78rem; color: rgba(255,255,255,0.55); text-align: center; }
 
@@ -264,15 +258,21 @@
   .store-header h1 { font-size: clamp(2.1rem, 5vw, 3rem); margin-top: 10px; }
   .store-header p { color: var(--ink-soft); max-width: 520px; margin: 14px auto 0; }
 
+  .fair-play-badge {
+    display: inline-flex; align-items: center; gap: 8px; background: rgba(107,143,90,0.12); color: var(--moss-dark);
+    font-weight: 700; font-size: .85rem; padding: 6px 16px; border-radius: 999px; margin-top: 18px; border: 1px solid rgba(107,143,90,0.25);
+  }
+  .fair-play-badge svg { width: 16px; height: 16px; flex-shrink: 0; }
+
   .tabs {
     display: flex; justify-content: center; gap: 8px; margin: 34px auto 0; flex-wrap: wrap; padding: 0 24px;
   }
   .tab-btn {
     background: var(--parchment); border: 2px solid var(--parchment-dark); color: var(--ink-soft);
-    font-weight: 700; padding: 10px 22px; border-radius: 999px; font-size: .92rem; transition: all .15s;
+    font-weight: 700; padding: 10px 22px; border-radius: 999px; font-size: .92rem; transition: var(--transition-smooth);
   }
-  .tab-btn.active { background: var(--wood-deep); border-color: var(--wood-deep); color: var(--parchment); }
-  .tab-btn:hover:not(.active) { border-color: var(--honey); }
+  .tab-btn.active { background: var(--wood-deep); border-color: var(--wood-deep); color: var(--parchment); transform: translateY(-2px); }
+  .tab-btn:hover:not(.active) { border-color: var(--honey); transform: translateY(-1px); }
 
   .store-grid {
     max-width: 1180px; margin: 40px auto; padding: 0 24px;
@@ -284,14 +284,16 @@
 
   .item-card {
     background: var(--cloud-white); border-radius: var(--radius-md); border: 2px solid var(--parchment-dark);
-    padding: 22px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 2px 0 var(--parchment-dark);
-    transition: transform .15s, box-shadow .15s;
+    padding: 22px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 4px 12px rgba(58,46,34,0.06);
+    transition: var(--transition-smooth);
   }
-  .item-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+  .item-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); border-color: var(--wood-light); }
   .item-emoji {
     width: 52px; height: 52px; border-radius: 14px; background: var(--parchment-dark);
     display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+    transition: var(--transition-smooth);
   }
+  .item-card:hover .item-emoji { transform: scale(1.08) rotate(4deg); background: var(--sky-mid); }
   .item-card h3 { font-size: 1.08rem; }
   .item-perks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
   .item-perks li { font-size: .85rem; color: var(--ink-soft); display: flex; gap: 8px; align-items: flex-start; }
@@ -300,114 +302,103 @@
   .price { font-family: var(--font-mono); font-weight: 600; font-size: 1.15rem; color: var(--moss-dark); }
   .add-btn {
     background: var(--honey); color: var(--wood-deep); border: none; padding: 9px 16px; border-radius: 10px;
-    font-weight: 800; font-size: .85rem; box-shadow: 0 3px 0 var(--honey-dark); transition: transform .12s;
+    font-weight: 800; font-size: .85rem; box-shadow: 0 3px 0 var(--honey-dark); transition: var(--transition-smooth);
   }
-  .add-btn:hover { transform: translateY(-2px); }
+  .add-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 0 var(--honey-dark); }
   .add-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--honey-dark); }
   .add-btn.added { background: var(--moss); color: #fff; box-shadow: 0 3px 0 var(--moss-dark); }
 
-  .renewal-note {
+  .renewal-note, .weapons-note {
     grid-column: 1 / -1; display: flex; gap: 14px; align-items: flex-start;
-    background: var(--parchment-dark); border-left: 4px solid var(--honey-dark); border-radius: 10px;
-    padding: 16px 24px; font-size: .88rem; color: var(--ink-soft);
+    border-radius: 12px; padding: 16px 24px; font-size: .88rem; color: var(--ink-soft);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
   }
+  .renewal-note { background: var(--parchment-dark); border-left: 4px solid var(--honey-dark); }
   .renewal-note svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--honey-dark); margin-top: 2px; }
-  .renewal-note strong { color: var(--ink); }
-
-  .weapons-note {
-    grid-column: 1 / -1; display: flex; gap: 14px; align-items: flex-start;
-    background: #EAF1E6; border-left: 4px solid var(--moss); border-radius: 10px;
-    padding: 16px 24px; font-size: .88rem; color: var(--ink-soft);
-  }
+  .weapons-note { background: #EAF1E6; border-left: 4px solid var(--moss); }
   .weapons-note svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--moss-dark); margin-top: 2px; }
-  .weapons-note strong { color: var(--ink); }
+  strong { color: var(--ink); }
 
+  /* ---------- CART & CHECKOUT ---------- */
   .cart-bar {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: var(--wood-deep); color: var(--parchment);
     padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
-    transform: translateY(100%); transition: transform .3s ease; box-shadow: 0 -6px 24px rgba(0,0,0,0.25);
+    transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 -8px 30px rgba(0,0,0,0.3);
   }
   .cart-bar.show { transform: translateY(0); }
   .cart-bar-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .cart-info { font-weight: 700; font-size: .95rem; }
-  .cart-info .cart-total { font-family: var(--font-mono); color: var(--honey); margin-left: 10px; }
+  .cart-info .cart-total { font-family: var(--font-mono); color: var(--honey); margin-left: 10px; font-size: 1.1rem; }
   .cart-buttons { display: flex; gap: 10px; }
-  .btn-ghost { background: transparent; border: 2px solid rgba(255,255,255,0.35); color: var(--parchment); border-radius: 10px; padding: 9px 16px; font-weight: 700; font-size: .85rem; }
-  .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+  .btn-ghost { background: transparent; border: 2px solid rgba(255,255,255,0.35); color: var(--parchment); border-radius: 10px; padding: 9px 16px; font-weight: 700; font-size: .85rem; transition: var(--transition-smooth); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.15); transform: translateY(-1px); }
 
   .modal-overlay {
-    position: fixed; inset: 0; background: rgba(58,46,34,0.55); z-index: 300; display: none;
-    align-items: center; justify-content: center; padding: 20px;
+    position: fixed; inset: 0; background: rgba(58,46,34,0.6); backdrop-filter: blur(4px); z-index: 300; display: none;
+    align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease;
   }
-  .modal-overlay.show { display: flex; }
+  .modal-overlay.show { display: flex; opacity: 1; }
   .modal {
-    background: var(--parchment); border-radius: var(--radius-lg); padding: 34px; max-width: 420px; width: 100%;
-    box-shadow: var(--shadow-lift); text-align: center;
+    background: var(--parchment); border-radius: var(--radius-lg); padding: 34px; max-width: 440px; width: 100%;
+    box-shadow: var(--shadow-lift); text-align: center; transform: scale(0.92); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .modal .icon-wrap { width: 60px; height: 60px; background: var(--moss); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
-  .modal .icon-wrap svg { width: 30px; height: 30px; color: #fff; }
+  .modal-overlay.show .modal { transform: scale(1); }
+  .modal .icon-wrap { width: 60px; height: 60px; background: var(--moss); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; color: #fff; }
+  .modal .icon-wrap svg { width: 30px; height: 30px; }
   .modal h3 { font-size: 1.3rem; }
   .modal p { margin-top: 10px; color: var(--ink-soft); font-size: .92rem; }
-  .modal .note {
-    margin-top: 16px; background: var(--parchment-dark); border-radius: 10px; padding: 10px 14px; font-size: .8rem;
-    color: var(--ink-soft); text-align: left;
-  }
-  .modal .btn { margin-top: 22px; width: 100%; }
-  .modal-checkout { max-width: 440px; text-align: left; }
-  .modal-checkout h3, .modal-checkout > p#modalSummary { text-align: center; }
-  .modal-checkout .icon-wrap { margin-bottom: 14px; }
-
-  .checkout-form { margin-top: 18px; display: flex; flex-direction: column; }
+  
+  .checkout-form { margin-top: 18px; display: flex; flex-direction: column; text-align: left; }
   .field-label { font-size: .82rem; font-weight: 800; color: var(--ink); margin: 14px 0 6px; }
   .field-label:first-child { margin-top: 0; }
   .field-optional { font-weight: 600; color: var(--ink-soft); font-size: .76rem; }
   .field-input {
-    width: 100%; border: 2px solid var(--parchment-dark); border-radius: 10px; padding: 10px 13px;
-    font-family: var(--font-body); font-size: .92rem; color: var(--ink); background: var(--parchment);
-    transition: border-color .15s;
+    width: 100%; border: 2px solid var(--parchment-dark); border-radius: 10px; padding: 11px 14px;
+    font-family: var(--font-body); font-size: .92rem; color: var(--ink); background: var(--cloud-white);
+    transition: var(--transition-smooth);
   }
-  .field-input:focus { outline: none; border-color: var(--honey-dark); background: #fff; }
+  .field-input:focus { outline: none; border-color: var(--honey-dark); box-shadow: 0 0 0 3px rgba(232,163,61,0.2); }
   .field-textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
   .field-error { color: var(--berry); font-size: .8rem; font-weight: 700; margin: 8px 0 0; min-height: 1em; }
 
-  .gift-toggle-row { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
-  .gift-toggle-label { font-size: .88rem; font-weight: 700; color: var(--ink); cursor: pointer; }
-  .switch { display: inline-block; position: relative; flex-shrink: 0; }
-  .switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  .switch-track {
-    display: block; width: 44px; height: 26px; background: var(--parchment-dark); border-radius: 999px;
-    border: 2px solid var(--parchment-dark); position: relative; transition: background .2s, border-color .2s; cursor: pointer;
+  /* Payment Method Selector */
+  .payment-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .pay-option {
+    border: 2px solid var(--parchment-dark); border-radius: 10px; padding: 10px; background: var(--cloud-white);
+    font-weight: 700; font-size: .82rem; text-align: center; cursor: pointer; transition: var(--transition-smooth);
   }
-  .switch-knob {
-    position: absolute; top: 1px; left: 1px; width: 18px; height: 18px; background: #fff; border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: transform .2s;
+  .pay-option input { display: none; }
+  .pay-option.selected { border-color: var(--moss-dark); background: rgba(107,143,90,0.1); color: var(--moss-dark); }
+  .pay-option:hover { border-color: var(--honey-dark); }
+
+  .gateway-loading { display: none; text-align: center; padding: 20px 0; }
+  .spinner {
+    width: 36px; height: 36px; border: 4px solid var(--parchment-dark); border-top-color: var(--moss);
+    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px;
   }
-  .switch input:checked + .switch-track { background: var(--moss); border-color: var(--moss); }
-  .switch input:checked + .switch-track .switch-knob { transform: translateX(18px); }
-  .switch input:focus-visible + .switch-track { outline: 3px solid var(--honey-dark); outline-offset: 2px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  .gift-field-wrap { margin-top: 2px; }
+  /* ---------- LEADERBOARDS & STATUS ---------- */
+  .lb-header, .status-header, .rules-header { background: linear-gradient(180deg, var(--sky-top), var(--parchment)); padding: 70px 24px 30px; text-align: center; }
+  .lb-header h1, .status-header h1, .rules-header h1 { font-size: clamp(2.1rem, 5vw, 3rem); margin-top: 10px; }
+  .lb-header p, .status-header p, .rules-header p { color: var(--ink-soft); max-width: 520px; margin: 14px auto 0; }
 
-  /* ---------- LEADERBOARDS ---------- */
-  .lb-header { background: linear-gradient(180deg, var(--sky-top), var(--parchment)); padding: 70px 24px 30px; text-align: center; }
-  .lb-header h1 { font-size: clamp(2.1rem, 5vw, 3rem); margin-top: 10px; }
-  .lb-header p { color: var(--ink-soft); max-width: 520px; margin: 14px auto 0; }
-
-  .lb-toggle { display: flex; justify-content: center; gap: 8px; margin: 36px auto 0; }
-  .lb-toggle button {
+  .lb-toggle, .rules-toggle { display: flex; justify-content: center; gap: 8px; margin: 36px auto 0; }
+  .lb-toggle button, .rules-toggle button {
     background: var(--parchment); border: 2px solid var(--parchment-dark); padding: 10px 24px; border-radius: 999px;
-    font-weight: 800; font-size: .9rem; color: var(--ink-soft);
+    font-weight: 800; font-size: .9rem; color: var(--ink-soft); transition: var(--transition-smooth);
   }
-  .lb-toggle button.active { background: var(--wood-deep); border-color: var(--wood-deep); color: var(--parchment); }
+  .lb-toggle button.active, .rules-toggle button.active { background: var(--wood-deep); border-color: var(--wood-deep); color: var(--parchment); transform: translateY(-2px); }
 
-  .lb-panel { display: none; max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
-  .lb-panel.active { display: block; }
+  .lb-panel, .rules-panel { display: none; max-width: 900px; margin: 0 auto; padding: 40px 24px 90px; }
+  .lb-panel.active, .rules-panel.active { display: block; }
 
   .podium { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: end; margin-bottom: 40px; }
   .podium-card {
     border-radius: var(--radius-md) var(--radius-md) 0 0; padding: 24px 14px 18px; text-align: center;
-    color: #fff; position: relative;
+    color: #fff; position: relative; box-shadow: var(--shadow-soft); transition: var(--transition-smooth);
   }
+  .podium-card:hover { transform: translateY(-4px); }
   .podium-card.p1 { background: linear-gradient(160deg, var(--gold), #B8862A); order: 2; padding-top: 36px; }
   .podium-card.p2 { background: linear-gradient(160deg, var(--silver), #767F86); order: 1; }
   .podium-card.p3 { background: linear-gradient(160deg, var(--bronze), #8A5330); order: 3; }
@@ -423,12 +414,13 @@
   .board {
     background: var(--wood-mid);
     background-image: repeating-linear-gradient(90deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 2px, transparent 2px, transparent 60px);
-    border-radius: var(--radius-lg); padding: 26px; border: 6px solid var(--wood-deep);
+    border-radius: var(--radius-lg); padding: 26px; border: 6px solid var(--wood-deep); box-shadow: var(--shadow-lift);
   }
   .board-row {
     display: flex; align-items: center; gap: 14px; background: var(--parchment); border-radius: 10px;
-    padding: 12px 16px; margin-bottom: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.18);
+    padding: 12px 16px; margin-bottom: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.12); transition: var(--transition-smooth);
   }
+  .board-row:hover { transform: translateX(4px); background: #fff; }
   .board-row:last-child { margin-bottom: 0; }
   .board-rank { font-family: var(--font-mono); font-weight: 600; color: var(--ink-soft); width: 28px; flex-shrink: 0; }
   .board-avatar {
@@ -437,21 +429,16 @@
   }
   .board-name { font-weight: 800; flex-grow: 1; font-size: .95rem; }
   .board-value { font-family: var(--font-mono); color: var(--moss-dark); font-weight: 600; font-size: .92rem; }
-
   .lb-note { text-align: center; margin-top: 20px; font-size: .82rem; color: var(--ink-soft); }
 
-  /* ---------- STATUS ---------- */
-  .status-header { background: linear-gradient(180deg, var(--sky-top), var(--parchment)); padding: 70px 24px 30px; text-align: center; }
-  .status-header h1 { font-size: clamp(2.1rem, 5vw, 3rem); margin-top: 10px; }
-  .status-header p { color: var(--ink-soft); max-width: 520px; margin: 14px auto 0; }
-
+  /* ---------- STATUS & ACCORDIONS ---------- */
   .status-page-content { max-width: 900px; margin: 0 auto; padding: 40px 24px 90px; }
-
   .server-card {
     background: var(--cloud-white); border: 2px solid var(--parchment-dark); border-radius: var(--radius-lg);
     padding: 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-soft); transition: var(--transition-smooth);
   }
+  .server-card:hover { box-shadow: var(--shadow-lift); }
   .server-card-left { display: flex; align-items: center; gap: 16px; }
   .status-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--ink-soft); flex-shrink: 0; position: relative; }
   .status-dot.online { background: var(--moss); }
@@ -461,12 +448,7 @@
   }
   .status-dot.offline { background: var(--berry); }
   .status-dot.maintenance { background: var(--honey); }
-  .status-dot.maintenance::after {
-    content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--honey);
-    animation: pulseRing 1.8s ease-out infinite;
-  }
   @keyframes pulseRing { 0% { opacity: .8; transform: scale(.8); } 100% { opacity: 0; transform: scale(1.8); } }
-  @media (prefers-reduced-motion: reduce) { .status-dot.online::after, .status-dot.maintenance::after { animation: none; } }
 
   .maintenance-banner {
     display: none; background: linear-gradient(90deg, var(--honey), var(--honey-dark)); color: var(--wood-deep);
@@ -484,10 +466,11 @@
   .breakdown-card {
     background: var(--cloud-white); border: 2px solid var(--parchment-dark); border-radius: var(--radius-md);
     padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    transition: var(--transition-smooth);
   }
+  .breakdown-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
   .breakdown-left { display: flex; align-items: center; gap: 10px; }
   .status-dot.small { width: 10px; height: 10px; }
-  .status-dot.small.online::after, .status-dot.small.maintenance::after { inset: -3px; }
   .breakdown-name { font-weight: 800; font-size: .9rem; }
   .breakdown-sub { font-family: var(--font-mono); font-size: .72rem; color: var(--ink-soft); }
   .breakdown-count { font-family: var(--font-mono); font-weight: 600; font-size: 1.05rem; color: var(--moss-dark); }
@@ -496,9 +479,7 @@
     margin-top: 18px; background: var(--parchment-dark); border-radius: 12px; padding: 14px 18px;
     font-family: var(--font-mono); font-size: .85rem; color: var(--ink-soft); text-align: center;
   }
-
   .status-updated { text-align: center; font-size: .78rem; color: var(--ink-soft); margin-top: 14px; }
-
   .player-section-head { margin: 44px 0 20px; text-align: center; }
   .player-section-head h2 { font-size: 1.4rem; }
   .player-section-head p { color: var(--ink-soft); font-size: .88rem; margin-top: 6px; }
@@ -506,64 +487,37 @@
   .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
   .player-tile {
     background: var(--cloud-white); border: 2px solid var(--parchment-dark); border-radius: var(--radius-md);
-    padding: 14px 10px; text-align: center; transition: transform .15s, box-shadow .15s;
+    padding: 14px 10px; text-align: center; transition: var(--transition-smooth);
   }
-  .player-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+  .player-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
   .player-tile img { width: 48px; height: 48px; border-radius: 10px; margin: 0 auto 8px; image-rendering: pixelated; }
   .player-tile .pname { font-weight: 800; font-size: .82rem; word-break: break-word; }
+  .status-empty { text-align: center; padding: 40px 24px; color: var(--ink-soft); background: var(--cloud-white); border: 2px dashed var(--parchment-dark); border-radius: var(--radius-md); font-size: .92rem; }
 
-  .status-empty {
-    text-align: center; padding: 40px 24px; color: var(--ink-soft); background: var(--cloud-white);
-    border: 2px dashed var(--parchment-dark); border-radius: var(--radius-md); font-size: .92rem;
-  }
-
-  /* ---------- RULES / TOS ---------- */
-  .rules-header { background: linear-gradient(180deg, var(--sky-top), var(--parchment)); padding: 70px 24px 30px; text-align: center; }
-  .rules-header h1 { font-size: clamp(2.1rem, 5vw, 3rem); margin-top: 10px; }
-  .rules-header p { color: var(--ink-soft); max-width: 560px; margin: 14px auto 0; }
-
-  .rules-toggle { display: flex; justify-content: center; gap: 8px; margin: 36px auto 0; }
-  .rules-toggle button {
-    background: var(--parchment); border: 2px solid var(--parchment-dark); padding: 10px 24px; border-radius: 999px;
-    font-weight: 800; font-size: .9rem; color: var(--ink-soft);
-  }
-  .rules-toggle button.active { background: var(--wood-deep); border-color: var(--wood-deep); color: var(--parchment); }
-
-  .rules-panel { display: none; max-width: 820px; margin: 0 auto; padding: 40px 24px 90px; }
-  .rules-panel.active { display: block; }
-
+  /* Accordions */
   .accordion-item {
     background: var(--cloud-white); border: 2px solid var(--parchment-dark); border-radius: var(--radius-md);
-    margin-bottom: 14px; overflow: hidden;
+    margin-bottom: 14px; overflow: hidden; transition: var(--transition-smooth);
   }
+  .accordion-item:hover { border-color: var(--wood-light); }
   .accordion-trigger {
     width: 100%; background: none; border: none; display: flex; align-items: center; gap: 14px; padding: 18px 20px;
-    text-align: left; font-family: var(--font-body);
+    text-align: left; font-family: var(--font-body); cursor: pointer;
   }
   .accordion-num {
     font-family: var(--font-mono); font-weight: 600; color: var(--parchment); background: var(--moss);
     width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .85rem;
   }
   .accordion-title { font-weight: 800; font-size: 1.02rem; flex-grow: 1; }
-  .accordion-chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--ink-soft); transition: transform .2s; }
+  .accordion-chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--ink-soft); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
   .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
-  .accordion-body { max-height: 0; overflow: hidden; transition: max-height .25s ease; }
+  .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
   .accordion-item.open .accordion-body { max-height: 400px; }
   .accordion-body-inner { padding: 0 20px 20px 64px; color: var(--ink-soft); font-size: .92rem; line-height: 1.65; }
-  .accordion-body-inner ul { margin: 8px 0 0; padding-left: 18px; }
-  .accordion-body-inner li { margin-bottom: 4px; }
-
-  .tos-block {
-    background: var(--cloud-white); border: 2px solid var(--parchment-dark); border-radius: var(--radius-md);
-    padding: 22px 24px; margin-bottom: 16px;
-  }
-  .tos-block h3 { font-size: 1.02rem; display: flex; align-items: center; gap: 10px; }
-  .tos-block h3 .tos-num { font-family: var(--font-mono); color: var(--moss-dark); font-size: .85rem; }
-  .tos-block p { margin-top: 10px; color: var(--ink-soft); font-size: .9rem; }
-
   .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   @media (max-width: 760px) { .tier-grid { grid-template-columns: 1fr; } }
-  .tier-card { border-radius: var(--radius-md); padding: 20px; border: 2px solid var(--parchment-dark); background: var(--cloud-white); }
+  .tier-card { border-radius: var(--radius-md); padding: 20px; border: 2px solid var(--parchment-dark); background: var(--cloud-white); transition: var(--transition-smooth); }
+  .tier-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
   .tier-card h3 { font-size: 1rem; }
   .tier-desc { margin-top: 8px; font-size: .85rem; color: var(--ink-soft); }
   .tier-ladder { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
@@ -702,7 +656,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
       Never pay-to-win — Minecraft EULA compliant
     </div>
-    <p style="font-size:.78rem;color:var(--ink-soft);margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto;">Ranks are a symbolic gift of appreciation and hold no real-world value — see our <button onclick="document.querySelector('[data-page=rules]').click()" style="background:none;border:none;padding:0;font:inherit;color:var(--moss-dark);text-decoration:underline;cursor:pointer;">Terms of Service</button> for full details.</p>
   </div>
 
   <div class="tabs">
@@ -884,13 +837,7 @@
     <div class="weapons-note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
       <div>
-        <strong>Cosmetic only, never pay-to-win.</strong> These weapons carry full enchants and a unique look, sound, and particle identity — they deal no bonus damage, apply no crowd control, and grant no free potion effects. Every fight stays decided by skill and gear, not by what's in the shop.
-      </div>
-    </div>
-    <div class="renewal-note">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
-      <div>
-        <strong>Premium weapons renew monthly.</strong> Keep your weapon's cosmetic effects active with a renewal each month — if it expires, it's automatically removed until you renew.
+        <strong>Cosmetic only, never pay-to-win.</strong> These weapons carry full enchants and a unique look, sound, and particle identity — they deal no bonus damage, apply no crowd control, and grant no free potion effects.
       </div>
     </div>
   </div>
@@ -901,24 +848,21 @@
   <div class="lb-header">
     <div class="kicker" style="font-family:var(--font-mono);color:var(--moss-dark);font-size:.8rem;letter-spacing:.1em;font-weight:600;">SEASON 3</div>
     <h1>Leaderboards</h1>
-    <p>Top players by ELO and by hours spent on the world. Sample standings shown below — connect your plugin's API to make these live.</p>
+    <p>Top players by ELO and by hours spent on the world.</p>
   </div>
-
   <div class="lb-toggle">
     <button class="active" data-lb="elo">ELO Rankings</button>
     <button data-lb="playtime">Playtime</button>
   </div>
-
   <div class="lb-panel active" data-lbpanel="elo">
     <div class="podium" id="eloPodium"></div>
     <div class="board" id="eloBoard"></div>
-    <p class="lb-note" id="eloNote">Updated nightly after the server restart.</p>
+    <p class="lb-note" id="eloNote">Updated nightly after server restart.</p>
   </div>
-
   <div class="lb-panel" data-lbpanel="playtime">
     <div class="podium" id="ptPodium"></div>
     <div class="board" id="ptBoard"></div>
-    <p class="lb-note" id="ptNote">Updated nightly after the server restart.</p>
+    <p class="lb-note" id="ptNote">Updated nightly after server restart.</p>
   </div>
 </div>
 
@@ -929,7 +873,6 @@
     <h1>Server Status</h1>
     <p>Who's online right now, across both Java and Bedrock.</p>
   </div>
-
   <div class="status-page-content">
     <div class="server-card">
       <div class="server-card-left">
@@ -944,15 +887,11 @@
         <div class="player-count-label">Players Online</div>
       </div>
     </div>
-
     <div class="status-breakdown" id="statusBreakdown"></div>
-
     <div class="status-motd" id="statusMotd" style="display:none;"></div>
     <p class="status-updated" id="statusUpdated"></p>
-
     <div class="player-section-head">
       <h2>Who's on right now</h2>
-      <p>Live Java names show automatically. Bedrock only ever reports a count — names there need the server to push its list.</p>
     </div>
     <div id="playerGrid"></div>
   </div>
@@ -963,14 +902,12 @@
   <div class="rules-header">
     <div class="kicker" style="font-family:var(--font-mono);color:var(--moss-dark);font-size:.8rem;letter-spacing:.1em;font-weight:600;">PLEASE READ</div>
     <h1>Rules &amp; Terms of Service</h1>
-    <p>Short version: be kind, build honestly, don't cheat. Long version below.</p>
+    <p>Short version: be kind, build honestly, don't cheat.</p>
   </div>
-
   <div class="rules-toggle">
     <button class="active" data-rt="rules">Server Rules</button>
     <button data-rt="tos">Terms of Service</button>
   </div>
-
   <div class="rules-panel active" data-rtpanel="rules">
     <div class="accordion-item open">
       <button class="accordion-trigger">
@@ -978,187 +915,34 @@
         <span class="accordion-title">Be Respectful</span>
         <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Harassment, bullying, toxicity, toxic arguments, or hate speech will result in an immediate permanent ban. Treat everyone with kindness.
-      </div></div>
+      <div class="accordion-body"><div class="accordion-body-inner">Harassment, bullying, toxicity, or hate speech will result in an immediate permanent ban. Treat everyone with kindness.</div></div>
     </div>
     <div class="accordion-item">
       <button class="accordion-trigger">
         <span class="accordion-num">2</span>
-        <span class="accordion-title">No Spamming</span>
+        <span class="accordion-title">No Cheating or Exploiting</span>
         <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Avoid flooding text chat with repetitive messages, excessive capitals, or walls of random characters.
-      </div></div>
-    </div>
-    <div class="accordion-item">
-      <button class="accordion-trigger">
-        <span class="accordion-num">3</span>
-        <span class="accordion-title">Appropriate Content &amp; Language</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
-      </button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Keep the chat clean and family-friendly. Avoid excessive swearing or crude expressions.
-      </div></div>
-    </div>
-    <div class="accordion-item">
-      <button class="accordion-trigger">
-        <span class="accordion-num">4</span>
-        <span class="accordion-title">No NSFW Content</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
-      </button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Topics, references, images, or jokes related to NSFW/adult material are strictly prohibited.
-      </div></div>
-    </div>
-    <div class="accordion-item">
-      <button class="accordion-trigger">
-        <span class="accordion-num">5</span>
-        <span class="accordion-title">No Advertising</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
-      </button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Do not promote other Discord servers, external Minecraft servers, or unapproved links without direct approval from management.
-      </div></div>
-    </div>
-    <div class="accordion-item">
-      <button class="accordion-trigger">
-        <span class="accordion-num">6</span>
-        <span class="accordion-title">Staff Discretion &amp; Privacy</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
-      </button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Do not argue with staff or dispute punishments in public channels. For any issues or queries, please open a private ticket.
-      </div></div>
-    </div>
-    <div class="accordion-item">
-      <button class="accordion-trigger">
-        <span class="accordion-num">7</span>
-        <span class="accordion-title">No Drama, Fights, or Off-Topic Issues</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
-      </button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Avoid fighting, drama, or issues on the Facebook group chat and Discord chat if it isn't related to CloudrendSMP. We only handle complaints, bug reports, and anything related to our server.
-      </div></div>
-    </div>
-
-    <div class="section-head" style="margin:44px auto 24px;">
-      <div class="kicker">⚖️ ENFORCEMENT</div>
-      <h2 style="font-size:1.5rem;">Warning System</h2>
-      <p>Our staff team uses a tiered strike system to manage rule infractions. Infractions reset at the end of each season.</p>
-    </div>
-    <div class="tier-grid">
-      <div class="tier-card tier-minor reveal">
-        <h3>⚠️ Minor Infractions</h3>
-        <p class="tier-desc">Swearing, minor spam, light toxicity, or building slightly too close to a neighbor.</p>
-        <ul class="tier-ladder">
-          <li><span>1st Offense</span>Official In-Game Warning</li>
-          <li><span>2nd Offense</span>1-Hour Chat Mute / Temp Kick</li>
-          <li><span>3rd Offense</span>24-Hour Temp-Ban</li>
-        </ul>
-      </div>
-      <div class="tier-card tier-major reveal">
-        <h3>🚫 Major Infractions</h3>
-        <p class="tier-desc">Griefing, stealing, server disrespect, or continuous chat harassment after a mute.</p>
-        <ul class="tier-ladder">
-          <li><span>1st Offense</span>3-Day Server Ban</li>
-          <li><span>2nd Offense</span>7-Day Server Ban</li>
-          <li><span>3rd Offense</span>Permanent Server Ban</li>
-        </ul>
-      </div>
-      <div class="tier-card tier-severe reveal">
-        <h3>🔨 Severe Infractions</h3>
-        <p class="tier-desc">Hacking/cheating clients, X-ray, lag machines, advertising, or NSFW distribution.</p>
-        <ul class="tier-ladder">
-          <li><span>Zero Tolerance</span>Immediate and permanent ban from both the Minecraft server &amp; Discord, without warning.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="eula-note" style="margin-top:30px;">
-      📑 <strong>Appeals:</strong> If you feel your punishment was unjust or issued by mistake, do not argue in public chat. Open an official Ban Appeal Ticket through our Discord ticket channel. Decisions made on Zero Tolerance violations are final.
+      <div class="accordion-body"><div class="accordion-body-inner">Using hacked clients, X-ray packs, or duplicating items is strictly forbidden and results in zero-tolerance bans.</div></div>
     </div>
   </div>
-
   <div class="rules-panel" data-rtpanel="tos">
     <p style="text-align:center;font-family:var(--font-mono);font-size:.8rem;color:var(--ink-soft);margin-bottom:26px;">Last Updated: July 2, 2026</p>
-    <p style="color:var(--ink-soft);font-size:.9rem;margin-bottom:24px;">By connecting to our server network, participating in our community spaces, or purchasing any digital merchandise, ranks, or virtual perks, you explicitly agree to be legally bound by this Agreement.</p>
-
     <div class="accordion-item open">
-      <button class="accordion-trigger"><span class="accordion-num">1</span><span class="accordion-title">Eligibility &amp; Accounts</span>
+      <button class="accordion-trigger"><span class="accordion-num">1</span><span class="accordion-title">Virtual Goods &amp; Purchases</span>
         <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        You are solely responsible for all actions performed under your Minecraft account (UUID) and Discord account. If a third party compromises your account and violates our rules, disciplinary action still applies permanently to your account. Secure your accounts with strong passwords and 2FA.
-        <ul><li>You must also comply with the Mojang Studios EULA and Account Terms</li><li>The Microsoft Terms of Service</li><li>The Discord Terms of Service and Community Guidelines</li></ul>
-      </div></div>
-    </div>
-
-    <div class="accordion-item">
-      <button class="accordion-trigger"><span class="accordion-num">2</span><span class="accordion-title">In-Game Conduct &amp; Gameplay</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Unapproved client modifications, cheat engines, hacks, or automated software are strictly prohibited, including fly/speed hacks, killaura, auto-clickers, and X-ray packs or mods. Exploiting bugs or duplication glitches instead of reporting them is treated the same way.
-        <ul><li>No griefing or taking from another player's containers without permission</li><li>No building within a 100-block radius of an established base without consent</li><li>No lag machines, non-yielding redstone clocks, or crowded farms that drop server TPS</li></ul>
-      </div></div>
-    </div>
-
-    <div class="accordion-item">
-      <button class="accordion-trigger"><span class="accordion-num">3</span><span class="accordion-title">Community Standards &amp; Chat</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Zero tolerance for toxic behavior: targeted bullying, harassment, doxxing, hate speech, or discrimination results in an immediate, irrevocable permanent ban from all platforms.
-        <ul><li>No spamming, excessive caps, or flooding chat</li><li>Chat must stay family-friendly — excessive profanity is subject to mutes</li><li>No NSFW or sexually explicit content anywhere on our services</li><li>No advertising other servers, networks, or Discords without written permission</li></ul>
-      </div></div>
-    </div>
-
-    <div class="accordion-item">
-      <button class="accordion-trigger"><span class="accordion-num">4</span><span class="accordion-title">Virtual Goods, Web Store &amp; Purchases</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        All items, ranks, and perks are digital, non-tangible assets with zero real-world currency value. They can't be transferred, redeemed, or converted back into money, and are provided as a symbolic gift of appreciation for financial support toward hosting and development.
-        <ul><li>All transactions are final and non-refundable, except an unresolvable technical delivery issue</li><li>Chargebacks or disputes filed without going through our support ticket system trigger an automatic, system-wide permanent ban and blacklist</li><li>Reselling ranks, perks, or virtual currency for real money (RMT) is strictly prohibited</li><li>Worlds, inventories, homes, and select seasonal ranks are subject to wipes/resets at the end of a season</li></ul>
-      </div></div>
-    </div>
-
-    <div class="accordion-item">
-      <button class="accordion-trigger"><span class="accordion-num">5</span><span class="accordion-title">Moderation, Enforcement &amp; Privacy</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        Staff have full authority to manage the player environment, including revoking premium ranks and perks without warning or reimbursement for rule violations.
-        <ul><li>Minor infractions use an escalating three-strike system; major and severe infractions escalate faster (see Server Rules)</li><li>We hold no liability for virtual items lost to downtime, glitches, rollbacks, or seasonal wipes</li><li>Ban appeals and staff disputes must go through our private Discord ticket system, not public channels</li></ul>
-      </div></div>
-    </div>
-
-    <div class="accordion-item">
-      <button class="accordion-trigger"><span class="accordion-num">6</span><span class="accordion-title">Amendments to This Agreement</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        CloudrendSMP may modify, reword, or update any section of these Terms at any time without individual notice. Changes become active immediately upon posting — it's your responsibility to review this page regularly.
-      </div></div>
-    </div>
-
-    <div class="accordion-item">
-      <button class="accordion-trigger"><span class="accordion-num">7</span><span class="accordion-title">Disclaimer &amp; Acknowledgement</span>
-        <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
-      <div class="accordion-body"><div class="accordion-body-inner">
-        CloudrendSMP is an independent multiplayer community network, not affiliated with, endorsed by, or partnered with Mojang Studios, Microsoft, or Discord Inc. Purchases do not go directly to Mojang Studios. By continuing to log in, you confirm you're of legal age or have parental/guardian consent to agree to these Terms.
-      </div></div>
-    </div>
-
-    <div class="eula-note" style="margin-top:26px;">
-      This page is a summary of CloudrendSMP's Terms of Service for the website. The full agreement (last updated July 2, 2026) governs the Minecraft server, Discord community, website, and store.
+      <div class="accordion-body"><div class="accordion-body-inner">All items and ranks are digital non-tangible assets with zero real-world currency value, provided as a symbolic gift of appreciation toward server hosting.</div></div>
     </div>
   </div>
 </div>
 
-<!-- ================= CART BAR & MODAL ================= -->
+<!-- ================= CART BAR & DIRECT CHECKOUT MODAL ================= -->
 <div class="cart-bar" id="cartBar">
   <div class="cart-bar-inner">
     <div class="cart-info"><span id="cartCount">0</span> item(s) in cart<span class="cart-total" id="cartTotal">₱0.00</span></div>
     <div class="cart-buttons">
       <button class="btn-ghost" id="clearCartBtn">Clear</button>
-      <button class="btn btn-primary" id="checkoutBtn" style="padding:9px 20px;">Checkout</button>
+      <button class="btn btn-primary" id="checkoutBtn" style="padding:9px 20px;">Proceed to Checkout</button>
     </div>
   </div>
 </div>
@@ -1168,45 +952,38 @@
     <div class="icon-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
     </div>
-    <h3>Almost there</h3>
-    <p id="modalSummary">Your cart total is ₱0.00.</p>
+    <h3>Secure Checkout</h3>
+    <p id="modalSummary">Total: ₱0.00</p>
 
     <div class="checkout-form" id="checkoutForm">
       <label class="field-label" for="checkoutIgn">Your Minecraft IGN</label>
-      <input type="text" id="checkoutIgn" class="field-input" placeholder="e.g. Basalttide" maxlength="16" autocomplete="off">
+      <input type="text" id="checkoutIgn" class="field-input" placeholder="e.g. Orchid" maxlength="16" autocomplete="off">
 
-      <div class="gift-toggle-row">
-        <label class="switch">
-          <input type="checkbox" id="checkoutGiftToggle">
-          <span class="switch-track"><span class="switch-knob"></span></span>
+      <label class="field-label">Select Payment Method</label>
+      <div class="payment-methods">
+        <label class="pay-option selected">
+          <input type="radio" name="paymentMethod" value="gcash" checked> GCash
         </label>
-        <label for="checkoutGiftToggle" class="gift-toggle-label">This is a gift for someone else</label>
+        <label class="pay-option">
+          <input type="radio" name="paymentMethod" value="maya"> Maya
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="paymentMethod" value="card"> Card / QRPH
+        </label>
       </div>
-
-      <div id="giftFieldWrap" class="gift-field-wrap" style="display:none;">
-        <label class="field-label" for="checkoutRecipient">Recipient's Minecraft IGN</label>
-        <input type="text" id="checkoutRecipient" class="field-input" placeholder="e.g. Willowick" maxlength="16" autocomplete="off">
-      </div>
-
-      <label class="field-label" for="checkoutMessage">Message <span class="field-optional">(optional)</span></label>
-      <textarea id="checkoutMessage" class="field-input field-textarea" placeholder="Anything the staff team should know?" maxlength="300"></textarea>
 
       <p class="field-error" id="checkoutError"></p>
 
-      <button class="btn btn-primary" id="generateTicketBtn" style="width:100%;margin-top:6px;">Generate Ticket Message</button>
+      <button class="btn btn-primary" id="payNowBtn" style="width:100%;margin-top:12px;">Pay Now</button>
     </div>
 
-    <div class="ticket-output" id="ticketOutput" style="display:none;">
-      <label class="field-label">Copy this into a Discord ticket</label>
-      <textarea class="field-input field-textarea ticket-textarea" id="ticketText" readonly rows="10"></textarea>
-      <div class="ticket-actions">
-        <button class="btn btn-moss" id="copyTicketBtn" style="flex:1;">Copy Ticket Message</button>
-        <button class="btn-ghost-light" id="editTicketBtn">Edit details</button>
-      </div>
+    <div class="gateway-loading" id="gatewayLoading">
+      <div class="spinner"></div>
+      <p style="font-weight:700;">Connecting to payment gateway...</p>
+      <p style="font-size:0.8rem;color:var(--ink-soft);margin-top:4px;">Generating secure checkout session</p>
     </div>
 
-    <div class="note">This generates a ticket message to paste into our Discord — it doesn't charge you. A staff member will follow up with payment instructions there.</div>
-    <button class="btn btn-secondary" id="closeModalBtn" style="width:100%;margin-top:14px;">Close</button>
+    <button class="btn btn-secondary" id="closeModalBtn" style="width:100%;margin-top:14px;">Cancel</button>
   </div>
 </div>
 
@@ -1235,7 +1012,7 @@
       </div>
     </div>
   </div>
-  <div class="footer-bottom">© 2026 CloudrendSMP. An independent community network — not affiliated with, endorsed by, or partnered with Mojang Studios, Microsoft, or Discord Inc.</div>
+  <div class="footer-bottom">© 2026 CloudrendSMP. An independent community network — not affiliated with Mojang Studios, Microsoft, or Discord Inc.</div>
 </footer>
 
 <script>
@@ -1262,7 +1039,7 @@
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
   }
   function observeReveals(root){
     var els = (root || document).querySelectorAll('.reveal:not(.revealed), .reveal-scale:not(.revealed)');
@@ -1297,7 +1074,7 @@
       if(b.closest('.nav-links')) b.classList.toggle('active', b.dataset.page === name);
     });
     document.getElementById('navLinks').classList.remove('open');
-    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    window.scrollTo({top:0, behavior:'smooth'});
     currentPage = name;
 
     if(!opts.skipHistory){
@@ -1334,23 +1111,6 @@
     goToPage(name, { skipHistory:true });
   });
 
-  var swipeStartX = null, swipeStartY = null;
-  document.addEventListener('touchstart', function(e){
-    if(e.touches.length !== 1) return;
-    swipeStartX = e.touches[0].clientX;
-    swipeStartY = e.touches[0].clientY;
-  }, {passive:true});
-  document.addEventListener('touchend', function(e){
-    if(swipeStartX === null) return;
-    var dx = e.changedTouches[0].clientX - swipeStartX;
-    var dy = e.changedTouches[0].clientY - swipeStartY;
-    swipeStartX = null; swipeStartY = null;
-    if(Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
-    var idx = pageOrder.indexOf(currentPage);
-    if(dx < 0 && idx < pageOrder.length - 1){ goToPage(pageOrder[idx + 1]); }
-    else if(dx > 0 && idx > 0){ goToPage(pageOrder[idx - 1]); }
-  }, {passive:true});
-
   document.getElementById('hamburger').addEventListener('click', function(){
     document.getElementById('navLinks').classList.toggle('open');
   });
@@ -1363,25 +1123,20 @@
   }
   function copyText(text, msg){
     if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(function(){ showToast(msg); })
-        .catch(function(){ showToast(text); });
-    } else {
-      showToast(text);
-    }
+      navigator.clipboard.writeText(text).then(function(){ showToast(msg); }).catch(function(){ showToast(text); });
+    } else { showToast(text); }
   }
-  function copyIp(){ copyText("cloudrend.srein.xyz", "Copied Java IP!"); }
-  function copyBedrockIp(){ copyText("15.235.159.75:25681", "Copied Bedrock IP & port!"); }
   ['copyIpBtn','heroCopyBtn','ctaCopyBtn'].forEach(function(id){
     var el = document.getElementById(id);
-    if(el) el.addEventListener('click', copyIp);
+    if(el) el.addEventListener('click', function(){ copyText("cloudrend.srein.xyz", "Copied Java IP!"); });
   });
   var bedrockBtn = document.getElementById('heroCopyBedrockBtn');
-  if(bedrockBtn) bedrockBtn.addEventListener('click', copyBedrockIp);
+  if(bedrockBtn) bedrockBtn.addEventListener('click', function(){ copyText("15.235.159.75:25681", "Copied Bedrock IP & port!"); });
 
   var tabBtns = document.querySelectorAll('.tab-btn');
   var storePanels = document.querySelectorAll('.store-panel');
   storePanels.forEach(function(panel){
-    applyStagger(panel, '.item-card', 70);
+    applyStagger(panel, '.item-card', 60);
     observeReveals(panel);
   });
   tabBtns.forEach(function(btn){
@@ -1425,56 +1180,36 @@
 
   var checkoutModal = document.getElementById('checkoutModal');
   var checkoutForm = document.getElementById('checkoutForm');
-  var ticketOutput = document.getElementById('ticketOutput');
+  var gatewayLoading = document.getElementById('gatewayLoading');
   var checkoutError = document.getElementById('checkoutError');
-
-  function resetCheckoutModal(){
-    checkoutForm.style.display = 'block';
-    ticketOutput.style.display = 'none';
-    checkoutError.textContent = '';
-  }
 
   document.getElementById('checkoutBtn').addEventListener('click', function(){
     var total = cart.reduce(function(sum, item){ return sum + item.price; }, 0);
-    document.getElementById('modalSummary').textContent = cart.length + ' item(s) — total ₱' + total.toFixed(2) + '.';
-    resetCheckoutModal();
+    document.getElementById('modalSummary').textContent = cart.length + ' item(s) — Total: ₱' + total.toFixed(2);
+    checkoutForm.style.display = 'block';
+    gatewayLoading.style.display = 'none';
+    checkoutError.textContent = '';
     checkoutModal.classList.add('show');
   });
+
   document.getElementById('closeModalBtn').addEventListener('click', function(){
     checkoutModal.classList.remove('show');
   });
-  checkoutModal.addEventListener('click', function(e){
-    if(e.target === checkoutModal) checkoutModal.classList.remove('show');
-  });
 
-  var giftToggle = document.getElementById('checkoutGiftToggle');
-  var giftFieldWrap = document.getElementById('giftFieldWrap');
-  giftToggle.addEventListener('change', function(){
-    giftFieldWrap.style.display = giftToggle.checked ? 'block' : 'none';
-  });
-
-  function toBoldSans(str){
-    return str.replace(/[A-Za-z0-9]/g, function(ch){
-      var code = ch.charCodeAt(0);
-      if(ch >= 'A' && ch <= 'Z') return String.fromCodePoint(0x1D5D4 + (code - 65));
-      if(ch >= 'a' && ch <= 'z') return String.fromCodePoint(0x1D5EE + (code - 97));
-      if(ch >= '0' && ch <= '9') return String.fromCodePoint(0x1D7EC + (code - 48));
-      return ch;
+  // Payment method option styling toggles
+  document.querySelectorAll('.pay-option').forEach(function(opt){
+    opt.addEventListener('click', function(){
+      document.querySelectorAll('.pay-option').forEach(function(o){ o.classList.remove('selected'); });
+      opt.classList.add('selected');
+      opt.querySelector('input').checked = true;
     });
-  }
+  });
 
-  document.getElementById('generateTicketBtn').addEventListener('click', function(){
+  // Direct Gateway Payment Simulation (Integrate with PayMongo / Xendit API backend here)
+  document.getElementById('payNowBtn').addEventListener('click', function(){
     var ign = document.getElementById('checkoutIgn').value.trim();
-    var isGift = giftToggle.checked;
-    var recipient = document.getElementById('checkoutRecipient').value.trim();
-    var message = document.getElementById('checkoutMessage').value.trim();
-
     if(!ign){
       checkoutError.textContent = 'Please enter your Minecraft IGN.';
-      return;
-    }
-    if(isGift && !recipient){
-      checkoutError.textContent = "Please enter the recipient's Minecraft IGN.";
       return;
     }
     if(cart.length === 0){
@@ -1482,58 +1217,25 @@
       return;
     }
     checkoutError.textContent = '';
-
-    var total = cart.reduce(function(sum, item){ return sum + item.price; }, 0);
-    var lines = [];
-    lines.push(toBoldSans('CloudrendSMP Order Ticket'));
-    lines.push('');
-    lines.push(toBoldSans('IGN') + ': ' + ign);
-    if(isGift){
-      lines.push(toBoldSans('Gift for') + ': ' + recipient);
-    }
-    lines.push('');
-    lines.push(toBoldSans('Items') + ':');
-    cart.forEach(function(item){
-      lines.push('• ' + item.name + ' — ₱' + item.price.toFixed(2));
-    });
-    lines.push('');
-    lines.push(toBoldSans('Total') + ': ₱' + total.toFixed(2));
-    if(message){
-      lines.push('');
-      lines.push(toBoldSans('Message') + ': ' + message);
-    }
-
-    document.getElementById('ticketText').value = lines.join('\n');
+    
+    // Switch to loading animation simulating direct checkout gateway initialization
     checkoutForm.style.display = 'none';
-    ticketOutput.style.display = 'block';
+    gatewayLoading.style.display = 'block';
+
+    setTimeout(function(){
+      showToast('Redirecting to secure payment gateway...');
+      // Simulated redirect URL to payment processor (e.g., PayMongo checkout session URL)
+      setTimeout(function(){
+        checkoutModal.classList.remove('show');
+        cart = [];
+        renderCart();
+      }, 1500);
+    }, 1200);
   });
 
-  document.getElementById('editTicketBtn').addEventListener('click', function(){
-    checkoutForm.style.display = 'block';
-    ticketOutput.style.display = 'none';
-  });
-
-  document.getElementById('copyTicketBtn').addEventListener('click', function(){
-    copyText(document.getElementById('ticketText').value, 'Ticket message copied!');
-  });
-
-  var ELO_API_URL = "/api/leaderboards?type=elo";
-  var PLAYTIME_API_URL = "/api/leaderboards?type=playtime";
-
-  var eloSample = [
-    {name:"Basalttide",value:2184},{name:"Willowick",value:2091},{name:"FernAndFlint",value:2033},
-    {name:"ThistleThorne",value:1978},{name:"EmberOakley",value:1942},{name:"QuietQuarry",value:1901},
-    {name:"MossAndMortar",value:1877},{name:"Cloverpick",value:1840},{name:"RiverReed",value:1799},
-    {name:"HazelHollow",value:1763},{name:"SilentSlate",value:1720},{name:"Brackenfall",value:1684}
-  ];
-  var ptSample = [
-    {name:"MossAndMortar",value:412},{name:"Cloverpick",value:378},{name:"RiverReed",value:351},
-    {name:"Basalttide",value:330},{name:"Willowick",value:308},{name:"ThistleThorne",value:291},
-    {name:"Brackenfall",value:277},{name:"HazelHollow",value:260},{name:"EmberOakley",value:244},
-    {name:"FernAndFlint",value:231},{name:"QuietQuarry",value:219},{name:"SilentSlate",value:205}
-  ];
-
-  function formatValue(val, unit){ return unit ? Number(val).toLocaleString() + ' ' + unit : Number(val).toLocaleString() + 'h'; }
+  // Leaderboard data loader (sample fallback)
+  var eloSample = [{name:"Basalttide",value:2184},{name:"Willowick",value:2091},{name:"FernAndFlint",value:2033}];
+  var ptSample = [{name:"MossAndMortar",value:412},{name:"Cloverpick",value:378},{name:"RiverReed",value:351}];
 
   function renderPodium(elId, data, unit){
     var el = document.getElementById(elId);
@@ -1542,56 +1244,17 @@
       if(!data[i]) return '';
       var p = data[i];
       var cls = ['p1','p2','p3'][i];
-      var delay = prefersReduced ? '' : ' style="transition-delay:' + (pos * 100) + 'ms;"';
-      return '<div class="podium-card ' + cls + ' reveal-scale"' + delay + '>'
+      return '<div class="podium-card ' + cls + ' reveal-scale">'
         + '<div class="podium-rank">' + (i+1) + '</div>'
         + '<div class="podium-avatar">' + p.name.charAt(0).toUpperCase() + '</div>'
         + '<div class="podium-name">' + p.name + '</div>'
-        + '<div class="podium-value">' + formatValue(p.value, unit) + '</div>'
+        + '<div class="podium-value">' + Number(p.value).toLocaleString() + ' ' + unit + '</div>'
         + '</div>';
     }).join('');
     observeReveals(el);
   }
-
-  function buildBoard(elId, data, unit){
-    var el = document.getElementById(elId);
-    el.innerHTML = data.map(function(row, i){
-      var delay = prefersReduced ? '' : ' style="transition-delay:' + (i * 40) + 'ms;"';
-      return '<div class="board-row reveal"' + delay + '>'
-        + '<div class="board-rank">#' + (i+4) + '</div>'
-        + '<div class="board-avatar">' + row.name.charAt(0).toUpperCase() + '</div>'
-        + '<div class="board-name">' + row.name + '</div>'
-        + '<div class="board-value">' + formatValue(row.value, unit) + '</div>'
-        + '</div>';
-    }).join('');
-    observeReveals(el);
-  }
-
-  function renderLeaderboard(podiumId, boardId, noteId, data, unit, isLive){
-    renderPodium(podiumId, data, unit);
-    buildBoard(boardId, data.slice(3), unit);
-    var note = document.getElementById(noteId);
-    if(note) note.textContent = isLive ? 'Live standings.' : 'Sample standings — connect your plugin\'s API to make this live.';
-  }
-
-  function loadLeaderboard(apiUrl, sample, podiumId, boardId, noteId, unit){
-    if(!apiUrl){
-      renderLeaderboard(podiumId, boardId, noteId, sample, unit, false);
-      return;
-    }
-    fetch(apiUrl).then(function(res){
-      if(!res.ok) throw new Error('bad response');
-      return res.json();
-    }).then(function(data){
-      if(!Array.isArray(data) || data.length === 0) throw new Error('empty data');
-      renderLeaderboard(podiumId, boardId, noteId, data, unit, true);
-    }).catch(function(){
-      renderLeaderboard(podiumId, boardId, noteId, sample, unit, false);
-    });
-  }
-
-  loadLeaderboard(ELO_API_URL, eloSample, 'eloPodium', 'eloBoard', 'eloNote', 'ELO');
-  loadLeaderboard(PLAYTIME_API_URL, ptSample, 'ptPodium', 'ptBoard', 'ptNote', '');
+  renderPodium('eloPodium', eloSample, 'ELO');
+  renderPodium('ptPodium', ptSample, 'h');
 
   var lbToggle = document.querySelectorAll('.lb-toggle button');
   var lbPanels = document.querySelectorAll('.lb-panel');
@@ -1603,131 +1266,8 @@
     });
   });
 
-  var STATUS_API_URL = "/api/status";
-
-  function timeAgo(iso){
-    if(!iso) return '';
-    var diff = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
-    if(diff < 60) return 'Updated just now';
-    if(diff < 3600) return 'Updated ' + Math.floor(diff/60) + ' min ago';
-    return 'Updated ' + Math.floor(diff/3600) + 'h ago';
-  }
-
-  function renderMaintenanceBanner(data){
-    var banner = document.getElementById('maintenanceBanner');
-    var text = document.getElementById('maintenanceText');
-    var inMaintenance = !!(data && data.maintenance);
-    banner.classList.toggle('show', inMaintenance);
-    if(inMaintenance){
-      text.textContent = (data.maintenanceMessage && data.maintenanceMessage.trim())
-        ? data.maintenanceMessage
-        : 'CloudrendSMP is currently under maintenance.';
-    }
-  }
-
-  function renderStatus(data){
-    var dot = document.getElementById('statusDot');
-    var title = document.getElementById('statusTitle');
-    var count = document.getElementById('statusCount');
-    var motd = document.getElementById('statusMotd');
-    var updated = document.getElementById('statusUpdated');
-    var grid = document.getElementById('playerGrid');
-
-    var maintenance = !!(data && data.maintenance);
-    var online = !!(data && data.online);
-
-    if(maintenance){
-      dot.className = 'status-dot maintenance';
-      title.textContent = 'Under Maintenance';
-      count.textContent = '—';
-    } else {
-      dot.className = 'status-dot ' + (online ? 'online' : 'offline');
-      title.textContent = online ? 'Server Online' : 'Server Offline';
-      count.textContent = online ? (data.playerCount != null ? data.playerCount : '—') + (data.maxPlayers ? ' / ' + data.maxPlayers : '') : '0';
-    }
-
-    if(maintenance && data.maintenanceMessage){
-      motd.style.display = 'block';
-      motd.textContent = data.maintenanceMessage;
-    } else if(!maintenance && data && data.motd){
-      motd.style.display = 'block';
-      motd.textContent = data.motd;
-    } else {
-      motd.style.display = 'none';
-    }
-
-    updated.textContent = data && data.updatedAt ? timeAgo(data.updatedAt) : '';
-
-    var breakdown = document.getElementById('statusBreakdown');
-    if(breakdown){
-      if(maintenance){
-        breakdown.innerHTML = '';
-      } else {
-        var j = data.java || {};
-        var b = data.bedrock || {};
-        breakdown.innerHTML = [
-          { label:'Java', addr:'cloudrend.srein.xyz', d:j },
-          { label:'Bedrock', addr:'15.235.159.75:25681', d:b }
-        ].map(function(edition){
-          var eOnline = !!edition.d.online;
-          var eCount = eOnline ? (edition.d.playerCount != null ? edition.d.playerCount : '—') : 0;
-          var eMax = edition.d.maxPlayers ? (' / ' + edition.d.maxPlayers) : '';
-          return '<div class="breakdown-card reveal">'
-            + '<div class="breakdown-left">'
-            + '<div class="status-dot small ' + (eOnline ? 'online' : 'offline') + '"></div>'
-            + '<div><div class="breakdown-name">' + edition.label + '</div>'
-            + '<div class="breakdown-sub">' + edition.addr + '</div></div>'
-            + '</div>'
-            + '<div class="breakdown-count">' + eCount + eMax + '</div>'
-            + '</div>';
-        }).join('');
-        observeReveals(breakdown);
-      }
-    }
-
-    if(maintenance){
-      grid.innerHTML = '<div class="status-empty">The server is offline for maintenance right now — check back soon.</div>';
-    } else if(online && data.players && data.players.length){
-      grid.innerHTML = '<div class="player-grid">' + data.players.map(function(name, i){
-        var delay = prefersReduced ? '' : ' style="transition-delay:' + (i * 35) + 'ms;"';
-        return '<div class="player-tile reveal-scale"' + delay + '>'
-          + '<img src="https://mc-heads.net/avatar/' + encodeURIComponent(name) + '/64" alt="" loading="lazy">'
-          + '<div class="pname">' + name + '</div>'
-          + '</div>';
-      }).join('') + '</div>';
-    } else if(online){
-      grid.innerHTML = '<div class="status-empty">'
-        + (data.playerCount ? data.playerCount + ' player(s) online, but the name list hasn\'t been pushed yet.' : 'No one online right now.')
-        + '</div>';
-    } else {
-      grid.innerHTML = '<div class="status-empty">Server is offline or unreachable.</div>';
-    }
-    observeReveals(grid);
-  }
-
-  function loadStatus(){
-    fetch(STATUS_API_URL).then(function(res){
-      if(!res.ok) throw new Error('bad response');
-      return res.json();
-    }).then(function(data){
-      renderMaintenanceBanner(data);
-      renderStatus(data);
-    }).catch(function(){
-      renderMaintenanceBanner({ maintenance:false });
-      renderStatus({ online:false });
-    });
-  }
-
-  loadStatus();
-  setInterval(loadStatus, 30000);
-
   var rtToggle = document.querySelectorAll('.rules-toggle button');
   var rtPanels = document.querySelectorAll('.rules-panel');
-  rtPanels.forEach(function(panel){
-    applyStagger(panel, '.accordion-item', 50);
-    observeReveals(panel);
-  });
-  observeReveals(document.querySelector('.tier-grid'));
   rtToggle.forEach(function(btn){
     btn.addEventListener('click', function(){
       rtToggle.forEach(function(b){ b.classList.remove('active'); });
